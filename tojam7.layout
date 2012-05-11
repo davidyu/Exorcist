@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="..\Spice\src\CORE_Input.cpp" open="1" top="0" tabpos="0">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="include\cMainGameState.hpp" open="0" top="0" tabpos="0">
+		<Cursor position="420" topLine="22" />
+	</File>
+	<File name="main.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1097" topLine="22" />
+	</File>
+	<File name="src\CORE_cGame.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="3606" topLine="28" />
+	</File>
+	<File name="src\cMainGameState.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="70" topLine="0" />
+	</File>
+</CodeBlocks_layout_file>
