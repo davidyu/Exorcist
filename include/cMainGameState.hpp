@@ -34,10 +34,16 @@ class cMainGameState : public STATE::iGameState
         void Update(CORE::cGame* game, float delta);
 
         void Render(CORE::cGame* game, float percent_tick);
+        void RenderMain(CORE::cGame* game, float percent_tick);
+        void RenderMotionBlur(CORE::cGame* game, float percent_tick);
+        void RenderLightMask(CORE::cGame* game, float percent_tick);
+        void BuildLightMask(CORE::cGame* game, float percent_tick);
+        void BuildMotionBlurFrame(CORE::cGame* game, float percent_tick);
 
     private:
         GFX::G2D::cSpriteBatch m_batch;
         GFX::cTextureWrapper* m_pMotionTex;
+        GFX::cTextureWrapper* m_pLightTex;
         std::vector<GFX::cTexture> texs;
         bool test;
 };
