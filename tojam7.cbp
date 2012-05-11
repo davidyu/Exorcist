@@ -78,6 +78,7 @@
 		<Unit filename="..\Spice\include\STATE_cGameTransition.hpp" />
 		<Unit filename="..\Spice\include\STATE_cTransSquareSpin.hpp" />
 		<Unit filename="..\Spice\include\STATE_iGameState.hpp" />
+		<Unit filename="..\Spice\include\cAnimationRegistry.hpp" />
 		<Unit filename="..\Spice\include\cGenericFactory.hpp" />
 		<Unit filename="..\Spice\include\demo_cPlayState.hpp" />
 		<Unit filename="..\Spice\include\global_inc.hpp" />
@@ -98,12 +99,15 @@
 		<Unit filename="..\Spice\src\MATH_Matrix4x4.cpp" />
 		<Unit filename="..\Spice\src\STATE_cGameStateManager.cpp" />
 		<Unit filename="..\Spice\src\STATE_cTransSquareSpin.cpp" />
+		<Unit filename="..\Spice\src\cAnimationRegistry.cpp" />
 		<Unit filename="include\GFX_cTextureRegistry.hpp" />
+		<Unit filename="include\cBros.hpp" />
 		<Unit filename="include\cMainGameState.hpp" />
 		<Unit filename="include\cTile.hpp" />
 		<Unit filename="include\cTileLevel.hpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src\CORE_cGame.cpp" />
+		<Unit filename="src\cBros.cpp" />
 		<Unit filename="src\cMainGameState.cpp" />
 		<Unit filename="src\cTile.cpp" />
 		<Unit filename="src\cTileLevel.cpp" />

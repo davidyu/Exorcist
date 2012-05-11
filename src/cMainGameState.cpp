@@ -154,9 +154,7 @@ void cMainGameState::RenderMain(CORE::cGame* game, float percent_tick)
 //        m_batch.DrawTexturePos2Dim2Origin2Scale2Rot(reg, 50.0f, 0.0f, 200.0f, 100.0f, 100.0f, 50.0f, 1.0f, 1.0f, rot);
     m_batch.End();
 
-    m_pLevel->Render(game, percent_tick, m_batch, MATH::cRectf(0.0f, 0.0f, 400.0f, 700.0f));
-
-
+    m_pLevel->Render(game, percent_tick, m_batch, MATH::cRectf(0.0f, 0.0f, 800.0f, 700.0f));
 
     /* End Main Drawing Procedure */
 
@@ -206,9 +204,12 @@ void cMainGameState::BuildMotionBlurFrame(CORE::cGame* game, float percent_tick)
 void cMainGameState::HandleInput(CORE::cGame* game)
 {
     CORE::Input& input = game->GetInput();
+    float    x, y;
+    input.GetJoyExtentIDWhichExtent2(0,0, x, y);
 
     if (input.GetKeyState(SDLK_ESCAPE)) game->EndGame();
     if (input.GetKeyState(SDLK_RIGHT)) {posx += 1.0f; }
+    if (y<-0.4f) { posx -= 1.0f; }
     if (input.OnMouseButtonUp(SDL_BUTTON_LEFT)) { b=!b;}
     if (input.OnKeyDown(SDLK_b)) {
         STATE::cGameTransition* trans = game->transition_factory.CreateObject("transSquareSpin");
@@ -216,5 +217,5 @@ void cMainGameState::HandleInput(CORE::cGame* game)
 
         game->GetStateManager().ReplaceStateUsingTransition(newstate, trans);
     }
-    float x, y;
+
 }
