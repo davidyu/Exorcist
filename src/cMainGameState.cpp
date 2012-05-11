@@ -53,17 +53,20 @@ bool cMainGameState::OnEnter(CORE::cGame* game)
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0.0, WINDOW_WIDTH, WINDOW_HEIGHT, 0.0, -10.0, 10.0);
+    glOrtho(0.0, WINDOW_WIDTH, 0.0, WINDOW_HEIGHT, -10.0, 10.0);
     glMatrixMode(GL_MODELVIEW);
+//    glScalef(1.0f, -1.0f, 1.0f);
     glLoadIdentity();
 
     if (!m_pMotionTex) {
         m_pMotionTex = new cTextureWrapper();
         m_pMotionTex->SetBytesPerPixel(3);
         m_pMotionTex->SetTextureFormat(GL_RGB);
-        m_pMotionTex->SetUV(0.0f, 1.0f, 1.0f, 0.0f);
+//        m_pMotionTex->SetUV(0.0f, 1.0f, 1.0f, 0.0f);
+//        m_pMotionTex->SetUV(0.0f, 1.0f, 1.0f, 0.0f);
 
-        CreateMotionBlurTexture(*m_pMotionTex, 256, 256, 0);
+
+        CreateMotionBlurTexture(*m_pMotionTex, 512, 512, 0);
     }
 
     if (!m_pLightTex) {
@@ -106,15 +109,23 @@ float posx = 0.0f;
 void cMainGameState::Render(CORE::cGame* game, float percent_tick)
 {
 //    glEnable(GL_ALPHA_TEST) ;
+    m_pMotionTex->SetUV(0.0f, 0.0f, 1.0f, 1.0f);
 
     BuildLightMask(game, percent_tick);
+
     RenderMain(game, percent_tick);
+    RenderLightMask(game, percent_tick);
+    glColor4f(1.0f, 1.0f, 1.0f, expf(-9.08e-3f*percent_tick));
+    RenderMotionBlur(game, percent_tick);
+
     BuildMotionBlurFrame(game, percent_tick);
 
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);
     RenderMotionBlur(game, percent_tick);
+
 
 }
 
@@ -123,6 +134,7 @@ void cMainGameState::RenderMain(CORE::cGame* game, float percent_tick)
     /* Begin Main Drawing Procedure */
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+//    glAlphaFunc(GL_GREATER, 0.2f);
     glEnable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA,
@@ -135,11 +147,11 @@ void cMainGameState::RenderMain(CORE::cGame* game, float percent_tick)
 //        m_batch.DrawTexturePos2Dim2Origin2Scale2Rot(reg, 50.0f, 0.0f, 200.0f, 100.0f, 100.0f, 50.0f, 1.0f, 1.0f, rot);
     m_batch.End();
 
-    RenderLightMask(game, percent_tick);
 
-    glColor4f(1.0f, 1.0f, 1.0f, expf(-5.08e-3f*percent_tick));
-    RenderMotionBlur(game, percent_tick);
     /* End Main Drawing Procedure */
+
+        // Draw the motion blur once at alpha
+
 
 }
 void cMainGameState::RenderMotionBlur(CORE::cGame* game, float percent_tick)
@@ -150,30 +162,34 @@ void cMainGameState::RenderLightMask(CORE::cGame* game, float percent_tick)
 {
     glEnable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
+
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     //    glBlendFunc(GL_DST_COLOR, GL_ONE);
     glBlendFunc(GL_DST_COLOR,GL_SRC_COLOR); // 2X Multiplicative
 ////    glBlendFunc(GL_ZERO, GL_SRC_COLOR); // Multiplicative
 //    glBlendFunc(GL_ONE, GL_ONE); // Additive -> Wrong for Particle.png
-    ImmediateRenderTexturePos2Dim2(texs[1], posx, -300.0f, 1000.0f, 1000.0f);
-
+//    ImmediateRenderTexturePos2Dim2(texs[1], posx, -300.0f, 1000.0f, 1000.0f);
+    RenderFullViewportTexture(*m_pLightTex, WINDOW_WIDTH, WINDOW_HEIGHT);
     glBlendFunc(GL_SRC_ALPHA,
 			GL_ONE_MINUS_SRC_ALPHA);
 }
 void cMainGameState::BuildLightMask(CORE::cGame* game, float percent_tick)
 {
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClearColor(0.05f, 0.05f, 0.05f, 0.1f);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 //
-    ImmediateRenderTexturePos2Dim2(texs[1], posx, -500.0f, 1000.0f, 1000.0f);
+
+    ImmediateRenderTexturePos2Dim2(texs[1], posx, 100.0f, 400.0f, 400.0f);
+
     glBindTexture(GL_TEXTURE_2D, m_pLightTex->GetID());
     CopyBackbufferToTexture(*m_pLightTex, WINDOW_WIDTH, WINDOW_HEIGHT);
-
 }
 
 void cMainGameState::BuildMotionBlurFrame(CORE::cGame* game, float percent_tick)
 {
     glBindTexture(GL_TEXTURE_2D, m_pMotionTex->GetID());
     CopyBackbufferToTexture(*m_pMotionTex, WINDOW_WIDTH, WINDOW_HEIGHT);
+    m_pMotionTex->SetUV(0.0f, 1.0f, 1.0f, 0.0f);
 }
 
 void cMainGameState::HandleInput(CORE::cGame* game)
