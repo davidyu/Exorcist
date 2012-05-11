@@ -47,6 +47,41 @@
 			<Add option="-lmingw32 -lopengl32 -lglu32 -lSDL2main -lSDL2" />
 			<Add option="-lSDL_image -lSDL2_mixer" />
 		</Linker>
+		<Unit filename="..\Spice\include\CORE_Input.hpp" />
+		<Unit filename="..\Spice\include\CORE_cGame.hpp" />
+		<Unit filename="..\Spice\include\CORE_cSDLState.hpp" />
+		<Unit filename="..\Spice\include\CORE_cTimer.hpp" />
+		<Unit filename="..\Spice\include\CORE_iApplication.hpp" />
+		<Unit filename="..\Spice\include\CORE_keycodes.hpp" />
+		<Unit filename="..\Spice\include\GFX_Color4.hpp" />
+		<Unit filename="..\Spice\include\GFX_G2D_cAnimation.hpp" />
+		<Unit filename="..\Spice\include\GFX_G2D_cSpriteBatch.hpp" />
+		<Unit filename="..\Spice\include\GFX_G2D_cTextureRegion.hpp" />
+		<Unit filename="..\Spice\include\GFX_MotionBlur.hpp" />
+		<Unit filename="..\Spice\include\GFX_TextureUtilities.hpp" />
+		<Unit filename="..\Spice\include\GFX_cCameraBase.hpp" />
+		<Unit filename="..\Spice\include\GFX_cImage.hpp" />
+		<Unit filename="..\Spice\include\GFX_cTexture.hpp" />
+		<Unit filename="..\Spice\include\GFX_cTextureMesh.hpp" />
+		<Unit filename="..\Spice\include\GFX_cTextureRegistry.hpp" />
+		<Unit filename="..\Spice\include\GFX_cTextureWrapper.hpp" />
+		<Unit filename="..\Spice\include\MATH_LinearAlgebra.hpp" />
+		<Unit filename="..\Spice\include\MATH_Math.hpp" />
+		<Unit filename="..\Spice\include\MATH_MathHelper.hpp" />
+		<Unit filename="..\Spice\include\MATH_Matrix4x4.hpp" />
+		<Unit filename="..\Spice\include\MATH_Primitives.hpp" />
+		<Unit filename="..\Spice\include\MATH_Random.hpp" />
+		<Unit filename="..\Spice\include\MATH_Vec2.hpp" />
+		<Unit filename="..\Spice\include\MATH_Vec3.hpp" />
+		<Unit filename="..\Spice\include\MATH_Vec4.hpp" />
+		<Unit filename="..\Spice\include\STATE_cGameStateManager.hpp" />
+		<Unit filename="..\Spice\include\STATE_cGameTransition.hpp" />
+		<Unit filename="..\Spice\include\STATE_cTransSquareSpin.hpp" />
+		<Unit filename="..\Spice\include\STATE_iGameState.hpp" />
+		<Unit filename="..\Spice\include\cGenericFactory.hpp" />
+		<Unit filename="..\Spice\include\demo_cPlayState.hpp" />
+		<Unit filename="..\Spice\include\global_inc.hpp" />
+		<Unit filename="..\Spice\include\memory_macros.h" />
 		<Unit filename="..\Spice\src\CORE_Input.cpp" />
 		<Unit filename="..\Spice\src\CORE_cSDLState.cpp" />
 		<Unit filename="..\Spice\src\CORE_cTimer.cpp" />
@@ -63,10 +98,15 @@
 		<Unit filename="..\Spice\src\MATH_Matrix4x4.cpp" />
 		<Unit filename="..\Spice\src\STATE_cGameStateManager.cpp" />
 		<Unit filename="..\Spice\src\STATE_cTransSquareSpin.cpp" />
+		<Unit filename="include\GFX_cTextureRegistry.hpp" />
 		<Unit filename="include\cMainGameState.hpp" />
+		<Unit filename="include\cTile.hpp" />
+		<Unit filename="include\cTileLevel.hpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src\CORE_cGame.cpp" />
 		<Unit filename="src\cMainGameState.cpp" />
+		<Unit filename="src\cTile.cpp" />
+		<Unit filename="src\cTileLevel.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

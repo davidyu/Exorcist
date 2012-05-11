@@ -4,6 +4,8 @@
 #include "CORE_cGame.hpp"
 #include "STATE_iGameState.hpp"
 
+#include "GFX_cTextureRegistry.hpp"
+
 
 
 /*temp*/ #include <iostream>
@@ -40,6 +42,7 @@ bool cGame::Initialise()
 
     m_running = true;
     m_input.Initialise();
+    GFX::cTextureRegistry::Init();
 
 
     return true;

@@ -1,28 +1,64 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="..\Spice\src\CORE_Input.cpp" open="1" top="0" tabpos="1">
+	<File name="..\Spice\include\GFX_TextureUtilities.hpp" open="1" top="0" tabpos="0">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="..\Spice\include\GFX_cImage.hpp" open="0" top="0" tabpos="0">
+		<Cursor position="287" topLine="9" />
+	</File>
+	<File name="..\Spice\src\CORE_Input.cpp" open="0" top="0" tabpos="1">
+		<Cursor position="3273" topLine="42" />
+	</File>
+	<File name="..\Spice\src\CORE_cSDLState.cpp" open="1" top="0" tabpos="0">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="..\Spice\src\GFX_G2D_cSpriteBatch.cpp" open="1" top="0" tabpos="0">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="..\Spice\src\GFX_G2D_cTextureRegion.cpp" open="1" top="0" tabpos="0">
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="..\Spice\src\GFX_MotionBlur.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="321" topLine="0" />
 	</File>
-	<File name="..\Spice\src\GFX_TextureUtilities.cpp" open="1" top="0" tabpos="0">
-		<Cursor position="5531" topLine="143" />
+	<File name="..\Spice\src\GFX_TextureUtilities.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="6156" topLine="150" />
 	</File>
-	<File name="..\Spice\src\GFX_cTexture.cpp" open="1" top="0" tabpos="9">
-		<Cursor position="418" topLine="0" />
+	<File name="..\Spice\src\GFX_cTexture.cpp" open="0" top="0" tabpos="9">
+		<Cursor position="142" topLine="0" />
 	</File>
-	<File name="include\cMainGameState.hpp" open="1" top="0" tabpos="4">
-		<Cursor position="1272" topLine="15" />
+	<File name="..\Spice\src\GFX_cTextureMesh.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2222" topLine="58" />
+	</File>
+	<File name="..\Spice\src\STATE_cGameStateManager.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2840" topLine="0" />
+	</File>
+	<File name="include\GFX_cTextureRegistry.hpp" open="0" top="0" tabpos="0">
+		<Cursor position="1033" topLine="16" />
+	</File>
+	<File name="include\cMainGameState.hpp" open="0" top="0" tabpos="4">
+		<Cursor position="263" topLine="9" />
+	</File>
+	<File name="include\cTile.hpp" open="0" top="0" tabpos="0">
+		<Cursor position="65" topLine="0" />
+	</File>
+	<File name="include\cTileLevel.hpp" open="0" top="0" tabpos="0">
+		<Cursor position="135" topLine="0" />
 	</File>
 	<File name="main.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="1097" topLine="22" />
 	</File>
-	<File name="src\CORE_cGame.cpp" open="1" top="0" tabpos="2">
-		<Cursor position="2708" topLine="93" />
+	<File name="src\CORE_cGame.cpp" open="0" top="0" tabpos="2">
+		<Cursor position="4748" topLine="180" />
 	</File>
-	<File name="src\cMainGameState.cpp" open="1" top="0" tabpos="5">
-		<Cursor position="1271" topLine="37" />
+	<File name="src\cMainGameState.cpp" open="1" top="1" tabpos="2">
+		<Cursor position="3004" topLine="117" />
+	</File>
+	<File name="src\cTile.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="486" topLine="0" />
+	</File>
+	<File name="src\cTileLevel.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1755" topLine="52" />
 	</File>
 </CodeBlocks_layout_file>

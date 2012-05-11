@@ -1,6 +1,11 @@
 #include "cTile.hpp"
+#include "GFX_cTextureRegistry.hpp"
+#include "GFX_TextureUtilities.hpp"
+#include "GFX_G2D_cSpriteBatch.hpp"
+#include "GFX_TextureUtilities.hpp"
 
-cTile::cTile()
+cTile::cTile(float x, float y)
+: m_Pos(Vec2f(x, y))
 {
     //ctor
 }
@@ -8,4 +13,12 @@ cTile::cTile()
 cTile::~cTile()
 {
     //dtor
+}
+
+void cTile::Render(CORE::cGame* game, float delta, GFX::G2D::cSpriteBatch& batch)
+{
+    static GFX::cTextureWrapper& tex = Art("tile0");
+//    batch.DrawTexturePos2Dim2(tex, m_Pos.x, m_Pos.y, TILEWIDTH, TILEWIDTH);
+    ImmediateRenderTexturePos2Dim2(tex, m_Pos.x ,m_Pos.y, TILEWIDTH, TILEWIDTH);
+
 }

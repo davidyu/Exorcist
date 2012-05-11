@@ -6,7 +6,6 @@
 
 #define XTILES 100
 #define YTILES 100
-#define TILEWIDTH 20
 
 namespace CORE
 {
@@ -19,16 +18,17 @@ namespace MATH
 class cTileLevel
 {
     public:
-        cTileLevel();
+        cTileLevel(int xTiles, int yTiles);
         virtual ~cTileLevel();
         void Init();
 
         void Update(CORE::cGame* game, float delta);
-        void Render(CORE::cGame* game, float delta, const MATH::cRectf& renderRect);
+        void Render(CORE::cGame* game, float delta, GFX::G2D::cSpriteBatch& batch, const MATH::cRectf& renderRect);
 
         cTile& GetTileXY(int x, int y);
     private:
-        std::array<std::array<cTile, YTILES>, XTILES> tiles;
+        cTile*** tiles; // Yeah this is sooo smart >_>
+        int m_xTiles, m_yTiles;
 
 };
 

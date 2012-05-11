@@ -14,6 +14,7 @@ namespace CORE
     class Input;
 }
 
+class cTileLevel;
 //static STATE::iGameState* CreateInstance() {}
 
 class cMainGameState : public STATE::iGameState
@@ -45,7 +46,9 @@ class cMainGameState : public STATE::iGameState
         GFX::cTextureWrapper* m_pMotionTex;
         GFX::cTextureWrapper* m_pLightTex;
         std::vector<GFX::cTexture> texs;
-        bool test;
+
+        cTileLevel* m_pLevel;
+
 };
 
 #endif // MAINGAMESTATE_H
