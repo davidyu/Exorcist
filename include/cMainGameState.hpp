@@ -14,6 +14,13 @@ namespace CORE
     class Input;
 }
 
+namespace GFX
+{
+    namespace G2D
+    {
+        class cAnimation;
+    }
+}
 class cTileLevel;
 //static STATE::iGameState* CreateInstance() {}
 
@@ -48,6 +55,7 @@ class cMainGameState : public STATE::iGameState
         GFX::G2D::cSpriteBatch m_batch;
         GFX::cTextureWrapper* m_pMotionTex;
         GFX::cTextureWrapper* m_pLightTex;
+        GFX::G2D::cAnimation* m_pAnimStaticOverlay;
         std::vector<GFX::cTexture> texs;
 
         cTileLevel* m_pLevel;

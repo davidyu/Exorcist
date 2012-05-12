@@ -19,13 +19,17 @@ public:
     cBros();
     virtual ~cBros();
     void Update(CORE::cGame* game, float delta, cMainGameState* state);
+    void TryMove(CORE::cGame* game, float delta, cMainGameState* state);
     void Render(CORE::cGame* game, float delta, cMainGameState* state);
     void HandleInput(CORE::cGame* game, float delta);
+
+
 private:
     enum { STILL, WALKING, DRILLING, DYING };
     GFX::G2D::cAnimationRegistry m_Anims;
     float m_DrillRate;
     int m_State;
+    int m_Direction;
 
 };
 

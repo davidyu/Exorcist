@@ -28,8 +28,9 @@ class cTileLevel
         void Render(CORE::cGame* game, float delta, GFX::G2D::cSpriteBatch& batch, const MATH::cRectf& renderRect);
 
         cTile& GetTileXY(int x, int y);
+        cTile& GetTileClosestToPos(const Vec2f& p);
     private:
-        cTile*** tiles; // Yeah this is sooo smart >_>
+        cTile*** m_pppTiles; // Yeah this is sooo smart >_>
         int m_xTiles, m_yTiles;
         bool m_IsDrilled;
 

@@ -36,6 +36,7 @@ cMainGameState::cMainGameState()
 , m_pMotionTex(0)
 , m_pLightTex(0)
 , m_pLevel(0)
+, m_pAnimStaticOverlay(0)
  {}
 
 cMainGameState::~cMainGameState() {}
@@ -92,6 +93,12 @@ bool cMainGameState::OnEnter(CORE::cGame* game)
     texs.push_back(cTexture("art/light.png"));
     texs.back().RegisterGL();
 
+    m_pAnimStaticOverlay = new cAnimation(100, cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("static"), 8, 0, 0, 256, 256));
+
+    cBros* bro = new cBros;
+    cEntity::EntityList.push_back(bro);
+    bro = 0;
+
 
     return true;
 }
@@ -136,6 +143,8 @@ bool cMainGameState::OnExit(CORE::cGame* game)
     texs.clear();
     DELETESINGLE(m_pMotionTex);
     DELETESINGLE(m_pLightTex);
+    DELETESINGLE(m_pAnimStaticOverlay);
+
 
     cout << "Leaving Main Game state\n";
 
@@ -149,6 +158,11 @@ void cMainGameState::Update(CORE::cGame* game, float delta)
     HandleInput(game);
 
     m_pLevel->Update(game, delta, this);
+
+    int i;
+    for (i=0; i<cEntity::EntityList.size(); ++i) {
+        cEntity::EntityList[i]->Update(game, delta, this);
+    }
 }
 
 float posx = 0.0f;
@@ -161,9 +175,13 @@ void cMainGameState::Render(CORE::cGame* game, float percent_tick)
     BuildLightMask(game, percent_tick);
 
     RenderMain(game, percent_tick);
+    static float statetime = 0.0f;
+    statetime += percent_tick;
+    ImmediateRenderTexturePos2Dim2(m_pAnimStaticOverlay->GetKeyFrame(statetime, true), posx,100,400,400);
     if (b)RenderLightMask(game, percent_tick);
 
-    const float e = expf(-9.08e-3f*percent_tick);
+
+    const float e = expf(-35.08e-3f*percent_tick);
     glColor4f(1.0f, 1.0f, 1.0f, e);
     RenderMotionBlur(game, percent_tick);
 
@@ -202,7 +220,10 @@ void cMainGameState::RenderMain(CORE::cGame* game, float percent_tick)
 
     m_pLevel->Render(game, percent_tick, m_batch, MATH::cRectf(0.0f, 0.0f, 800.0f, 700.0f));
 
-    bro.Render(game, percent_tick, this);
+    int i;
+    for (i=0; i<cEntity::EntityList.size(); ++i) {
+        cEntity::EntityList[i]->Render(game, percent_tick, this);
+    }
 
     /* End Main Drawing Procedure */
 
@@ -256,8 +277,7 @@ void cMainGameState::HandleInput(CORE::cGame* game)
     //input.GetJoyExtentIDWhichExtent2(0,0, x, y);
 
     if (input.GetKeyState(SDLK_ESCAPE)) game->EndGame();
-    if (input.GetKeyState(SDLK_RIGHT)) {posx += 1.0f; }
-    if (input.GetKeyState(SDLK_LEFT)) {posx -= 1.0f; }
+//    if (input.GetKeyState(SDLK_RIGHT)) {posx += 1.0f; }
     if (y<-0.4f) { posx -= 1.0f; }
     if (input.OnMouseButtonUp(SDL_BUTTON_LEFT)) { b=!b;}
     if (input.OnKeyDown(SDLK_b)) {
