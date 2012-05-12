@@ -80,14 +80,19 @@ void cTileLevel::Render(CORE::cGame* game, float delta, GFX::G2D::cSpriteBatch& 
     }
 }
 
-cTile& cTileLevel::GetTileClosestToPos(const Vec2f& p)
+cTile* cTileLevel::GetTileClosestToPos(const Vec2f& p, int& x, int& y)
 {
-    int x = static_cast<float>(p.x)/TILEWIDTH;
-    int y = static_cast<float>(p.y)/TILEWIDTH;
+    x = static_cast<float>(p.x)/TILEWIDTH;
+    y = static_cast<float>(p.y)/TILEWIDTH;
 
-    if (x<m_xTiles&&y<m_yTiles) {
-        cout << "Out of bounds m_pppTiles\n";
-        assert(false); // T|hrow?
+    return GetTileXY(x, y);
+}
+
+cTile* cTileLevel::GetTileXY(int x, int y)
+{
+    if (x>=m_xTiles||x<0||y>=m_yTiles||y<0) {
+        x=y=0;
+        return 0;
     }
-    return *m_pppTiles[x][y];
+    return m_pppTiles[x][y];
 }

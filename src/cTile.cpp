@@ -7,6 +7,7 @@
 
 cTile::cTile(float x, float y, bool collidable)
 : m_Pos(Vec2f(x, y))
+, m_BBox(cRectf(0.0f, 0.0f, TILEWIDTH, TILEWIDTH))
 , m_Life(0.0f)
 , m_IsDrilled(false)
 , m_IsCollidable(collidable)

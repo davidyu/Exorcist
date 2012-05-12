@@ -3,6 +3,8 @@
 #include "GFX_G2D_cTextureRegion.hpp"
 #include "GFX_TextureUtilities.hpp"
 #include "CORE_cGame.hpp"
+#include "cMainGameState.hpp"
+#include "cTileLevel.hpp"
 
 using namespace GFX::G2D;
 
@@ -39,26 +41,33 @@ void cBros::Update(CORE::cGame* game, float delta, cMainGameState* state)
         TryMove(game, delta, state);
     }
 
+    m_Pos += m_Vel;
+    m_Vel *= expf(-0.02*delta);
+
 }
 
 void cBros::TryMove(CORE::cGame* game, float delta, cMainGameState* state)
 {
+    int x, y;
+    cTileLevel* level = state->GetLevel();
+    cTile* tile = level->GetTileClosestToPos(m_Pos, x, y);
+    cTile* collideTile = 0;
+
     switch (m_Direction) {
         case 0: // NORTH
-            m_Pos.y -= 0.1f*delta;
+            m_Vel.y = -0.1f*delta;
             break;
         case 1: // EAST
-            m_Pos.x += 0.1f*delta;
+            m_Vel.x = 0.1f*delta;
             break;
         case 2: // SOUTH
-            m_Pos.y += 0.1f*delta;
+            m_Vel.y = 0.1f*delta;
             break;
         case 3: // WEST
-            m_Pos.x -= 0.1f*delta;
+            m_Vel.x = -0.1f*delta;
             break;
 
     }
-    cout << m_Pos.y << endl;
 }
 
 void cBros::Render(CORE::cGame* game, float delta, cMainGameState* state)

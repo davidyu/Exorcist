@@ -34,9 +34,12 @@ class cTile
         float GetLife() const
         { return m_Life; }
         bool IsCollidable() const
-         { return m_IsCollidable; }
+        { return m_IsCollidable; }
+        cRectf GetBoundingBox() const
+        { return cRectf::GetShiftedRect(m_BBox, m_Pos); }
     protected:
         Vec2f m_Pos;
+        cRectf m_BBox;
         float m_Life;
         bool m_IsDrilled;
         bool m_IsCollidable;

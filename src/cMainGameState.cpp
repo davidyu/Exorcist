@@ -93,7 +93,7 @@ bool cMainGameState::OnEnter(CORE::cGame* game)
     texs.push_back(cTexture("art/light.png"));
     texs.back().RegisterGL();
 
-    m_pAnimStaticOverlay = new cAnimation(100, cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("static"), 8, 0, 0, 256, 256));
+    m_pAnimStaticOverlay = new cAnimation(50, cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("static"), 4, 0, 0, 512, 512));
 
     cBros* bro = new cBros;
     cEntity::EntityList.push_back(bro);
@@ -177,7 +177,7 @@ void cMainGameState::Render(CORE::cGame* game, float percent_tick)
     RenderMain(game, percent_tick);
     static float statetime = 0.0f;
     statetime += percent_tick;
-    ImmediateRenderTexturePos2Dim2(m_pAnimStaticOverlay->GetKeyFrame(statetime, true), posx,100,400,400);
+    ImmediateRenderTexturePos2Dim2(m_pAnimStaticOverlay->GetKeyFrame(statetime, true), posx,100,700,700);
     if (b)RenderLightMask(game, percent_tick);
 
 

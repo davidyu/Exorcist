@@ -27,8 +27,8 @@ class cTileLevel
         void Update(CORE::cGame* game, float delta, cMainGameState* state);
         void Render(CORE::cGame* game, float delta, GFX::G2D::cSpriteBatch& batch, const MATH::cRectf& renderRect);
 
-        cTile& GetTileXY(int x, int y);
-        cTile& GetTileClosestToPos(const Vec2f& p);
+        cTile* GetTileXY(int x, int y);
+        cTile* GetTileClosestToPos(const Vec2f& p, int& x, int& y);
     private:
         cTile*** m_pppTiles; // Yeah this is sooo smart >_>
         int m_xTiles, m_yTiles;
