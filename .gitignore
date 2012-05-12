@@ -2,3 +2,4 @@
 *.depend
 gmon.out
 obj/
+*.exe

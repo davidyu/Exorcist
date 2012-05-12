@@ -205,7 +205,7 @@ void cMainGameState::HandleInput(CORE::cGame* game)
 {
     CORE::Input& input = game->GetInput();
     float    x, y;
-    input.GetJoyExtentIDWhichExtent2(0,0, x, y);
+    //input.GetJoyExtentIDWhichExtent2(0,0, x, y);
 
     if (input.GetKeyState(SDLK_ESCAPE)) game->EndGame();
     if (input.GetKeyState(SDLK_RIGHT)) {posx += 1.0f; }

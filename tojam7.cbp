@@ -42,6 +42,7 @@
 			<Add option="-Wall" />
 			<Add directory="include" />
 			<Add directory="..\Spice\include" />
+			<Add directory="..\sdl-1.3\include" />
 		</Compiler>
 		<Linker>
 			<Add option="-lmingw32 -lopengl32 -lglu32 -lSDL2main -lSDL2" />
