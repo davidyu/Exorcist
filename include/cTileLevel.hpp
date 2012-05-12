@@ -15,6 +15,8 @@ namespace MATH
 {
     class cRectf;
 }
+class cMainGameState;
+
 class cTileLevel
 {
     public:
@@ -22,13 +24,14 @@ class cTileLevel
         virtual ~cTileLevel();
         void Init();
 
-        void Update(CORE::cGame* game, float delta);
+        void Update(CORE::cGame* game, float delta, cMainGameState* state);
         void Render(CORE::cGame* game, float delta, GFX::G2D::cSpriteBatch& batch, const MATH::cRectf& renderRect);
 
         cTile& GetTileXY(int x, int y);
     private:
         cTile*** tiles; // Yeah this is sooo smart >_>
         int m_xTiles, m_yTiles;
+        bool m_IsDrilled;
 
 };
 

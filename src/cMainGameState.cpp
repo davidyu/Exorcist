@@ -16,6 +16,7 @@
 #include "global_inc.hpp"
 
 #include "cTileLevel.hpp"
+#include "cBros.hpp"
 
 #define WINDOW_WIDTH game->GetSDLState().window_w
 #define WINDOW_HEIGHT game->GetSDLState().window_h
@@ -88,7 +89,7 @@ bool cMainGameState::OnEnter(CORE::cGame* game)
     texs.push_back(cTexture("art/bg.png"));
     texs.back().RegisterGL();
 
-    texs.push_back(cTexture("art/Particle.png"));
+    texs.push_back(cTexture("art/light.png"));
     texs.back().RegisterGL();
 
 
@@ -146,6 +147,8 @@ void cMainGameState::Resume(CORE::cGame* game) {}
 void cMainGameState::Update(CORE::cGame* game, float delta)
 {
     HandleInput(game);
+
+    m_pLevel->Update(game, delta, this);
 }
 
 float posx = 0.0f;
@@ -159,8 +162,9 @@ void cMainGameState::Render(CORE::cGame* game, float percent_tick)
 
     RenderMain(game, percent_tick);
     if (b)RenderLightMask(game, percent_tick);
-    glColor4f(1.0f, 1.0f, 1.0f, expf(-11.08e-3f*percent_tick));
 
+    const float e = expf(-9.08e-3f*percent_tick);
+    glColor4f(1.0f, 1.0f, 1.0f, e);
     RenderMotionBlur(game, percent_tick);
 
     BuildMotionBlurFrame(game, percent_tick);
@@ -170,16 +174,18 @@ void cMainGameState::Render(CORE::cGame* game, float percent_tick)
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);
     RenderMotionBlur(game, percent_tick);
-
-
 }
+
+
 
 void cMainGameState::RenderMain(CORE::cGame* game, float percent_tick)
 {
+    static cBros bro;
     /* Begin Main Drawing Procedure */
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glClearColor(1.0f,1.0f,1.0f,1.0f);
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-//    glAlphaFunc(GL_GREATER, 0.2f);
+//    glAlphaFunc(GL_GREATER, 0.95f);
     glEnable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA,
@@ -191,9 +197,12 @@ void cMainGameState::RenderMain(CORE::cGame* game, float percent_tick)
         m_batch.SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 //        m_batch.DrawTexturePos2Dim2Origin2Scale2Rot(reg, 50.0f, 0.0f, 200.0f, 100.0f, 100.0f, 50.0f, 1.0f, 1.0f, rot);
+//    m_pLevel->Render(game, percent_tick, m_batch, MATH::cRectf(0.0f, 0.0f, 800.0f, 700.0f));
     m_batch.End();
 
     m_pLevel->Render(game, percent_tick, m_batch, MATH::cRectf(0.0f, 0.0f, 800.0f, 700.0f));
+
+    bro.Render(game, percent_tick, this);
 
     /* End Main Drawing Procedure */
 
@@ -222,9 +231,9 @@ void cMainGameState::RenderLightMask(CORE::cGame* game, float percent_tick)
 }
 void cMainGameState::BuildLightMask(CORE::cGame* game, float percent_tick)
 {
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.01f, 0.01f, 0.01f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-//
+    glColor4f(1.0f,1.0f,1.0f,1.0f);
 
     ImmediateRenderTexturePos2Dim2(texs[1], posx, 100.0f, 400.0f, 400.0f);
 
@@ -248,6 +257,7 @@ void cMainGameState::HandleInput(CORE::cGame* game)
 
     if (input.GetKeyState(SDLK_ESCAPE)) game->EndGame();
     if (input.GetKeyState(SDLK_RIGHT)) {posx += 1.0f; }
+    if (input.GetKeyState(SDLK_LEFT)) {posx -= 1.0f; }
     if (y<-0.4f) { posx -= 1.0f; }
     if (input.OnMouseButtonUp(SDL_BUTTON_LEFT)) { b=!b;}
     if (input.OnKeyDown(SDLK_b)) {

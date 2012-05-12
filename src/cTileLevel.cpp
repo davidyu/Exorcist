@@ -49,9 +49,15 @@ void cTileLevel::Init()
     }
 
 }
-void cTileLevel::Update(CORE::cGame* game, float delta)
+void cTileLevel::Update(CORE::cGame* game, float delta, cMainGameState* state)
 {
+    int i, j;
 
+    for (i=0; i<m_xTiles; ++i) {
+        for (j=0; j<m_yTiles; ++j) {
+            tiles[i][j]->Update(game, delta, state);
+        }
+    }
 }
 
 // Renders the tiles within the rectangle given

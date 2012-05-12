@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "global_inc.hpp"
-#include "GFX_G2D_cAnimation.hpp"
+#include "GFX_G2D_cAnimationRegistry.hpp"
 #include "MATH_Primitives.hpp"
 
 namespace CORE

@@ -1,5 +1,6 @@
 *.o
 *.depend
+*.layout
 gmon.out
 obj/
 *.exe
