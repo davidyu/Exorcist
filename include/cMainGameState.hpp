@@ -42,6 +42,9 @@ class cMainGameState : public STATE::iGameState
         void BuildMotionBlurFrame(CORE::cGame* game, float percent_tick);
 
     private:
+
+        void RegisterSpriteFrames();
+
         GFX::G2D::cSpriteBatch m_batch;
         GFX::cTextureWrapper* m_pMotionTex;
         GFX::cTextureWrapper* m_pLightTex;
