@@ -22,10 +22,11 @@ protected:
 
 public:
     cEntity();
+    cEntity(Vec2f& pos, Vec2f& dim, Vec2f& vel);
+    cEntity(float x, float y, float w, float h, float vx, float vy);
     virtual ~cEntity();
     virtual void Update(CORE::cGame* game, float delta, cMainGameState* state);
     virtual void Render(CORE::cGame* game, float delta, cMainGameState* state); //animation logic in here
-    virtual void Collide(cEntity *entity); //what to do after colliding with entity?
 
     Vec2f& GetPos() { return m_Pos; }
     Vec2f& GetVel() { return m_Vel; }
