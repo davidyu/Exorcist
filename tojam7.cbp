@@ -55,6 +55,7 @@
 		<Unit filename="..\Spice\include\CORE_keycodes.hpp" />
 		<Unit filename="..\Spice\include\GFX_Color4.hpp" />
 		<Unit filename="..\Spice\include\GFX_G2D_cAnimation.hpp" />
+		<Unit filename="..\Spice\include\GFX_G2D_cAnimationRegistry.hpp" />
 		<Unit filename="..\Spice\include\GFX_G2D_cSpriteBatch.hpp" />
 		<Unit filename="..\Spice\include\GFX_G2D_cTextureRegion.hpp" />
 		<Unit filename="..\Spice\include\GFX_MotionBlur.hpp" />
@@ -78,7 +79,6 @@
 		<Unit filename="..\Spice\include\STATE_cGameTransition.hpp" />
 		<Unit filename="..\Spice\include\STATE_cTransSquareSpin.hpp" />
 		<Unit filename="..\Spice\include\STATE_iGameState.hpp" />
-		<Unit filename="..\Spice\include\cAnimationRegistry.hpp" />
 		<Unit filename="..\Spice\include\cGenericFactory.hpp" />
 		<Unit filename="..\Spice\include\demo_cPlayState.hpp" />
 		<Unit filename="..\Spice\include\global_inc.hpp" />
@@ -87,6 +87,7 @@
 		<Unit filename="..\Spice\src\CORE_cSDLState.cpp" />
 		<Unit filename="..\Spice\src\CORE_cTimer.cpp" />
 		<Unit filename="..\Spice\src\GFX_G2D_cAnimation.cpp" />
+		<Unit filename="..\Spice\src\GFX_G2D_cAnimationRegistry.cpp" />
 		<Unit filename="..\Spice\src\GFX_G2D_cSpriteBatch.cpp" />
 		<Unit filename="..\Spice\src\GFX_G2D_cTextureRegion.cpp" />
 		<Unit filename="..\Spice\src\GFX_MotionBlur.cpp" />
@@ -99,7 +100,6 @@
 		<Unit filename="..\Spice\src\MATH_Matrix4x4.cpp" />
 		<Unit filename="..\Spice\src\STATE_cGameStateManager.cpp" />
 		<Unit filename="..\Spice\src\STATE_cTransSquareSpin.cpp" />
-		<Unit filename="..\Spice\src\cAnimationRegistry.cpp" />
 		<Unit filename="include\GFX_cTextureRegistry.hpp" />
 		<Unit filename="include\cBros.hpp" />
 		<Unit filename="include\cMainGameState.hpp" />
