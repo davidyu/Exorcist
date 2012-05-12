@@ -189,7 +189,7 @@ void cGame::MainLoop()
         // Update
         // Update Input-- set old keystates and current ones
         delta = static_cast<float>(m_timer.GetTicksDelta());
-        std::cout << delta << std::endl;
+//        std::cout << delta << std::endl;
         m_input.UpdateAll();
         state = m_state_manager.GetCurrent();
         state->Update(this, delta);

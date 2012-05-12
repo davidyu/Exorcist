@@ -12,6 +12,7 @@
 
 
 #include <iostream>
+using namespace std;
 #include "CORE_cGame.hpp"
 #include "STATE_iGameState.hpp"
 
@@ -30,6 +31,8 @@ void RegisterStates()
 // Main function must have these params for SDL... kinda lame for encapsulation here..
 int main(int argc, char* args[])
 {
+
+
     RegisterStates();
 
     iApplication* game = new cGame();

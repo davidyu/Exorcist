@@ -1,5 +1,7 @@
 #include "cEntity.hpp"
 
+std::vector<cEntity *> cEntity::EntityList;
+
 cEntity::cEntity()
 : m_AnimFPS(10), m_AnimLooping(true)
 , m_Pos(Vec2f(0.0f, 0.0f))

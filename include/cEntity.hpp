@@ -25,6 +25,8 @@ protected:
     bool                 m_AnimLooping;
 
 public:
+    enum {NORTH, EAST, SOUTH, WEST };
+
     cEntity();
     cEntity(Vec2f& pos, Vec2f& dim, Vec2f& vel, cRectf& bbox);
     cEntity(float x, float y, float w, float h, float vx, float vy, float offx, float offy, float offw, float offh);

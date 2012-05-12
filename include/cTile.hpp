@@ -24,7 +24,7 @@ using namespace MATH;
 class cTile
 {
     public:
-        cTile(float x, float y);
+        cTile(float x, float y, bool collidable);
         virtual ~cTile();
         void Update(CORE::cGame* game, float delta, cMainGameState* state);
         void Render(CORE::cGame* game, float delta, GFX::G2D::cSpriteBatch& batch);
@@ -33,10 +33,13 @@ class cTile
         { m_IsDrilled = b; }
         float GetLife() const
         { return m_Life; }
+        bool IsCollidable() const
+         { return m_IsCollidable; }
     protected:
         Vec2f m_Pos;
         float m_Life;
         bool m_IsDrilled;
+        bool m_IsCollidable;
 
 };
 
