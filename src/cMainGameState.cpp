@@ -1,3 +1,5 @@
+#include <string>
+
 #include <SDL2/SDL_opengl.h>
 #include <SDL2/SDL_mixer.h>
 #include "cMainGameState.hpp"
@@ -78,6 +80,8 @@ bool cMainGameState::OnEnter(CORE::cGame* game)
          CreateMotionBlurTexture(*m_pLightTex, 256, 256, 0);
     }
 
+    RegisterSpriteFrames(); //Dave -- all sprites registered through here!!!
+
     m_pLevel = new cTileLevel(100, 100);
     m_pLevel->Init();
 
@@ -88,9 +92,44 @@ bool cMainGameState::OnEnter(CORE::cGame* game)
     texs.back().RegisterGL();
 
 
-
     return true;
 }
+
+//register all frames here
+void cMainGameState::RegisterSpriteFrames()
+{
+    //doesn't work but should theoretically work
+    //register one animation (walk cycle of dozer)
+    //cTexture tp1 = cTexture("art/dozer.png"); //tp1 = tile for player 1 -- THROWS SEGFAULT!!!! Apparently SDL_Image doesn't like pngs with bit-depth of 8???
+
+    //tp1.RegisterGL();
+
+    //important properties of src image
+    int w = 48,
+        h = 48;
+
+    int numFrames = 8; //total # of contiguous frames you want to add
+    int framesPerRow = 8; //# of frames per row in source image
+
+    int row, col;
+    //following loop may be useful to generate frame names; below generates dozer_walk_0, dozer_walk_1, etc
+    for (unsigned char i = 0; i < numFrames; i++) //use unsigned char because easier to convert into ASCII rep of number
+    {
+        string fn = "dozer_walk_";
+        char *num = new char[1]; //need to make one-character array because string.append() takes only strings and char *s
+        num[0] = i + 48;//convert to character rep
+        fn.append(num); //append number to end of frame name
+
+        row = i / framesPerRow;
+        col = i % framesPerRow;
+
+        //RegisterTexture(cTextureRegion(tp1, col*w, row*h, w, h)); //assumes source image has no padding
+
+        delete [] num; //since we're constantly recreating num, might as well as declare it out of loop and reuse
+    }
+
+}
+
 bool cMainGameState::OnExit(CORE::cGame* game)
 {
     texs.clear();

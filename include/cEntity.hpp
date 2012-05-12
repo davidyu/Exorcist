@@ -1,5 +1,7 @@
 #ifndef CENTITY_H
-#define CENTITY_H
+    #define CENTITY_H
+
+#include <vector>
 
 #include "global_inc.hpp"
 
@@ -11,22 +13,26 @@ using namespace MATH;
 
 class cMainGameState;
 
-class cBros
+class cEntity
 {
 public:
-    cBros();
-    virtual ~cBros();
-    void Update(CORE::cGame* game, float delta, cMainGameState* state);
-    void Render(CORE::cGame* game, float delta, cMainGameState* state);
-    //void HandleInput(CORE::cGame* game, float delta);
+    static std::vector<cEntity *> EntityList;
+protected:
+    //CAnimation animation -- to do!
 
-    //Vec2f& GetPos() { return m_Pos; }
-    //Vec2f& GetVel() { return m_Vel; }
+public:
+    cEntity();
+    virtual ~cEntity();
+    virtual void Update(CORE::cGame* game, float delta, cMainGameState* state);
+    virtual void Render(CORE::cGame* game, float delta, cMainGameState* state); //animation logic in here
+    virtual void Collide(cEntity *entity); //what to do after colliding with entity?
 
-private:
+    Vec2f& GetPos() { return m_Pos; }
+    Vec2f& GetVel() { return m_Vel; }
 
-
+protected:
     Vec2f m_Pos;
+    Vec2f m_Dim; //size
     Vec2f m_Vel;
 };
 

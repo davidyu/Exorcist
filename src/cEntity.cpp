@@ -1,34 +1,9 @@
-#ifndef CENTITY_H
-#define CENTITY_H
+#include "cEntity.hpp"
 
-#include "global_inc.hpp"
+cEntity::cEntity() {}
 
-namespace CORE
-{
-    class cGame;
-}
+cEntity::~cEntity() {}
 
-using namespace MATH;
-
-class cMainGameState;
-
-class cBros
-{
-public:
-    cBros();
-    virtual ~cBros();
-    void Update(CORE::cGame* game, float delta, cMainGameState* state);
-    void Render(CORE::cGame* game, float delta, cMainGameState* state);
-    void HandleInput(CORE::cGame* game, float delta);
-
-    Vec2f& GetPos() { return m_Pos; }
-    Vec2f& GetVel() { return m_Vel; }
-
-private:
-
-
-    Vec2f m_Pos;
-    Vec2f m_Vel;
-};
-
-#endif // CBROS_H
+void cEntity::Update(CORE::cGame* game, float delta, cMainGameState* state) {}
+void cEntity::Render(CORE::cGame* game, float delta, cMainGameState* state) {}
+void cEntity::Collide(cEntity *entity) {}

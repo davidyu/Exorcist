@@ -42,7 +42,6 @@
 			<Add option="-Wall" />
 			<Add directory="include" />
 			<Add directory="..\Spice\include" />
-			<Add directory="..\sdl-1.3\include" />
 		</Compiler>
 		<Linker>
 			<Add option="-lmingw32 -lopengl32 -lglu32 -lSDL2main -lSDL2" />
@@ -103,12 +102,16 @@
 		<Unit filename="..\Spice\src\STATE_cTransSquareSpin.cpp" />
 		<Unit filename="include\GFX_cTextureRegistry.hpp" />
 		<Unit filename="include\cBros.hpp" />
+		<Unit filename="include\cEntity.hpp" />
 		<Unit filename="include\cMainGameState.hpp" />
 		<Unit filename="include\cTile.hpp" />
 		<Unit filename="include\cTileLevel.hpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src\CORE_cGame.cpp" />
 		<Unit filename="src\cBros.cpp" />
+		<Unit filename="src\cEntity.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="src\cMainGameState.cpp" />
 		<Unit filename="src\cTile.cpp" />
 		<Unit filename="src\cTileLevel.cpp" />
