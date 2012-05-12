@@ -115,7 +115,7 @@ void cMainGameState::RegisterSpriteFrames()
     //following loop may be useful to generate frame names; below generates dozer_walk_0, dozer_walk_1, etc
     for (unsigned char i = 0; i < numFrames; i++) //use unsigned char because easier to convert into ASCII rep of number
     {
-        string fn = "dozer_walk_";
+        string fn = "dozer_walk_"; //can be any prefix you want; should make this a function and take names!
         char *num = new char[1]; //need to make one-character array because string.append() takes only strings and char *s
         num[0] = i + 48;//convert to character rep
         fn.append(num); //append number to end of frame name
