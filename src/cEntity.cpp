@@ -1,7 +1,8 @@
 #include "cEntity.hpp"
 
 cEntity::cEntity()
-        :m_AnimFPS(10), m_AnimLooping(true)
+: m_AnimFPS(10), m_AnimLooping(true)
+, m_Pos(Vec2f(0.0f, 0.0f))
 {
     m_Anim.SetTicksPerFrame((int) (1000.0f * (1.0f / m_AnimFPS)));
 }

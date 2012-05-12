@@ -3,9 +3,12 @@
 #include "GFX_TextureUtilities.hpp"
 #include "GFX_G2D_cSpriteBatch.hpp"
 #include "GFX_TextureUtilities.hpp"
+#include "cTileLevel.hpp"
 
 cTile::cTile(float x, float y)
 : m_Pos(Vec2f(x, y))
+, m_Life(0.0f)
+, m_IsDrilled(false)
 {
     //ctor
 }
@@ -13,6 +16,11 @@ cTile::cTile(float x, float y)
 cTile::~cTile()
 {
     //dtor
+}
+
+void cTile::Update(CORE::cGame* game, float delta, cMainGameState* state)
+{
+
 }
 
 void cTile::Render(CORE::cGame* game, float delta, GFX::G2D::cSpriteBatch& batch)
