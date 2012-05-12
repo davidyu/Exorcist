@@ -3,3 +3,4 @@
 *.layout
 gmon.out
 obj/
+*.exe

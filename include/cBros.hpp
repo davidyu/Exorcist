@@ -2,6 +2,7 @@
 #define CBROS_H
 
 #include "global_inc.hpp"
+#include "cEntity.hpp"
 
 namespace CORE
 {
@@ -12,7 +13,7 @@ using namespace MATH;
 
 class cMainGameState;
 
-class cBros
+class cBros: public cEntity
 {
 public:
     cBros();
@@ -20,15 +21,7 @@ public:
     void Update(CORE::cGame* game, float delta, cMainGameState* state);
     void Render(CORE::cGame* game, float delta, cMainGameState* state);
     void HandleInput(CORE::cGame* game, float delta);
-
-    Vec2f& GetPos() { return m_Pos; }
-    Vec2f& GetVel() { return m_Vel; }
-
 private:
-
-
-    Vec2f m_Pos;
-    Vec2f m_Vel;
 };
 
 #endif // CBROS_H
