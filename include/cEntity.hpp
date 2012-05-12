@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "global_inc.hpp"
+#include "GFX_G2D_cAnimation.hpp"
 
 namespace CORE
 {
@@ -18,7 +19,9 @@ class cEntity
 public:
     static std::vector<cEntity *> EntityList;
 protected:
-    //CAnimation animation -- to do!
+    GFX::G2D::cAnimation m_Anim;
+    int                  m_AnimFPS;
+    bool                 m_AnimLooping;
 
 public:
     cEntity();
@@ -27,6 +30,7 @@ public:
     virtual ~cEntity();
     virtual void Update(CORE::cGame* game, float delta, cMainGameState* state);
     virtual void Render(CORE::cGame* game, float delta, cMainGameState* state); //animation logic in here
+    virtual void Collided(cEntity& e);
 
     Vec2f& GetPos() { return m_Pos; }
     Vec2f& GetVel() { return m_Vel; }
