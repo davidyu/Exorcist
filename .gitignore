@@ -1,4 +1,5 @@
 *.o
 *.depend
+*.layout
 gmon.out
 obj/
