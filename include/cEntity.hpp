@@ -27,7 +27,7 @@ protected:
     bool                 m_AnimLooping;
 
 public:
-    enum {NORTH, EAST, SOUTH, WEST };
+    enum {NORTH, EAST, SOUTH, WEST, NONE };
 
     cEntity();
     cEntity(const Vec2f& pos, const cRectf& bbox);
@@ -36,6 +36,13 @@ public:
     virtual void Update(CORE::cGame* game, float delta, cMainGameState* state);
     virtual void Render(CORE::cGame* game, float delta, cMainGameState* state); //animation logic in here
     virtual void Collided(cEntity& e);
+
+    static void ClearEntities() {
+        for (int i=0; i<cEntity::EntityList.size(); ++i) {
+            DELETESINGLE(cEntity::EntityList[i]);
+        }
+        EntityList.clear();
+    }
 
     void SetAnimFPS(int afps);
 

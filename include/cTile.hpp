@@ -27,7 +27,7 @@ using namespace GFX::G2D;
 class cTile
 {
 public:
-    enum { EMPTY, COLLIDABLE, COLLECTIBLE};
+    enum { EMPTY, COLLIDABLE, BLOCK, COLLECTIBLE};
 
     cTile(float x, float y, int type);
      ~cTile();
@@ -45,7 +45,7 @@ public:
     float GetLife() const
     { return m_Life; }
     bool IsCollidable() const
-    { return m_Type==COLLIDABLE; }
+    { return m_Type==COLLIDABLE||m_Type==BLOCK; }
     cRectf GetBBox() const
     { return cRectf::GetShiftedRect(m_BBox, m_Pos); }
     const Vec2f& GetPos()
@@ -62,6 +62,18 @@ protected:
     vector<GFX::cTextureWrapper> m_Frames;
     int m_FrameIndex;
 
+};
+
+// Diggable tile
+class cBlock : public cTile
+{
+public:
+    cBlock(float x, float y) : cTile(x, y, true)
+    {
+        m_Frames.push_back(cTextureRegion(Art("tileset"), 256, 0, 64, 64));
+        m_Type = BLOCK;
+    }
+    ~cBlock(){}
 };
 
 // Diggable tile

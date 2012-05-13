@@ -21,7 +21,15 @@ public:
     void Update(CORE::cGame* game, float delta, cMainGameState* state);
     void TryMove(CORE::cGame* game, float delta, cMainGameState* state);
     void Render(CORE::cGame* game, float delta, cMainGameState* state);
-    void HandleInput(CORE::cGame* game, float delta);
+    void HandleInput(CORE::cGame* game, float delta, cMainGameState* state);
+
+    void Flare(CORE::cGame* game, float delta, cMainGameState* state);
+
+    void Kill() {
+        if (m_State==DYING) return;
+        m_State = DYING;
+        m_Anims.ResetStatetime();
+    }
 
 
 private:
@@ -29,6 +37,7 @@ private:
     float m_DrillRate;
     int m_State;
     int m_Direction;
+    int m_FlaresLeft;
 
 };
 

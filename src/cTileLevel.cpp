@@ -1,6 +1,7 @@
 #include "cTileLevel.hpp"
 #include "GFX_cImage.hpp"
 #include "GFX_TextureUtilities.hpp"
+#include "cEntity.hpp"
 
 enum cTileLevel::e_TileType : unsigned int
 {
@@ -60,16 +61,17 @@ void cTileLevel::Init()
         for (int j = 0; j < m_yTiles; j++)
         {
             unsigned int c = m_LevelMap->GetPixel(i, j);
+            unsigned int b = m_LevelMap->GetPixel(i, j);
             switch (c)
             {
-            case e_TileType::NOTHING:
+            case 0xffffffff:
                 m_pppTiles[i][j] = new cCavy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
                 break;
-            case e_TileType::DIGGABLE_SOIL:
+            case 0xff000000:
                 m_pppTiles[i][j] = new cDiggy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
                 break;
-            case e_TileType::STONE_WALL:
-                m_pppTiles[i][j] = new cCavy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
+            case 0xff00ff00:
+                m_pppTiles[i][j] = new cBlock((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
                 break;
             default:  //assume nothing
                 m_pppTiles[i][j] = new cCavy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
@@ -109,11 +111,16 @@ void cTileLevel::Render(CORE::cGame* game, float delta, GFX::G2D::cSpriteBatch& 
 
     left = (left < 0) ? 0 : left;
     top  = (top  < 0) ? 0 : top;
+    right = (right > m_xTiles) ? m_xTiles : right;
+    bottom  = (bottom  > m_yTiles) ? m_yTiles : bottom;
 
     //cout << left << COMMA << right << COMMA << top << COMMA << bottom << endl;
 
     for (i=left; i<=right; ++i) {
         for (j=top; j<=bottom; ++j) {
+            if (!IsWithinRangeXY(i, j)) {
+                continue;
+            }
             m_pppTiles[i][j]->Render(game, delta, batch);
 
             ++count;
@@ -139,17 +146,19 @@ vector<cTile*> cTileLevel::GetCollidedTiles(const cRectf& r)
             if (m_pppTiles[i][j]->IsCollidable()) {
                 colltiles.push_back(m_pppTiles[i][j]);
             }
-
         }
     }
 }
 
-cTile* cTileLevel::GetTileClosestToPos(const Vec2f& p, int& x, int& y)
+void cTileLevel::GetTilePosClosestToPos(const Vec2f& p, int& x, int& y) const
 {
     x = static_cast<float>(p.x)/TILEWIDTH;
     y = static_cast<float>(p.y)/TILEWIDTH;
-
-    return GetTileXY(x, y);
+    if (x>=m_xTiles||x<0) {
+        x = -1;
+    }if (y>=m_yTiles||y<0) {
+        y = -1;
+    }
 }
 
 cTile* cTileLevel::GetTileXY(int x, int y)

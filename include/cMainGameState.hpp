@@ -8,6 +8,7 @@
 #include "GFX_cOrthoCamera.hpp"
 //
 #include "global_inc.hpp"
+#include "cTileLevel.hpp"
 
 
 namespace CORE
@@ -23,7 +24,6 @@ namespace GFX
         class cAnimation;
     }
 }
-class cTileLevel;
 //static STATE::iGameState* CreateInstance() {}
 
 class cMainGameState : public STATE::iGameState
@@ -50,10 +50,20 @@ class cMainGameState : public STATE::iGameState
         void BuildLightMask(CORE::cGame* game, float percent_tick);
         void BuildMotionBlurFrame(CORE::cGame* game, float percent_tick);
 
+        void SelectP2DarkOne();
+
         cTileLevel* GetLevel()
-        { return m_pLevel; }
+        { return &m_Levels[m_LevelIndex]; }
+
+        static void IncrementLevelIndex()
+        { m_LevelIndex++; }
+
+        static int GetLevelIndex()
+        { return m_LevelIndex; }
 
     private:
+
+        static int m_LevelIndex;
 
         void RegisterSpriteFrames();
 
@@ -64,9 +74,11 @@ class cMainGameState : public STATE::iGameState
         GFX::G2D::cAnimation* m_pAnimStaticOverlay;
         std::vector<GFX::cTexture> texs;
 
-        cTileLevel* m_pLevel;
+        vector<cTileLevel> m_Levels;
+
 
         cBros* m_Player;
+        int m_P2Index;
 
 };
 
