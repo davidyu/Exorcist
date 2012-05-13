@@ -204,7 +204,8 @@ void cMainGameState::Update(CORE::cGame* game, float delta)
             dynamic_cast<cBros*>(m_Entities.EntityList[0])->Kill();
             SetWinner(2);
         }
-        if (m_Entities.EntityList[i]->GetBBox().IsCollidedRect(dynamic_cast<cBros*>(m_Entities.EntityList[0])->GetFlareBox())) {
+        if (dynamic_cast<cDarkOne*>(m_Entities.EntityList[i])->GetState()!=cDarkOne::DYING
+        && m_Entities.EntityList[i]->GetBBox().IsCollidedRect(dynamic_cast<cBros*>(m_Entities.EntityList[0])->GetFlareBox())) {
             m_IsStatic = true;
             Mix_PlayChannel(-1, cSoundRegistry::stat, 0);
         }
