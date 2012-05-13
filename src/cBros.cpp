@@ -16,7 +16,7 @@ cBros::cBros()
 , m_State(STILL)
 {
     //SetAnimFPS(2);
-    m_Anims.SetTicksPerFrame(100.0f);
+    m_Anims.SetTicksPerFrame(150.0f);
     m_Anims.PushAnimation(cAnimation(30.0f,
                          cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("sheet"), 4, 0, 0, 64, 64)));
     m_Anims.PushAnimation(cAnimation(30.0f,
@@ -25,6 +25,11 @@ cBros::cBros()
                          cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("sheet"), 4, 0, 128, 64, 64)));
     m_Anims.PushAnimation(cAnimation(30.0f,
                          cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("sheet"), 4, 0, 192, 64, 64)));
+    m_Anims.SetTicksPerFrame(300.0f);
+    m_Anims.PushAnimation(cAnimation(30.0f,
+                         cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("sheet"), 4, 0, 256, 64, 64)));
+    m_Anims.PushAnimation(cAnimation(30.0f,
+                         cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("sheet"), 4, 0, 320, 64, 64)));
 
     m_Pos.y = 0.0f;
     m_BBox = cRectf(16.0f, 7.0f, 32.0f, 50.0f);
@@ -37,7 +42,7 @@ cBros::~cBros()
 
 void cBros::Update(CORE::cGame* game, float delta, cMainGameState* state)
 {
-    HandleInput(game, delta);
+    HandleInput(game, delta, state);
 
     if (m_State==WALKING) {
         TryMove(game, delta, state);
@@ -76,9 +81,17 @@ void cBros::TryMove(CORE::cGame* game, float delta, cMainGameState* state)
     }
 }
 
+void cBros::Flare(CORE::cGame* game, float delta, cMainGameState* state)
+{
+    cEntity::EntityList[DARKOFFSET]->
+}
+
 void cBros::Render(CORE::cGame* game, float delta, cMainGameState* state)
 {
-    switch (m_Direction) {
+    if (m_State==DYING) {
+        m_Anims.SetCurrentIndex(5);
+    } else {
+        switch (m_Direction) {
             case NORTH:
                 m_Anims.SetCurrentIndex(1);
                 break;
@@ -92,7 +105,12 @@ void cBros::Render(CORE::cGame* game, float delta, cMainGameState* state)
                 m_Anims.SetCurrentIndex(2);
                 break;
         }
-    if (m_State==WALKING||m_State==DRILLING) {
+    }
+    if (m_State==DYING) {
+        const cTextureWrapper& frame
+         = m_Anims[m_Anims.GetCurrentIndex()].GetKeyFrame(m_Anims.GetStatetime(), false);
+         ImmediateRenderTexturePos2Dim2(frame, GetPos().x, GetPos().y, 64, 64);
+    } else if (m_State==WALKING||m_State==DRILLING) {
         const cTextureWrapper& frame
          = m_Anims.GetCurrentFrame();
          ImmediateRenderTexturePos2Dim2(frame, GetPos().x, GetPos().y, 64, 64);
@@ -109,34 +127,38 @@ void cBros::Render(CORE::cGame* game, float delta, cMainGameState* state)
 
 void cBros::HandleInput(CORE::cGame* game, float delta)
 {
+    if (m_State==DYING) return;
     CORE::Input& input = game->GetInput();
 
     if (m_State!=DYING&&
-    !( input.GetKeyState(SDLK_UP)
-    || input.GetKeyState(SDLK_RIGHT)
-    || input.GetKeyState(SDLK_DOWN)
-    || input.GetKeyState(SDLK_LEFT))) {
+    !( input.GetKeyState(SDLK_w)
+    || input.GetKeyState(SDLK_d)
+    || input.GetKeyState(SDLK_s)
+    || input.GetKeyState(SDLK_a))) {
         m_State = STILL;
     }
 
 
-    if (input.OnKeyDown(SDLK_UP)) {
+    if (input.OnKeyDown(SDLK_w)) {
         m_Direction = NORTH;
         m_State = WALKING;
 
     }
-    if (input.OnKeyDown(SDLK_RIGHT)) {
+    if (input.OnKeyDown(SDLK_d)) {
         m_Direction = EAST;
         m_State = WALKING;
     }
-    if (input.OnKeyDown(SDLK_DOWN)) {
+    if (input.OnKeyDown(SDLK_s)) {
         m_Direction = SOUTH;
         m_State = WALKING;
 
     }
-    if (input.OnKeyDown(SDLK_LEFT)) {
+    if (input.OnKeyDown(SDLK_a)) {
         m_Direction = WEST;
         m_State = WALKING;
+    }
+    if (input.OnKeyDown(SDLK_SPACE)) {
+        //
     }
 
 }

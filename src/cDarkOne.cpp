@@ -14,7 +14,8 @@ using namespace GFX;
 #define NUMDESTS 6
 
 cDarkOne::cDarkOne(const Vec2f& pos, const cRectf& bbox, const cTileLevel& level)
-: m_State(IDLING)
+: cEntity(pos, bbox)
+, m_State(IDLING)
 , m_NextBehaviorChange(0.0f)
 , m_IsPlayerControlled(false)
 , m_TurnCooldown(0.0f)
@@ -43,6 +44,9 @@ cDarkOne::cDarkOne(const Vec2f& pos, const cRectf& bbox, const cTileLevel& level
     m_Anims.SetTicksPerFrame(100.0f);
     m_Anims.PushAnimation(cAnimation(30.0f,
                          cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("sheet"), 4, 256, 384, 64, 64)));
+    m_Anims.SetTicksPerFrame(300.0f);
+    m_Anims.PushAnimation(cAnimation(30.0f,
+                         cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("sheet"), 4, 320, 0, 64, 64)));
 
 
 
@@ -172,7 +176,9 @@ void cDarkOne::Walk(float delta)
 }
 void cDarkOne::Render(CORE::cGame* game, float delta, cMainGameState* state)
 {
-    if (m_State==WANDERING) {
+    if (m_State==DYING) {
+        m_Anims.SetCurrentIndex(7);
+    } else if (m_State==WANDERING) {
         switch (m_Dir) {
             case NORTH:
                 m_Anims.SetCurrentIndex(1);
@@ -196,7 +202,11 @@ void cDarkOne::Render(CORE::cGame* game, float delta, cMainGameState* state)
     } else if (m_State==IDLING) {
         m_Anims.SetCurrentIndex(6);
     }
-        if (m_State==WANDERING&&m_Dir==NONE) {
+        if (m_State==DYING) {
+        const cTextureWrapper& frame
+         = m_Anims[m_Anims.GetCurrentIndex()].GetKeyFrame(m_Anims.GetStatetime(), false);
+         ImmediateRenderTexturePos2Dim2(frame, GetPos().x, GetPos().y, 64, 64);
+        } else if (m_State==WANDERING&&m_Dir==NONE) {
             const cTextureWrapper& frame
              = m_Anims[m_Anims.GetCurrentIndex()][0];
             ImmediateRenderTexturePos2Dim2(frame, GetPos().x, GetPos().y, 64, 64);
@@ -233,41 +243,42 @@ void cDarkOne::DetermineNewBehavior()
 
 void cDarkOne::HandleInput(CORE::cGame* game, float delta)
 {
+    if (m_State==DYING) return;
     CORE::Input& input = game->GetInput();
 
     if (m_State==WANDERING&&
-    !( input.GetKeyState(SDLK_w)
-    || input.GetKeyState(SDLK_d)
-    || input.GetKeyState(SDLK_a)
-    || input.GetKeyState(SDLK_s))) {
+    !( input.GetKeyState(SDLK_UP)
+    || input.GetKeyState(SDLK_RIGHT)
+    || input.GetKeyState(SDLK_LEFT)
+    || input.GetKeyState(SDLK_DOWN))) {
         m_State = WANDERING;
         m_Dir = NONE;
     }
 
-    if (input.OnKeyDown(SDLK_w)) {
+    if (input.OnKeyDown(SDLK_UP)) {
         m_Dir = NORTH;
         m_State = WANDERING;
     }
-    if (input.OnKeyDown(SDLK_d)) {
+    if (input.OnKeyDown(SDLK_RIGHT)) {
         m_Dir = EAST;
         m_State = WANDERING;
     }
-    if (input.OnKeyDown(SDLK_s)) {
+    if (input.OnKeyDown(SDLK_DOWN)) {
         m_Dir = SOUTH;
         m_State = WANDERING;
 
     }
-    if (input.OnKeyDown(SDLK_a)) {
+    if (input.OnKeyDown(SDLK_LEFT)) {
         m_Dir = WEST;
         m_State = WANDERING;
     }
-    if (input.OnKeyDown(SDLK_q)) {
+    if (input.OnKeyDown(SDLK_j)) {
         m_State = BLINKING;
     }
-    if (input.OnKeyDown(SDLK_e)) {
+    if (input.OnKeyDown(SDLK_k)) {
         m_State = IDLING;
     }
-    if (input.OnKeyDown(SDLK_r)) {
+    if (input.OnKeyDown(SDLK_l)) {
         m_State = SMILING;
     }
 

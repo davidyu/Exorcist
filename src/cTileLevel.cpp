@@ -1,6 +1,7 @@
 #include "cTileLevel.hpp"
 #include "GFX_cImage.hpp"
 #include "GFX_TextureUtilities.hpp"
+#include "cEntity.hpp"
 
 enum cTileLevel::e_TileType : unsigned int
 {
@@ -60,15 +61,16 @@ void cTileLevel::Init()
         for (int j = 0; j < m_yTiles; j++)
         {
             unsigned int c = m_LevelMap->GetPixel(i, j);
+            unsigned int b = m_LevelMap->GetPixel(i, j);
             switch (c)
             {
-            case e_TileType::NOTHING:
+            case 0xffffffff:
                 m_pppTiles[i][j] = new cCavy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
                 break;
-            case e_TileType::DIGGABLE_SOIL:
+            case 0xff000000:
                 m_pppTiles[i][j] = new cDiggy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
                 break;
-            case e_TileType::STONE_WALL:
+            case 0xff00ff00:
                 m_pppTiles[i][j] = new cBlock((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
                 break;
             default:  //assume nothing
@@ -144,7 +146,6 @@ vector<cTile*> cTileLevel::GetCollidedTiles(const cRectf& r)
             if (m_pppTiles[i][j]->IsCollidable()) {
                 colltiles.push_back(m_pppTiles[i][j]);
             }
-
         }
     }
 }

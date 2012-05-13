@@ -45,7 +45,7 @@ public:
     float GetLife() const
     { return m_Life; }
     bool IsCollidable() const
-    { return m_Type==COLLIDABLE;||m_Type==BLOCK }
+    { return m_Type==COLLIDABLE||m_Type==BLOCK; }
     cRectf GetBBox() const
     { return cRectf::GetShiftedRect(m_BBox, m_Pos); }
     const Vec2f& GetPos()
@@ -74,19 +74,6 @@ public:
         m_Type = BLOCK;
     }
     ~cBlock(){}
-};
-
-// Diggable tile
-class cDiggy : public cTile
-{
-public:
-    cDiggy(float x, float y) : cTile(x, y, true)
-    {
-        m_Frames.push_back(cTextureRegion(Art("tileset"), 64, 0, 64, 64));
-        m_Frames.push_back(cTextureRegion(Art("tileset"), 128, 0, 64, 64));
-        m_Frames.push_back(cTextureRegion(Art("tileset"), 192, 0, 64, 64));
-    }
-    ~cDiggy(){}
 };
 
 // Diggable tile

@@ -37,6 +37,13 @@ public:
     virtual void Render(CORE::cGame* game, float delta, cMainGameState* state); //animation logic in here
     virtual void Collided(cEntity& e);
 
+    static void ClearEntities() {
+        for (int i=0; i<cEntity::EntityList.size(); ++i) {
+            DELETESINGLE(cEntity::EntityList[i]);
+        }
+        EntityList.clear();
+    }
+
     void SetAnimFPS(int afps);
 
     Vec2f&  GetPos()

@@ -21,7 +21,15 @@ public:
     void Update(CORE::cGame* game, float delta, cMainGameState* state);
     void TryMove(CORE::cGame* game, float delta, cMainGameState* state);
     void Render(CORE::cGame* game, float delta, cMainGameState* state);
-    void HandleInput(CORE::cGame* game, float delta);
+    void HandleInput(CORE::cGame* game, float delta, cMainGameState* state);
+
+    void Flare(CORE::cGame* game, float delta, cMainGameState* state);
+
+    void Kill() {
+        if (m_State==DYING) return;
+        m_State = DYING;
+        m_Anims.ResetStatetime();
+    }
 
 
 private:

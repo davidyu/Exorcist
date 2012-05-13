@@ -22,9 +22,16 @@ class cDarkOne : public cEntity
         void DetermineDirection();
         void GetNextDestination();
         void Walk(float delta);
+        void Kill() {
+            if (m_State==DYING) return;
+            m_State = DYING;
+            m_Anims.ResetStatetime();
+        }
 
         void HandleInput(CORE::cGame* game, float delta);
 
+        bool IsPlayerControlled()
+        { return m_IsPlayerControlled; }
         void SetPlayerControl(bool b)
         { m_IsPlayerControlled = b; }
     private:
