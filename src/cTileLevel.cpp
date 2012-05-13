@@ -68,7 +68,6 @@ void cTileLevel::Init()
         for (int j = 0; j < m_yTiles; j++)
         {
             unsigned int c = m_LevelMap->GetPixel(i, j);
-            std::cout << std::hex << c << ", " << std::hex << e_TileType::DIGGABLE_SOIL << std::endl;
             switch (c)
             {
             case e_TileType::NOTHING:
