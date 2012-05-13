@@ -86,6 +86,8 @@ bool cMainGameState::OnEnter(CORE::cGame* game)
     m_pLevel->Init();
 
     //note going to override Init
+    //m_pLevel = new cTileLevel("art/level_1.png");
+    //m_pLevel->Init();
 
     texs.push_back(cTexture("art/bg.png"));
     texs.back().RegisterGL();

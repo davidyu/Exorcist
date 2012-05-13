@@ -7,7 +7,7 @@ enum cTileLevel::e_TileType : unsigned int
     NOTHING       = 0X00000000,
     DIGGABLE_SOIL = 0x3a2e2e00,
     STONE_WALL    = 0xffffff00
-}
+};
 
 cTileLevel::cTileLevel(int xTiles, int yTiles)
 : m_pppTiles(0)
@@ -20,10 +20,10 @@ cTileLevel::cTileLevel(int xTiles, int yTiles)
 cTileLevel::cTileLevel(string levelName)
 : m_pppTiles(0)
 {
-    m_LevelMap = GFX::cImage(levelName);
+    m_LevelMap = new GFX::cImage(levelName);
 
-    int h = lvl->GetHeight();
-    int w = lvl->GetWidth();
+    int h = m_LevelMap->GetHeight();
+    int w = m_LevelMap->GetWidth();
 
     m_xTiles = w;
     m_yTiles = h;
