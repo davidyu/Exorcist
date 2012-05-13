@@ -40,6 +40,8 @@ class cTileLevel
         bool m_IsDrilled; //why here?
         enum e_TileType : unsigned int;
 
+        GFX::cImage* m_LevelMap;
+
 };
 
 #endif // CTILELEVEL_H

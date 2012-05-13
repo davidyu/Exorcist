@@ -15,6 +15,7 @@ cBros::cBros()
 , m_Direction(0)
 , m_State(STILL)
 {
+    //SetAnimFPS(2);
     m_Anims.SetTicksPerFrame(300.0f);
     m_Anims.PushAnimation(cAnimation(30.0f,
                          cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("sheet"), 4, 0, 0, 64, 64)));
@@ -102,6 +103,8 @@ void cBros::Render(CORE::cGame* game, float delta, cMainGameState* state)
          = m_Anims[m_Anims.GetCurrentIndex()][0];
          ImmediateRenderTexturePos2Dim2(frame, GetPos().x, GetPos().y, 64, 64);
     }
+
+
     m_Anims.UpdateCurrent(delta);
 
 }

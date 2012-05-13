@@ -4,9 +4,9 @@
 
 enum cTileLevel::e_TileType : unsigned int
 {
-    NOTHING       = 0X00000000,
-    DIGGABLE_SOIL = 0x3a2e2e00,
-    STONE_WALL    = 0xffffff00
+    NOTHING       =  0xff000000,
+    DIGGABLE_SOIL =  SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0xff3a2e2e : 0xff2e2e3a,
+    STONE_WALL    =  0xffffffff
 };
 
 cTileLevel::cTileLevel(int xTiles, int yTiles)
@@ -20,33 +20,13 @@ cTileLevel::cTileLevel(int xTiles, int yTiles)
 cTileLevel::cTileLevel(string levelName)
 : m_pppTiles(0)
 {
-    GFX::cImage lvl(levelName);
+    m_LevelMap = new GFX::cImage(levelName);
 
-    int h = lvl.GetHeight();
-    int w = lvl.GetWidth();
+    int h = m_LevelMap->GetHeight();
+    int w = m_LevelMap->GetWidth();
 
     m_xTiles = w;
     m_yTiles = h;
-
-    for (int y = 0; y < h; y++)
-    {
-        for (int x = 0; x < w; x++)
-        {
-            unsigned int c = GFX::GetColourInHex(lvl.GetPixel(x, y));
-            switch (c)
-            {
-            case NOTHING:
-                break;
-            case DIGGABLE_SOIL:
-                break;
-            case STONE_WALL:
-                break;
-            default:  //assume nothing
-                break;
-            }
-
-        }
-    }
 }
 
 cTileLevel::~cTileLevel()
@@ -77,6 +57,41 @@ cTileLevel::~cTileLevel()
 void cTileLevel::Init()
 {
     int i, j;
+    m_pppTiles = new cTile**[m_xTiles];
+
+    for (i = 0; i < m_xTiles; ++i)
+        m_pppTiles[i] = new cTile*[m_yTiles]; //reverse: I store map in row-major order
+
+
+    for (i = 0; i < m_xTiles; i++)
+    {
+        for (int j = 0; j < m_yTiles; j++)
+        {
+            unsigned int c = m_LevelMap->GetPixel(i, j);
+            switch (c)
+            {
+            case e_TileType::NOTHING:
+                m_pppTiles[i][j] = new cCavy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
+                break;
+            case e_TileType::DIGGABLE_SOIL:
+                m_pppTiles[i][j] = new cDiggy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
+                break;
+            case e_TileType::STONE_WALL:
+                m_pppTiles[i][j] = new cCavy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
+                break;
+            default:  //assume nothing
+                m_pppTiles[i][j] = new cCavy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
+                break;
+            }
+
+        }
+    }
+}
+
+/*
+void cTileLevel::Init()
+{
+    int i, j;
 
     m_pppTiles = new cTile**[m_xTiles];
     for (i=0; i<m_xTiles; ++i) {
@@ -95,6 +110,8 @@ void cTileLevel::Init()
         }
     }
 }
+*/
+
 void cTileLevel::Update(CORE::cGame* game, float delta, cMainGameState* state)
 {
     int i, j;
