@@ -4,9 +4,9 @@
 
 enum cTileLevel::e_TileType : unsigned int
 {
-    NOTHING       = 0X00000000,
-    DIGGABLE_SOIL = 0x3a2e2e00,
-    STONE_WALL    = 0xffffff00
+    NOTHING       =  0xff000000,
+    DIGGABLE_SOIL =  SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0xff3a2e2e : 0xff2e2e3a,
+    STONE_WALL    =  0xffffffff
 };
 
 cTileLevel::cTileLevel(int xTiles, int yTiles)
@@ -53,42 +53,43 @@ cTileLevel::~cTileLevel()
     }
 }
 
-/*
+
 void cTileLevel::Init()
 {
     int i, j;
     m_pppTiles = new cTile**[m_xTiles];
 
-    for (i = 0; i < m_yTiles; ++i)
-        m_pppTiles[i] = new cTile*[m_xTiles]; //reverse: I store map in row-major order
+    for (i = 0; i < m_xTiles; ++i)
+        m_pppTiles[i] = new cTile*[m_yTiles]; //reverse: I store map in row-major order
 
 
-    for (i = 0; i < m_yTiles; i++)
+    for (i = 0; i < m_xTiles; i++)
     {
-        for (int j = 0; j < m_xTiles; j++)
+        for (int j = 0; j < m_yTiles; j++)
         {
-            unsigned int c = GFX::GetColourInHex(lvl->GetPixel(j, i));
+            unsigned int c = m_LevelMap->GetPixel(i, j);
+            std::cout << std::hex << c << ", " << std::hex << e_TileType::DIGGABLE_SOIL << std::endl;
             switch (c)
             {
-            case NOTHING:
-                m_pppTiles[i][j] = new cTile((float)(j*64), (float)(i*64), false);
+            case e_TileType::NOTHING:
+                m_pppTiles[i][j] = new cCavy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
                 break;
-            case DIGGABLE_SOIL:
-                m_pppTiles[i][j] = new cTile((float)(j*64), (float)(i*64), true);
+            case e_TileType::DIGGABLE_SOIL:
+                m_pppTiles[i][j] = new cDiggy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
                 break;
-            case STONE_WALL:
-                m_pppTiles[i][j] = new cTile((float)(j*64), (float)(i*64), true);
+            case e_TileType::STONE_WALL:
+                m_pppTiles[i][j] = new cCavy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
                 break;
             default:  //assume nothing
-                m_pppTiles[i][j] = new cTile((float)(j*64), (float)(i*64), false);
+                m_pppTiles[i][j] = new cCavy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
                 break;
             }
 
         }
     }
 }
-*/
 
+/*
 void cTileLevel::Init()
 {
     int i, j;
@@ -110,6 +111,8 @@ void cTileLevel::Init()
         }
     }
 }
+*/
+
 void cTileLevel::Update(CORE::cGame* game, float delta, cMainGameState* state)
 {
     int i, j;

@@ -82,12 +82,12 @@ bool cMainGameState::OnEnter(CORE::cGame* game)
          CreateMotionBlurTexture(*m_pLightTex, 256, 256, 0);
     }
 
-    m_pLevel = new cTileLevel(100, 100);
-    m_pLevel->Init();
+    //m_pLevel = new cTileLevel(100, 100);
+    //m_pLevel->Init();
 
     //note going to override Init
-    //m_pLevel = new cTileLevel("art/level_1.png");
-    //m_pLevel->Init();
+    m_pLevel = new cTileLevel("art/level_1.png");
+    m_pLevel->Init();
 
     texs.push_back(cTexture("art/bg.png"));
     texs.back().RegisterGL();
