@@ -110,8 +110,7 @@ void cTileLevel::Render(CORE::cGame* game, float delta, GFX::G2D::cSpriteBatch& 
     left = (left < 0) ? 0 : left;
     top  = (top  < 0) ? 0 : top;
 
-    //cout << renderRect.Width() << COMMA << renderRect.Height() << endl;
-    cout << left << COMMA << right << COMMA << top << COMMA << bottom << endl;
+    //cout << left << COMMA << right << COMMA << top << COMMA << bottom << endl;
 
     for (i=left; i<=right; ++i) {
         for (j=top; j<=bottom; ++j) {
