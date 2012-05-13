@@ -22,6 +22,7 @@ enum cTileLevel::e_EntityType : unsigned int
 
 cTileLevel::cTileLevel(string levelName)
 : m_pppTiles(0)
+, m_Init(false)
 {
     m_LevelMap = new GFX::cImage(levelName);
 
@@ -34,31 +35,13 @@ cTileLevel::cTileLevel(string levelName)
 
 cTileLevel::~cTileLevel()
 {
-    if (m_pppTiles) {
-        int i, j;
-        for (i=0; i<m_xTiles; ++i) {
-            for (j=0; j<m_yTiles; ++j) {
-                if (m_pppTiles[i][j]) {
-                    DELETESINGLE(m_pppTiles[i][j]);
-                } else {
-                    std::cout << "Strange things ahappenin' when deleting m_pppTiles2...\n";
-                }
-
-            }
-            if (m_pppTiles[i]) {
-                DELETEARRAY(m_pppTiles[i]);
-            } else {
-                std::cout << "Strange things ahappenin' when deleting m_pppTiles2...\n";
-            }
-
-        }
-        DELETEARRAY(m_pppTiles);
-    }
+    Clear();
 }
 
 
 void cTileLevel::Init(cMainGameState* state)
 {
+    if (m_Init) Clear();
     int i, j;
     m_pppTiles = new cTile**[m_xTiles];
 
@@ -88,7 +71,7 @@ void cTileLevel::Init(cMainGameState* state)
                     else
                         d = new cDoor(i*TILEWIDTH, j*TILEWIDTH, cDoor::e_Direction::NORTH, cDoor::e_Type::EXIT);
 
-                    cEntity::EntityList.push_back(d);
+                    state->GetEntities().EntityList.push_back(d);
                 }
                 else if (i-1 > 0 && m_LevelMap->GetPixel(i-1,j) == e_EntityType::DOOR_PARTNER)
                 {
@@ -100,7 +83,7 @@ void cTileLevel::Init(cMainGameState* state)
                     else
                         d = new cDoor(i*TILEWIDTH, j*TILEWIDTH, cDoor::e_Direction::SOUTH, cDoor::e_Type::EXIT);
 
-                    cEntity::EntityList.push_back(d);
+                    state->GetEntities().EntityList.push_back(d);
                 }
                 else if (j+1 < m_yTiles && m_LevelMap->GetPixel(i,j+1) == e_EntityType::DOOR_PARTNER)
                 {
@@ -114,7 +97,7 @@ void cTileLevel::Init(cMainGameState* state)
                         d = new cDoor(i*TILEWIDTH, j*TILEWIDTH, cDoor::e_Direction::EAST, cDoor::e_Type::EXIT);
                     }
 
-                    cEntity::EntityList.push_back(d);
+                    state->GetEntities().EntityList.push_back(d);
                 }
                 else if (j-1 > 0 && m_LevelMap->GetPixel(i,j-1) == e_EntityType::DOOR_PARTNER)
                 {
@@ -127,7 +110,7 @@ void cTileLevel::Init(cMainGameState* state)
                     {
                         d = new cDoor(i*TILEWIDTH, j*TILEWIDTH, cDoor::e_Direction::WEST, cDoor::e_Type::EXIT);
                     }
-                    cEntity::EntityList.push_back(d);
+                    state->GetEntities().EntityList.push_back(d);
                 }
 
                 break;
@@ -153,8 +136,32 @@ void cTileLevel::Init(cMainGameState* state)
 
         }
     }
+    m_Init = true;
 }
 
+void cTileLevel::Clear()
+{
+    if (m_pppTiles) {
+        int i, j;
+        for (i=0; i<m_xTiles; ++i) {
+            for (j=0; j<m_yTiles; ++j) {
+                if (m_pppTiles[i][j]) {
+                    DELETESINGLE(m_pppTiles[i][j]);
+                } else {
+                    std::cout << "Strange things ahappenin' when deleting m_pppTiles2...\n";
+                }
+
+            }
+            if (m_pppTiles[i]) {
+                DELETEARRAY(m_pppTiles[i]);
+            } else {
+                std::cout << "Strange things ahappenin' when deleting m_pppTiles2...\n";
+            }
+
+        }
+        DELETEARRAY(m_pppTiles);
+    }
+}
 void cTileLevel::Update(CORE::cGame* game, float delta, cMainGameState* state)
 {
     int i, j;

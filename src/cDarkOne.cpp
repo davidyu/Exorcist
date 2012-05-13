@@ -46,7 +46,7 @@ cDarkOne::cDarkOne(const Vec2f& pos, const cRectf& bbox, const cTileLevel& level
                          cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("sheet"), 4, 256, 384, 64, 64)));
     m_Anims.SetTicksPerFrame(300.0f);
     m_Anims.PushAnimation(cAnimation(30.0f,
-                         cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("sheet"), 4, 320, 0, 64, 64)));
+                         cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("sheet"), 4, 320, 448, 64, 64)));
 
 
 
@@ -75,6 +75,7 @@ cDarkOne::~cDarkOne()
 
 void cDarkOne::Update(CORE::cGame* game, float delta, cMainGameState* state)
 {
+    if (m_State==DYING) return;
     if (!m_IsPlayerControlled) {
 
         if (m_NextBehaviorChange<0.0f) {
@@ -117,7 +118,6 @@ void cDarkOne::DetermineDirection()
             m_DirPreference = RandInt(0,2);
         }
         if (fabs(xDelta)<TOL&&fabs(yDelta)<TOL) {
-
             GetNextDestination();
         } else if (m_DirPreference==0) {
             m_Dir = NONE;
@@ -202,20 +202,22 @@ void cDarkOne::Render(CORE::cGame* game, float delta, cMainGameState* state)
     } else if (m_State==IDLING) {
         m_Anims.SetCurrentIndex(6);
     }
-        if (m_State==DYING) {
+
+
+    if (m_State==DYING) {
+    const cTextureWrapper& frame
+     = m_Anims[m_Anims.GetCurrentIndex()].GetKeyFrame(m_Anims.GetStatetime(), false);
+     ImmediateRenderTexturePos2Dim2(frame, GetPos().x, GetPos().y, 64, 64);
+    } else if (m_State==WANDERING&&m_Dir==NONE) {
         const cTextureWrapper& frame
-         = m_Anims[m_Anims.GetCurrentIndex()].GetKeyFrame(m_Anims.GetStatetime(), false);
+         = m_Anims[m_Anims.GetCurrentIndex()][0];
+        ImmediateRenderTexturePos2Dim2(frame, GetPos().x, GetPos().y, 64, 64);
+    } else if (true) {
+        const cTextureWrapper& frame
+         = m_Anims.GetCurrentFrame();
          ImmediateRenderTexturePos2Dim2(frame, GetPos().x, GetPos().y, 64, 64);
-        } else if (m_State==WANDERING&&m_Dir==NONE) {
-            const cTextureWrapper& frame
-             = m_Anims[m_Anims.GetCurrentIndex()][0];
-            ImmediateRenderTexturePos2Dim2(frame, GetPos().x, GetPos().y, 64, 64);
-        } else if (true) {
-            const cTextureWrapper& frame
-             = m_Anims.GetCurrentFrame();
-             ImmediateRenderTexturePos2Dim2(frame, GetPos().x, GetPos().y, 64, 64);
-        }
-         m_Anims.UpdateCurrent(delta);
+    }
+     m_Anims.UpdateCurrent(delta);
 }
 
 void cDarkOne::DetermineNewBehavior()

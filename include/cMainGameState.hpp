@@ -9,7 +9,9 @@
 //
 #include "global_inc.hpp"
 #include "cTileLevel.hpp"
+#include "cEntityManager.hpp"
 
+#define DIGGER m_Entities.EntityList[0]
 
 namespace CORE
 {
@@ -49,19 +51,31 @@ class cMainGameState : public STATE::iGameState
         void RenderLightMask(CORE::cGame* game, float percent_tick);
         void BuildLightMask(CORE::cGame* game, float percent_tick);
         void BuildMotionBlurFrame(CORE::cGame* game, float percent_tick);
+        void Flare(CORE::cGame* game, float percent_tick);
 
+        void SetWinner(int i)
+        { if (!m_Win) m_Win = i; }
+        void SetHasFlared(bool b)
+        { m_HasFlared=b; m_FlareTime=0.0f; }
         void SelectP2DarkOne();
 
         cBros* GetPlayer() { return m_Player; }
 
         cTileLevel* GetLevel()
-        { return &m_Levels[m_LevelIndex]; }
+        { return m_pLevels[m_LevelIndex]; }
+
+        cEntityManager& GetEntities()
+        { return m_Entities; }
 
         static void IncrementLevelIndex()
-        { m_LevelIndex++; }
+        { m_LevelIndex = ++m_LevelIndex%static_cast<int>(m_pLevels.size()); }
+
+        static void InitLevels();
+        static void ClearLevels();
 
         static int GetLevelIndex()
         { return m_LevelIndex; }
+
 
     private:
 
@@ -75,12 +89,19 @@ class cMainGameState : public STATE::iGameState
         GFX::cTextureWrapper* m_pLightTex;
         GFX::G2D::cAnimation* m_pAnimStaticOverlay;
         std::vector<GFX::cTexture> texs;
+        cEntityManager m_Entities;
 
-        vector<cTileLevel> m_Levels;
+        bool m_HasFlared;
+        float m_FlareTime;
 
+        static vector<cTileLevel*> m_pLevels;
 
         cBros* m_Player;
         int m_P2Index;
+
+        int m_Win;
+        float m_Wintime;
+        bool m_Quit;
 
 };
 

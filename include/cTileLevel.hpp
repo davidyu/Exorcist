@@ -25,7 +25,9 @@ class cTileLevel
         cTileLevel(int xTiles, int yTiles);
         cTileLevel(string levelName);
         virtual ~cTileLevel();
+
         void Init(cMainGameState* state);
+        void Clear();
 
         void Update(CORE::cGame* game, float delta, cMainGameState* state);
         void Render(CORE::cGame* game, float delta, GFX::G2D::cSpriteBatch& batch, cRectf* renderRect);
@@ -41,7 +43,10 @@ class cTileLevel
         enum e_TileType : unsigned int;
         enum e_EntityType : unsigned int;
 
+        bool m_Init;
+
         GFX::cImage* m_LevelMap;
+
 
 };
 

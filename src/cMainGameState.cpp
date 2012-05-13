@@ -30,19 +30,33 @@ using namespace GFX;
 using namespace GFX::G2D;
 
 int cMainGameState::m_LevelIndex = 0;
+vector<cTileLevel*> cMainGameState::m_pLevels;
 
-namespace
+void cMainGameState::InitLevels()
 {
-    cTexture* p_tex;
+    m_pLevels.push_back(new cTileLevel("art/level_1.png"));
+    m_pLevels.push_back(new cTileLevel("art/level_2.png"));
 }
+
+void cMainGameState::ClearLevels()
+{
+    for (int i=0; i<m_pLevels.size(); ++i) {
+        DELETESINGLE(m_pLevels[i]);
+    }
+    m_pLevels.clear();
+}
+
 
 cMainGameState::cMainGameState()
 : m_batch()
 , m_pMotionTex(0)
 , m_pLightTex(0)
-, m_Levels()
+, m_HasFlared(true)
 , m_pAnimStaticOverlay(0)
 , m_P2Index(DARKOFFSET)
+, m_Win(0)
+, m_Wintime(0.0f)
+, m_Quit(true)
  {}
 
 cMainGameState::~cMainGameState() {}
@@ -71,7 +85,6 @@ bool cMainGameState::OnEnter(CORE::cGame* game)
     glLoadIdentity();
     glOrtho(0.0, WINDOW_WIDTH, 0.0, WINDOW_HEIGHT, -10.0, 10.0);
     glMatrixMode(GL_MODELVIEW);
-//    glScalef(1.0f, -1.0f, 1.0f);
     glLoadIdentity();
 
     if (!m_pMotionTex) {
@@ -92,17 +105,14 @@ bool cMainGameState::OnEnter(CORE::cGame* game)
          CreateMotionBlurTexture(*m_pLightTex, 256, 256, 0);
     }
 
-
     m_Player = new cBros;
-    cEntity::EntityList.push_back(m_Player); //push player before push door
+    m_Entities.EntityList.push_back(m_Player); //push player before push door
 
     DOOROFFSET = 1; //just in case!!!
-    m_Levels.push_back(cTileLevel("art/level_1.png"));
-    m_Levels.push_back(cTileLevel("art/level_2.png"));
+    m_pLevels.push_back(new cTileLevel("art/level_1.png"));
+    m_pLevels.push_back(new cTileLevel("art/level_2.png"));
 
-    m_Levels[m_LevelIndex].Init(this);
-
-
+    m_pLevels[m_LevelIndex]->Init(this);
 
     texs.push_back(cTexture("art/bg.png"));
     texs.back().RegisterGL();
@@ -112,16 +122,18 @@ bool cMainGameState::OnEnter(CORE::cGame* game)
 
     m_pAnimStaticOverlay = new cAnimation(50.0f, cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("static"), 4, 0, 0, 512, 512));
 
-    cout << cEntity::EntityList.size() << endl;
-    DARKOFFSET = cEntity::EntityList.size(); //reset because we just added doors!
+    cout << m_Entities.EntityList.size() << endl;
+    DARKOFFSET = m_Entities.EntityList.size(); //reset because we just added doors!
     m_P2Index = DARKOFFSET;
 
     for (i=0; i<5; ++i) {
-        cEntity::EntityList.push_back(new cDarkOne(Vec2f(RandFloat(0.0f, 400.0f), RandFloat(0.0f, 400.0f))
-                                                 , cRectf(14.0, 0.0f, 36, 64), m_Levels[m_LevelIndex]));
+        m_Entities.EntityList.push_back(new cDarkOne(Vec2f(RandFloat(0.0f, 400.0f), RandFloat(0.0f, 400.0f))
+                                                 , cRectf(14.0, 0.0f, 36, 64), *m_pLevels[m_LevelIndex]));
     }
-    dynamic_cast<cDarkOne*>(cEntity::EntityList[cEntity::EntityList.size()-1])->SetPlayerControl(true);
 
+    dynamic_cast<cDarkOne*>(m_Entities.EntityList[m_Entities.EntityList.size()-1])->SetPlayerControl(true);
+
+    m_Quit = false;
 
     return true;
 }
@@ -134,9 +146,7 @@ bool cMainGameState::OnExit(CORE::cGame* game)
     DELETESINGLE(m_pAnimStaticOverlay);
 
     int i;
-    cEntity::ClearEntities();
-    m_Levels.clear();
-
+    m_Entities.ClearEntities();
 
     cout << "Leaving Main Game state\n";
 
@@ -149,38 +159,55 @@ void cMainGameState::Update(CORE::cGame* game, float delta)
 {
     HandleInput(game);
 
-    m_Levels[m_LevelIndex].Update(game, delta, this);
+    if (m_Win==1) {
+        m_Wintime+=delta;
+    } else if (m_Win==2) {
+        m_Wintime+=delta;
+    }
+    if (m_Wintime>= 2.0f) {
+        if (m_Win==1) {
+            IncrementLevelIndex();
+        }
+        game->GetStateManager().ReplaceStateUsingTransition(game->state_factory.CreateObject("play")
+                                                        ,   game->transition_factory.CreateObject("transFade"));
+    }
 
-    cEntity::EntityList[0]->Update(game, delta, this);
+    m_pLevels[m_LevelIndex]->Update(game, delta, this);
+
+    m_Entities.EntityList[0]->Update(game, delta, this);
 
     for (int i=DOOROFFSET; i < DARKOFFSET; ++i)
     {
-        cEntity::EntityList[i]->Update(game, delta, this);
-        if (cEntity::EntityList[i]->GetBBox().IsCollidedRect(cEntity::EntityList[0]->GetBBox())) {
-            if (dynamic_cast<cDoor*>(cEntity::EntityList[i])->IsExit())
+        m_Entities.EntityList[i]->Update(game, delta, this);
+        if (m_Entities.EntityList[i]->GetBBox().IsCollidedRect(m_Entities.EntityList[0]->GetBBox())) {
+            if (dynamic_cast<cDoor*>(m_Entities.EntityList[i])->IsExit())
             {
                 //next level!
             }
-            else if (dynamic_cast<cDoor*>(cEntity::EntityList[i])->IsEntrance())
+            else if (dynamic_cast<cDoor*>(m_Entities.EntityList[i])->IsEntrance())
             {
                 //prev level!
             }
         }
     }
 
-    for (int i=DARKOFFSET; i<cEntity::EntityList.size(); ++i) {
-        cEntity::EntityList[i]->Update(game, delta, this);
-        if (dynamic_cast<cDarkOne*>(cEntity::EntityList[i])->IsPlayerControlled()
-          && cEntity::EntityList[i]->GetBBox().IsCollidedRect(cEntity::EntityList[0]->GetBBox())) {
-            dynamic_cast<cBros*>(cEntity::EntityList[0])->Kill();
+    m_Entities.EntityList[0]->Update(game, delta, this);
+    for (int i=DARKOFFSET; i<m_Entities.EntityList.size(); ++i) {
+        m_Entities.EntityList[i]->Update(game, delta, this);
+        if (dynamic_cast<cDarkOne*>(m_Entities.EntityList[i])->IsPlayerControlled()
+         && dynamic_cast<cDarkOne*>(m_Entities.EntityList[i])->GetState()!=cDarkOne::DYING
+         && m_Entities.EntityList[i]->GetBBox().IsCollidedRect(m_Entities.EntityList[0]->GetBBox())) {
+            dynamic_cast<cBros*>(m_Entities.EntityList[0])->Kill();
+            SetWinner(2);
         }
     }
 }
 
-bool b = true;
 void cMainGameState::Render(CORE::cGame* game, float percent_tick)
 {
+    if (m_Quit) return;
 //    glEnable(GL_ALPHA_TEST) ;
+
     m_pMotionTex->SetUV(0.0f, 0.0f, 1.0f, 1.0f);
 
     BuildLightMask(game, percent_tick);
@@ -205,18 +232,22 @@ void cMainGameState::Render(CORE::cGame* game, float percent_tick)
     if (statetime>10000000.0f) {
         statetime = 0.0f;
     }
-//    ImmediateRenderTexturePos2Dim2(m_pAnimStaticOverlay->GetKeyFrame(statetime, true), 0.0f,100,700,700);
-    if (b)RenderLightMask(game, percent_tick);
+    ImmediateRenderTexturePos2Dim2(m_pAnimStaticOverlay->GetKeyFrame(statetime, true), 0.0f,100,700,700);
+    RenderLightMask(game, percent_tick);
 
-    for (int i=0; i<cEntity::EntityList.size(); ++i) {
-        cEntity::EntityList[i]->Render(game, percent_tick, this);
+    for (int i=0; i<m_Entities.EntityList.size(); ++i) {
+        m_Entities.EntityList[i]->Render(game, percent_tick, this);
     }
 
+    if (!m_HasFlared) {
+        Flare(game, percent_tick);
+    }
     const float e = expf(-35.08e-3f*percent_tick);
     glColor4f(1.0f, 1.0f, 1.0f, e);
     RenderMotionBlur(game, percent_tick);
 
     BuildMotionBlurFrame(game, percent_tick);
+    m_pMotionTex->SetUV(0.0f, 1.0f, 1.0f, 0.0f);
 
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -245,14 +276,14 @@ void cMainGameState::RenderMain(CORE::cGame* game, float percent_tick)
         m_batch.SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 //        m_batch.DrawTexturePos2Dim2Origin2Scale2Rot(reg, 50.0f, 0.0f, 200.0f, 100.0f, 100.0f, 50.0f, 1.0f, 1.0f, rot);
-//    m_Levels[m_LevelIndex].Render(game, percent_tick, m_batch, MATH::cRectf(0.0f, 0.0f, 800.0f, 700.0f));
+//    m_pLevels[m_LevelIndex].Render(game, percent_tick, m_batch, MATH::cRectf(0.0f, 0.0f, 800.0f, 700.0f));
     m_batch.End();
 
     cRectf *r = m_Camera->GetViewportRect();
     //cout << r.Left() << "," << r.Right() << endl;
-    m_Levels[m_LevelIndex].Render(game, percent_tick, m_batch, r);
+    m_pLevels[m_LevelIndex]->Render(game, percent_tick, m_batch, r);
 
-    cEntity::EntityList[0]->Render(game, percent_tick, this);
+    m_Entities.EntityList[0]->Render(game, percent_tick, this);
 
     /* End Main Drawing Procedure */
 
@@ -296,7 +327,6 @@ void cMainGameState::BuildMotionBlurFrame(CORE::cGame* game, float percent_tick)
     glBindTexture(GL_TEXTURE_2D, m_pMotionTex->GetID());
     CopyBackbufferToTexture(*m_pMotionTex, WINDOW_WIDTH, WINDOW_HEIGHT);
     // Copy back buffer calls glCopyTex2D which flips the texture upside down.
-    m_pMotionTex->SetUV(0.0f, 1.0f, 1.0f, 0.0f);
 }
 
 void cMainGameState::HandleInput(CORE::cGame* game)
@@ -309,7 +339,6 @@ void cMainGameState::HandleInput(CORE::cGame* game)
     if (input.GetKeyState(SDLK_p)) {
         SelectP2DarkOne();
     }
-    if (input.OnMouseButtonUp(SDL_BUTTON_LEFT)) { b=!b;}
     if (input.OnKeyDown(SDLK_b)) {
         STATE::cGameTransition* trans = game->transition_factory.CreateObject("transSquareSpin");
         STATE::iGameState* newstate = game->state_factory.CreateObject("play");
@@ -319,6 +348,27 @@ void cMainGameState::HandleInput(CORE::cGame* game)
 
 }
 
+void cMainGameState::Flare(CORE::cGame* game, float percent_tick)
+{
+    const float hw = DIGGER->GetPos().x+WINDOW_WIDTH/2.0f+100.0f;
+    const float hh = DIGGER->GetPos().y+WINDOW_HEIGHT/2.0f;
+    const float MAXFLARETIME=1000.0f;
+
+    m_FlareTime += percent_tick;
+    glColor4f(1.0f, 1.0f, 1.0f, 1.2f-m_FlareTime/MAXFLARETIME);
+    glBegin(GL_QUADS);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glVertex2f(hw, hh);
+        glVertex2f(hw, -hh);
+        glVertex2f(-hw, -hh);
+        glVertex2f(-hw, hh);
+    glEnd();
+
+    if (m_FlareTime>MAXFLARETIME) {
+        m_HasFlared = true;
+    }
+}
+
 void cMainGameState::SelectP2DarkOne()
 {
     cRectf r = *m_Camera->GetViewportRect();
@@ -326,12 +376,13 @@ void cMainGameState::SelectP2DarkOne()
     int newIndex;
     int count = 0;
     cRectf bbox;
-    while (!isSelected&&count<100&&newIndex!=m_P2Index) {
-        newIndex = MATH::RandInt(DARKOFFSET,cEntity::EntityList.size()-1);
-        bbox = cEntity::EntityList[newIndex]->GetBBox();
+    while (!isSelected&&count<100&&newIndex!=m_P2Index
+           &&dynamic_cast<cDarkOne*>(m_Entities.EntityList[newIndex])->cDarkOne::DYING) {
+        newIndex = MATH::RandInt(DARKOFFSET,m_Entities.EntityList.size()-1);
+        bbox = m_Entities.EntityList[newIndex]->GetBBox();
         if (r.IsCollidedRect(bbox)) {
-            dynamic_cast<cDarkOne*>(cEntity::EntityList[m_P2Index])->SetPlayerControl(false);
-            dynamic_cast<cDarkOne*>(cEntity::EntityList[newIndex])->SetPlayerControl(true);
+            dynamic_cast<cDarkOne*>(m_Entities.EntityList[m_P2Index])->SetPlayerControl(false);
+            dynamic_cast<cDarkOne*>(m_Entities.EntityList[newIndex])->SetPlayerControl(true);
             m_P2Index = newIndex;
             isSelected = true;
         }

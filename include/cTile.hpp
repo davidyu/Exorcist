@@ -35,7 +35,7 @@ public:
     void Render(CORE::cGame* game, float delta, GFX::G2D::cSpriteBatch& batch);
 
     void DecreaseLife(float dec)
-    { m_Life -= dec; }
+    { if (m_Type!=BLOCK) m_Life -= dec; }
     void SetDrilled(bool b)
     { m_IsDrilled = b; }
     void SetFrameIndex(int i)
@@ -80,7 +80,7 @@ public:
 class cDiggy : public cTile
 {
 public:
-    cDiggy(float x, float y) : cTile(x, y, true)
+    cDiggy(float x, float y) : cTile(x, y, COLLIDABLE)
     {
         m_Frames.push_back(cTextureRegion(Art("tileset"), 64, 0, 64, 64));
         m_Frames.push_back(cTextureRegion(Art("tileset"), 128, 0, 64, 64));
@@ -93,7 +93,7 @@ public:
 class cCavy : public cTile
 {
 public:
-    cCavy(float x, float y) : cTile(x, y, false)
+    cCavy(float x, float y) : cTile(x, y, EMPTY)
     {
         m_Frames.push_back(cTextureRegion(Art("tileset"), 0, 0, 64, 64));
     }

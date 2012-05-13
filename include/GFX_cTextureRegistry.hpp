@@ -44,6 +44,15 @@ namespace GFX
 
         cTexture sta = cTexture("art/static.png"); sta.RegisterGL();
         RegisterTexture("static", sta);
+
+        cTexture tit = cTexture("art/title.png"); tit.RegisterGL();
+        RegisterTexture("title", tit);
+
+        cTexture int1 = cTexture("art/int1.png"); int1.RegisterGL();
+        RegisterTexture("int1", int1);
+
+        cTexture int2 = cTexture("art/int2.png"); int2.RegisterGL();
+        RegisterTexture("int2", int2);
     }
 }
 
