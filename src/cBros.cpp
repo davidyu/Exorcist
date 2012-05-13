@@ -7,11 +7,12 @@
 #include "cTileLevel.hpp"
 
 using namespace GFX::G2D;
+using namespace GFX;
 
 cBros::cBros()
 : cEntity()
 , m_Anims()
-, m_DrillRate(0.3f)
+, m_DrillRate(0.0009f)
 , m_Direction(0)
 , m_State(STILL)
 {
@@ -25,8 +26,8 @@ cBros::cBros()
     m_Anims.PushAnimation(cAnimation(30.0f,
                          cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("sheet"), 4, 0, 192, 64, 64)));
 
-    m_Pos.y = 200.0f;
-    m_BBox = cRectf(0.0f, 0.0f, 40.0f, 40.0f);
+    m_Pos.y = 0.0f;
+    m_BBox = cRectf(0.0f, 0.0f, 50.0f, 64.0f);
 }
 
 cBros::~cBros()
@@ -43,7 +44,7 @@ void cBros::Update(CORE::cGame* game, float delta, cMainGameState* state)
     }
 
     m_Pos += m_Vel;
-    m_Vel *= expf(-0.02*delta);
+    m_Vel *= expf(-0.05*delta);
 
 }
 
@@ -72,13 +73,14 @@ void cBros::TryMove(CORE::cGame* game, float delta, cMainGameState* state)
     vector<cTile*> col = level->GetCollidedTiles(GetBBoxSwept());
     for (int i=0; i<col.size(); ++i) {
         m_Pos += GetMinTranslationVectorRectRect(GetBBoxSwept(), col[i]->GetBBox());
+        col[i]->SetDrilled(true);
+        col[i]->DecreaseLife(m_DrillRate*delta);
     }
 }
 
 void cBros::Render(CORE::cGame* game, float delta, cMainGameState* state)
 {
-    if (m_State==WALKING||m_State==DRILLING) {
-        switch (m_Direction) {
+    switch (m_Direction) {
             case NORTH:
                 m_Anims.SetCurrentIndex(1);
                 break;
@@ -92,9 +94,16 @@ void cBros::Render(CORE::cGame* game, float delta, cMainGameState* state)
                 m_Anims.SetCurrentIndex(2);
                 break;
         }
+    if (m_State==WALKING||m_State==DRILLING) {
+        const cTextureWrapper& frame
+         = m_Anims.GetCurrentFrame();
+         ImmediateRenderTexturePos2Dim2(frame, GetPos().x, GetPos().y, 64, 64);
+    } else if (m_State==STILL) {
+        const cTextureWrapper& frame
+         = m_Anims[m_Anims.GetCurrentIndex()][0];
+         ImmediateRenderTexturePos2Dim2(frame, GetPos().x, GetPos().y, 64, 64);
     }
     m_Anims.UpdateCurrent(delta);
-    ImmediateRenderTexturePos2Dim2(m_Anims.GetCurrentFrame(), GetPos().x, GetPos().y, 64, 64);
 
 }
 

@@ -53,6 +53,7 @@ cTileLevel::~cTileLevel()
     }
 }
 
+/*
 void cTileLevel::Init()
 {
     int i, j;
@@ -86,6 +87,7 @@ void cTileLevel::Init()
         }
     }
 }
+*/
 
 void cTileLevel::Init()
 {
@@ -98,11 +100,11 @@ void cTileLevel::Init()
 
     for (i=0; i<m_xTiles; ++i) {
         for (j=0; j<m_yTiles; ++j) {
-            if (j>6) {
-                m_pppTiles[i][j] = new cTile((float)(i*64), (float)(j*64), true);
+            if (j>6&&i>6) {
+                m_pppTiles[i][j] = new cDiggy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
             }
             else {
-                m_pppTiles[i][j] = new cTile((float)(i*64), (float)(j*64), false);
+                m_pppTiles[i][j] = new cCavy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
             }
 
         }
@@ -115,6 +117,12 @@ void cTileLevel::Update(CORE::cGame* game, float delta, cMainGameState* state)
     for (i=0; i<m_xTiles; ++i) {
         for (j=0; j<m_yTiles; ++j) {
             m_pppTiles[i][j]->Update(game, delta, state);
+            if (m_pppTiles[i][j]->GetLife()<=0.0f) {
+                cTile* temp = new cCavy(m_pppTiles[i][j]->GetPos().x, m_pppTiles[i][j]->GetPos().y);
+                DELETESINGLE(m_pppTiles[i][j]);
+                m_pppTiles[i][j] = temp;
+                temp = 0;
+            }
         }
     }
 }
@@ -134,6 +142,7 @@ void cTileLevel::Render(CORE::cGame* game, float delta, GFX::G2D::cSpriteBatch& 
     for (i=left; i<=right; ++i) {
         for (j=top; j<=bottom; ++j) {
             m_pppTiles[i][j]->Render(game, delta, batch);
+
             ++count;
         }
     }
