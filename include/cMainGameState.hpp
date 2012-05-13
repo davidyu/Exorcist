@@ -11,6 +11,8 @@
 #include "cTileLevel.hpp"
 #include "cEntityManager.hpp"
 
+#include "cDoor.hpp"
+
 #define DIGGER m_Entities.EntityList[0]
 
 namespace CORE
@@ -53,6 +55,12 @@ class cMainGameState : public STATE::iGameState
         void BuildMotionBlurFrame(CORE::cGame* game, float percent_tick);
         void Flare(CORE::cGame* game, float percent_tick);
 
+        void SetEntrance(cDoor* d)
+        { m_Entrance = d; }
+
+        void SetExit (cDoor* d)
+        { m_Exit = d; }
+
         void SetWinner(int i)
         { if (!m_Win) m_Win = i; }
         void SetHasFlared(bool b)
@@ -69,6 +77,12 @@ class cMainGameState : public STATE::iGameState
 
         static void IncrementLevelIndex()
         { m_LevelIndex = ++m_LevelIndex%static_cast<int>(m_pLevels.size()); }
+
+        static void DecrementLevelIndex()
+        {
+            m_LevelIndex--;
+            if (m_LevelIndex < 0) m_LevelIndex = 0;
+        }
 
         static void InitLevels();
         static void ClearLevels();
@@ -97,6 +111,9 @@ class cMainGameState : public STATE::iGameState
         static vector<cTileLevel*> m_pLevels;
 
         cBros* m_Player;
+        cDoor* m_Entrance;
+        cDoor* m_Exit;
+
         int m_P2Index;
 
         int m_Win;
