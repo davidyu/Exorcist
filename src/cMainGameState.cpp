@@ -30,7 +30,7 @@ int DARKOFFSET = 2;
 using namespace GFX;
 using namespace GFX::G2D;
 
-int cMainGameState::m_LevelIndex = 0;
+int cMainGameState::m_LevelIndex = 1;
 vector<cTileLevel*> cMainGameState::m_pLevels;
 
 void cMainGameState::InitLevels()
@@ -58,7 +58,7 @@ cMainGameState::cMainGameState()
 , m_pLightTex(0)
 , m_HasFlared(true)
 , m_pAnimStaticOverlay(0)
-, m_P2Index(DARKOFFSET)
+, m_P2Index(DARKOFFSET-1)
 , m_Win(0)
 , m_Wintime(0.0f)
 , m_Quit(true)
@@ -207,7 +207,6 @@ void cMainGameState::Update(CORE::cGame* game, float delta)
     }
 
     m_IsStatic = false;
-    m_Entities.EntityList[0]->Update(game, delta, this);
 
     if (DARKOFFSET == m_Entities.EntityList.size()) //no dark ones
         return;
@@ -220,7 +219,8 @@ void cMainGameState::Update(CORE::cGame* game, float delta)
             dynamic_cast<cBros*>(m_Entities.EntityList[0])->Kill();
             SetWinner(2);
         }
-        if (m_Entities.EntityList[i]->GetBBox().IsCollidedRect(dynamic_cast<cBros*>(m_Entities.EntityList[0])->GetFlareBox())) {
+        if (dynamic_cast<cDarkOne*>(m_Entities.EntityList[i])->GetState()!=cDarkOne::DYING
+        && m_Entities.EntityList[i]->GetBBox().IsCollidedRect(dynamic_cast<cBros*>(m_Entities.EntityList[0])->GetFlareBox())) {
             m_IsStatic = true;
             Mix_PlayChannel(-1, cSoundRegistry::stat, 0);
         }

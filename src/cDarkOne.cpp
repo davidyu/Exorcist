@@ -79,7 +79,8 @@ cDarkOne::~cDarkOne()
 void cDarkOne::Update(CORE::cGame* game, float delta, cMainGameState* state)
 {
     cout << m_State << endl;
-    if (m_State==DYING) return;
+    if (m_State==DYING)
+        return;
     if (!m_IsPlayerControlled) {
 
         if (m_NextBehaviorChange<0.0f) {
@@ -254,6 +255,8 @@ void cDarkOne::HandleInput(CORE::cGame* game, float delta)
     if (m_State==DYING) return;
     CORE::Input& input = game->GetInput();
 
+//    HandleJoy(game, delta);
+
     if (m_State==WANDERING&&
     !( input.GetKeyState(SDLK_UP)
     || input.GetKeyState(SDLK_RIGHT)
@@ -274,7 +277,6 @@ void cDarkOne::HandleInput(CORE::cGame* game, float delta)
     if (input.OnKeyDown(SDLK_DOWN)) {
         m_Dir = SOUTH;
         m_State = WANDERING;
-
     }
     if (input.OnKeyDown(SDLK_LEFT)) {
         m_Dir = WEST;
@@ -287,6 +289,46 @@ void cDarkOne::HandleInput(CORE::cGame* game, float delta)
         m_State = IDLING;
     }
     if (input.OnKeyDown(SDLK_l)) {
+        m_State = SMILING;
+    }
+}
+
+void cDarkOne::HandleJoy(CORE::cGame* game, float delta)
+{
+    if (m_State==DYING) return;
+    CORE::Input& input = game->GetInput();
+
+    float x, y;
+    input.GetJoyExtentIDWhichExtent2(0,0,x,y);
+
+    if (m_State==WANDERING&&
+     fabs(x)<0.2f&&fabs(y)<0.2f) {
+        m_State = WANDERING;
+        m_Dir = NONE;
+    }
+    if (y>0.2f) {
+        m_Dir = NORTH;
+        m_State = WANDERING;
+    }
+    if (x>0.2f) {
+        m_Dir = EAST;
+        m_State = WANDERING;
+    }
+    if (y<-0.2f) {
+        m_Dir = SOUTH;
+        m_State = WANDERING;
+    }
+    if (x<-0.2f) {
+        m_Dir = WEST;
+        m_State = WANDERING;
+    }
+    if (input.OnJoyButtonDown(0,0)) {
+        m_State = BLINKING;
+    }
+    if (input.OnJoyButtonDown(0,1)) {
+        m_State = IDLING;
+    }
+    if (input.OnJoyButtonDown(0,2)) {
         m_State = SMILING;
     }
 }

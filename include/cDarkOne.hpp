@@ -5,7 +5,7 @@
 #include "global_inc.hpp"
 #include "cTileLevel.hpp"
 
-#define WALKSPEED 0.04f
+#define WALKSPEED 0.06f
 
 class cDarkOne : public cEntity
 {
@@ -25,6 +25,7 @@ class cDarkOne : public cEntity
         void Kill();
 
         void HandleInput(CORE::cGame* game, float delta);
+        void HandleJoy(CORE::cGame* game, float delta);
 
         bool IsPlayerControlled()
 
