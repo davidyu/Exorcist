@@ -48,6 +48,9 @@ class cMainGameState : public STATE::iGameState
         void BuildLightMask(CORE::cGame* game, float percent_tick);
         void BuildMotionBlurFrame(CORE::cGame* game, float percent_tick);
 
+        cTileLevel* GetLevel()
+        { return m_pLevel; }
+
     private:
 
         void RegisterSpriteFrames();

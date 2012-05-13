@@ -1,6 +1,8 @@
 #ifndef CTILELEVEL_H
 #define CTILELEVEL_H
 
+#include <string>
+
 #include "global_inc.hpp"
 #include "cTile.hpp"
 
@@ -21,18 +23,24 @@ class cTileLevel
 {
     public:
         cTileLevel(int xTiles, int yTiles);
+        cTileLevel(string levelName);
         virtual ~cTileLevel();
         void Init();
 
         void Update(CORE::cGame* game, float delta, cMainGameState* state);
         void Render(CORE::cGame* game, float delta, GFX::G2D::cSpriteBatch& batch, const MATH::cRectf& renderRect);
 
-        cTile& GetTileXY(int x, int y);
-        cTile& GetTileClosestToPos(const Vec2f& p);
+        cTile* GetTileXY(int x, int y);
+        cTile* GetTileClosestToPos(const Vec2f& p, int& x, int& y);
+        vector<cTile*> GetCollidedTiles(const cRectf& r);
+        bool IsWithinRangeXY(int x, int y);
     private:
         cTile*** m_pppTiles; // Yeah this is sooo smart >_>
         int m_xTiles, m_yTiles;
-        bool m_IsDrilled;
+        bool m_IsDrilled; //why here?
+        enum e_TileType : unsigned int;
+
+        GFX::cImage* m_LevelMap;
 
 };
 

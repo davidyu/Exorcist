@@ -34,7 +34,7 @@ namespace GFX
     inline void cTextureRegistry::Init()
     {
         cTexture tiles_e = cTexture("art/tileset.png"); tiles_e.RegisterGL();
-        RegisterTexture("tile0", cTextureRegion(tiles_e, 0, 0, 64, 64));
+        RegisterTexture("tileset", tiles_e);
 
         cTexture sheet = cTexture("art/spritesheet.png"); sheet.RegisterGL();
         RegisterTexture("sheet", sheet);

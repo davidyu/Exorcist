@@ -1,4 +1,13 @@
 #include "cTileLevel.hpp"
+#include "GFX_cImage.hpp"
+#include "GFX_TextureUtilities.hpp"
+
+enum cTileLevel::e_TileType : unsigned int
+{
+    NOTHING       =  0xff000000,
+    DIGGABLE_SOIL =  SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0xff3a2e2e : 0xff2e2e3a,
+    STONE_WALL    =  0xffffffff
+};
 
 cTileLevel::cTileLevel(int xTiles, int yTiles)
 : m_pppTiles(0)
@@ -6,6 +15,18 @@ cTileLevel::cTileLevel(int xTiles, int yTiles)
 , m_yTiles(yTiles)
 {
     //ctor
+}
+
+cTileLevel::cTileLevel(string levelName)
+: m_pppTiles(0)
+{
+    m_LevelMap = new GFX::cImage(levelName);
+
+    int h = m_LevelMap->GetHeight();
+    int w = m_LevelMap->GetWidth();
+
+    m_xTiles = w;
+    m_yTiles = h;
 }
 
 cTileLevel::~cTileLevel()
@@ -36,6 +57,42 @@ cTileLevel::~cTileLevel()
 void cTileLevel::Init()
 {
     int i, j;
+    m_pppTiles = new cTile**[m_xTiles];
+
+    for (i = 0; i < m_xTiles; ++i)
+        m_pppTiles[i] = new cTile*[m_yTiles]; //reverse: I store map in row-major order
+
+
+    for (i = 0; i < m_xTiles; i++)
+    {
+        for (int j = 0; j < m_yTiles; j++)
+        {
+            unsigned int c = m_LevelMap->GetPixel(i, j);
+            std::cout << std::hex << c << ", " << std::hex << e_TileType::DIGGABLE_SOIL << std::endl;
+            switch (c)
+            {
+            case e_TileType::NOTHING:
+                m_pppTiles[i][j] = new cCavy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
+                break;
+            case e_TileType::DIGGABLE_SOIL:
+                m_pppTiles[i][j] = new cDiggy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
+                break;
+            case e_TileType::STONE_WALL:
+                m_pppTiles[i][j] = new cCavy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
+                break;
+            default:  //assume nothing
+                m_pppTiles[i][j] = new cCavy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
+                break;
+            }
+
+        }
+    }
+}
+
+/*
+void cTileLevel::Init()
+{
+    int i, j;
 
     m_pppTiles = new cTile**[m_xTiles];
     for (i=0; i<m_xTiles; ++i) {
@@ -44,11 +101,18 @@ void cTileLevel::Init()
 
     for (i=0; i<m_xTiles; ++i) {
         for (j=0; j<m_yTiles; ++j) {
-            m_pppTiles[i][j] = new cTile((float)(i*40), (float)(j*40), true);
+            if (j>6&&i>6) {
+                m_pppTiles[i][j] = new cDiggy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
+            }
+            else {
+                m_pppTiles[i][j] = new cCavy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
+            }
+
         }
     }
-
 }
+*/
+
 void cTileLevel::Update(CORE::cGame* game, float delta, cMainGameState* state)
 {
     int i, j;
@@ -56,6 +120,12 @@ void cTileLevel::Update(CORE::cGame* game, float delta, cMainGameState* state)
     for (i=0; i<m_xTiles; ++i) {
         for (j=0; j<m_yTiles; ++j) {
             m_pppTiles[i][j]->Update(game, delta, state);
+            if (m_pppTiles[i][j]->GetLife()<=0.0f) {
+                cTile* temp = new cCavy(m_pppTiles[i][j]->GetPos().x, m_pppTiles[i][j]->GetPos().y);
+                DELETESINGLE(m_pppTiles[i][j]);
+                m_pppTiles[i][j] = temp;
+                temp = 0;
+            }
         }
     }
 }
@@ -75,19 +145,53 @@ void cTileLevel::Render(CORE::cGame* game, float delta, GFX::G2D::cSpriteBatch& 
     for (i=left; i<=right; ++i) {
         for (j=top; j<=bottom; ++j) {
             m_pppTiles[i][j]->Render(game, delta, batch);
+
             ++count;
         }
     }
 }
 
-cTile& cTileLevel::GetTileClosestToPos(const Vec2f& p)
+vector<cTile*> cTileLevel::GetCollidedTiles(const cRectf& r)
 {
-    int x = static_cast<float>(p.x)/TILEWIDTH;
-    int y = static_cast<float>(p.y)/TILEWIDTH;
+    const int left = static_cast<int>(r.Left())/TILEWIDTH;
+    const int right = static_cast<int>(r.Right())/TILEWIDTH;
+    const int top = static_cast<int>(r.Top())/TILEWIDTH;
+    const int bottom = static_cast<int>(r.Bottom())/TILEWIDTH;
+    vector<cTile*> colltiles;
 
-    if (x<m_xTiles&&y<m_yTiles) {
-        cout << "Out of bounds m_pppTiles\n";
-        assert(false); // T|hrow?
+    if (!IsWithinRangeXY(left, top)||!IsWithinRangeXY(right, bottom)) {
+        return colltiles;
     }
-    return *m_pppTiles[x][y];
+
+    int i,j;
+    for (i=left; i<=right; ++i) {
+        for (j=top; j<=bottom; ++j) {
+            if (m_pppTiles[i][j]->IsCollidable()) {
+                colltiles.push_back(m_pppTiles[i][j]);
+            }
+
+        }
+    }
+}
+
+cTile* cTileLevel::GetTileClosestToPos(const Vec2f& p, int& x, int& y)
+{
+    x = static_cast<float>(p.x)/TILEWIDTH;
+    y = static_cast<float>(p.y)/TILEWIDTH;
+
+    return GetTileXY(x, y);
+}
+
+cTile* cTileLevel::GetTileXY(int x, int y)
+{
+    if (!IsWithinRangeXY(x, y)) {
+        x=y=0;
+        return 0;
+    }
+    return m_pppTiles[x][y];
+}
+
+bool cTileLevel::IsWithinRangeXY(int x, int y)
+{
+    return !(x>=m_xTiles||x<0||y>=m_yTiles||y<0);
 }
