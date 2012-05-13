@@ -154,6 +154,7 @@ void cMainGameState::Render(CORE::cGame* game, float percent_tick)
 
     BuildLightMask(game, percent_tick);
 
+    //camera stuff - find offset and move it there
     Vec2f diff = m_Player->GetPos() - m_Camera->GetPos();
 
     //offsets
@@ -163,8 +164,8 @@ void cMainGameState::Render(CORE::cGame* game, float percent_tick)
     glLoadIdentity();
     //m_Camera->LoadIdentity();
     //m_Camera->Translatef(diff.x, diff.y);
-    m_Camera->TranslateTof(diff.x, diff.y);
-    glTranslatef(-diff.x, -diff.y, 0);
+    m_Camera->TranslateTof(diff.x, diff.y); //for culling
+    glTranslatef(-diff.x, -diff.y, 0);      //for actual rendering
 
 
     RenderMain(game, percent_tick);
