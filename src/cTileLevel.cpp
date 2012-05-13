@@ -1,4 +1,13 @@
 #include "cTileLevel.hpp"
+#include "GFX_cImage.hpp"
+#include "GFX_TextureUtilities.hpp"
+
+enum cTileLevel::e_TileType : unsigned int
+{
+    NOTHING       = 0X00000000,
+    DIGGABLE_SOIL = 0x3a2e2e00,
+    STONE_WALL    = 0xffffff00
+}
 
 cTileLevel::cTileLevel(int xTiles, int yTiles)
 : m_pppTiles(0)
@@ -6,6 +15,38 @@ cTileLevel::cTileLevel(int xTiles, int yTiles)
 , m_yTiles(yTiles)
 {
     //ctor
+}
+
+cTileLevel::cTileLevel(string levelName)
+: m_pppTiles(0)
+{
+    GFX::cImage lvl(levelName);
+
+    int h = lvl->GetHeight();
+    int w = lvl->GetWidth();
+
+    m_xTiles = w;
+    m_yTiles = h;
+
+    for (int y = 0; y < h; y++)
+    {
+        for (int x = 0; x < w; x++)
+        {
+            unsigned int c = GFX::GetColourInHex(lvl->GetPixel(x, y));
+            switch (c)
+            {
+            case NOTHING:
+                break;
+            case DIGGABLE_SOIL:
+                break;
+            case STONE_WALL:
+                break;
+            default:  //assume nothing
+                break;
+            }
+
+        }
+    }
 }
 
 cTileLevel::~cTileLevel()
@@ -53,7 +94,6 @@ void cTileLevel::Init()
 
         }
     }
-
 }
 void cTileLevel::Update(CORE::cGame* game, float delta, cMainGameState* state)
 {

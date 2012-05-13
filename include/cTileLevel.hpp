@@ -1,6 +1,8 @@
 #ifndef CTILELEVEL_H
 #define CTILELEVEL_H
 
+#include <string>
+
 #include "global_inc.hpp"
 #include "cTile.hpp"
 
@@ -21,6 +23,7 @@ class cTileLevel
 {
     public:
         cTileLevel(int xTiles, int yTiles);
+        cTileLevel(string levelName);
         virtual ~cTileLevel();
         void Init();
 
@@ -34,7 +37,8 @@ class cTileLevel
     private:
         cTile*** m_pppTiles; // Yeah this is sooo smart >_>
         int m_xTiles, m_yTiles;
-        bool m_IsDrilled;
+        bool m_IsDrilled; //why here?
+        enum e_TileType : unsigned int;
 
 };
 
