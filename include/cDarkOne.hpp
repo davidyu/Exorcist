@@ -25,6 +25,7 @@ class cDarkOne : public cEntity
         void Kill();
 
         void HandleInput(CORE::cGame* game, float delta);
+        void HandleJoy(CORE::cGame* game, float delta);
 
         bool IsPlayerControlled()
         { return m_IsPlayerControlled; }
