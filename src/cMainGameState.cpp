@@ -105,8 +105,9 @@ bool cMainGameState::OnEnter(CORE::cGame* game)
 
     for (i=0; i<5; ++i) {
         cEntity::EntityList.push_back(new cDarkOne(Vec2f(RandFloat(0.0f, 400.0f), RandFloat(0.0f, 400.0f))
-                                                 , cRectf(14.0, 0.0f, 36, 64)));
+                                                 , cRectf(14.0, 0.0f, 36, 64), *m_pLevel));
     }
+    dynamic_cast<cDarkOne*>(cEntity::EntityList[4])->SetPlayerControl(true);
 
 
     return true;
@@ -120,7 +121,7 @@ bool cMainGameState::OnExit(CORE::cGame* game)
     DELETESINGLE(m_pAnimStaticOverlay);
 
     int i;
-    for (i=0;i<cEntity::EntityList.size(); ++i) {
+    for (i=0; i<cEntity::EntityList.size(); ++i) {
         DELETESINGLE(cEntity::EntityList[i]);
     }
     cEntity::EntityList.clear();
@@ -145,7 +146,6 @@ void cMainGameState::Update(CORE::cGame* game, float delta)
     }
 }
 
-float posx = 0.0f;
 bool b = true;
 void cMainGameState::Render(CORE::cGame* game, float percent_tick)
 {
@@ -174,9 +174,12 @@ void cMainGameState::Render(CORE::cGame* game, float percent_tick)
     if (statetime>10000000.0f) {
         statetime = 0.0f;
     }
-    ImmediateRenderTexturePos2Dim2(m_pAnimStaticOverlay->GetKeyFrame(statetime, true), posx,100,700,700);
+//    ImmediateRenderTexturePos2Dim2(m_pAnimStaticOverlay->GetKeyFrame(statetime, true), 0.0f,100,700,700);
     if (b)RenderLightMask(game, percent_tick);
 
+    for (int i=0; i<cEntity::EntityList.size(); ++i) {
+        cEntity::EntityList[i]->Render(game, percent_tick, this);
+    }
 
     const float e = expf(-35.08e-3f*percent_tick);
     glColor4f(1.0f, 1.0f, 1.0f, e);
@@ -219,10 +222,7 @@ void cMainGameState::RenderMain(CORE::cGame* game, float percent_tick)
     //cout << r.Left() << "," << r.Right() << endl;
     m_pLevel->Render(game, percent_tick, m_batch, r);
 
-    int i;
-    for (i=0; i<cEntity::EntityList.size(); ++i) {
-        cEntity::EntityList[i]->Render(game, percent_tick, this);
-    }
+    cEntity::EntityList[0]->Render(game, percent_tick, this);
 
     /* End Main Drawing Procedure */
 
@@ -244,7 +244,7 @@ void cMainGameState::RenderLightMask(CORE::cGame* game, float percent_tick)
     glBlendFunc(GL_DST_COLOR,GL_SRC_COLOR); // 2X Multiplicative
 ////    glBlendFunc(GL_ZERO, GL_SRC_COLOR); // Multiplicative
 //    glBlendFunc(GL_ONE, GL_ONE); // Additive -> Wrong for Particle.png
-//    ImmediateRenderTexturePos2Dim2(texs[1], posx, -300.0f, 1000.0f, 1000.0f);
+
     RenderFullViewportTexture(*m_pLightTex, WINDOW_WIDTH, WINDOW_HEIGHT);
     glBlendFunc(GL_SRC_ALPHA,
 			GL_ONE_MINUS_SRC_ALPHA);
@@ -277,7 +277,6 @@ void cMainGameState::HandleInput(CORE::cGame* game)
 
     if (input.GetKeyState(SDLK_ESCAPE)) game->EndGame();
 //    if (input.GetKeyState(SDLK_RIGHT)) {posx += 1.0f; }
-    if (y<-0.4f) { posx -= 1.0f; }
     if (input.OnMouseButtonUp(SDL_BUTTON_LEFT)) { b=!b;}
     if (input.OnKeyDown(SDLK_b)) {
         STATE::cGameTransition* trans = game->transition_factory.CreateObject("transSquareSpin");

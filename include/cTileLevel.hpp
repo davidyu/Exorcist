@@ -31,7 +31,7 @@ class cTileLevel
         void Render(CORE::cGame* game, float delta, GFX::G2D::cSpriteBatch& batch, cRectf* renderRect);
 
         cTile* GetTileXY(int x, int y);
-        cTile* GetTileClosestToPos(const Vec2f& p, int& x, int& y);
+        void GetTilePosClosestToPos(const Vec2f& p, int& x, int& y) const;
         vector<cTile*> GetCollidedTiles(const cRectf& r);
         bool IsWithinRangeXY(int x, int y);
     private:

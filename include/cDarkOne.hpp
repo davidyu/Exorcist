@@ -3,13 +3,16 @@
 
 #include "cEntity.hpp"
 #include "global_inc.hpp"
+#include "cTileLevel.hpp"
+
+#define WALKSPEED 0.02f
 
 class cDarkOne : public cEntity
 {
     public:
-        enum { IDLING, WANDERING, BLINKING, SMILING };
+        enum { IDLING, WANDERING, BLINKING, SMILING, DYING };
 
-        cDarkOne(const Vec2f& pos, const cRectf& bbox);
+        cDarkOne(const Vec2f& pos, const cRectf& bbox, const cTileLevel& level);
         virtual ~cDarkOne();
 
         void Update(CORE::cGame* game, float delta, cMainGameState* state);
@@ -19,6 +22,11 @@ class cDarkOne : public cEntity
         void DetermineDirection();
         void GetNextDestination();
         void Walk(float delta);
+
+        void HandleInput(CORE::cGame* game, float delta);
+
+        void SetPlayerControl(bool b)
+        { m_IsPlayerControlled = b; }
     private:
         int m_State;
         float m_NextBehaviorChange;
@@ -28,6 +36,7 @@ class cDarkOne : public cEntity
         int m_Dir;
 
         vector<Vec2f> m_Destinations;
+        int m_DestIndex;
 };
 
 #endif // CDARKONE_H

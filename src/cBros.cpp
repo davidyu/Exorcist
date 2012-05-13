@@ -16,7 +16,7 @@ cBros::cBros()
 , m_State(STILL)
 {
     //SetAnimFPS(2);
-    m_Anims.SetTicksPerFrame(300.0f);
+    m_Anims.SetTicksPerFrame(100.0f);
     m_Anims.PushAnimation(cAnimation(30.0f,
                          cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("sheet"), 4, 0, 0, 64, 64)));
     m_Anims.PushAnimation(cAnimation(30.0f,
@@ -52,8 +52,6 @@ void cBros::TryMove(CORE::cGame* game, float delta, cMainGameState* state)
 {
     int x, y;
     cTileLevel* level = state->GetLevel();
-    cTile* tile = level->GetTileClosestToPos(m_Pos, x, y);
-    cTile* collideTile = 0;
 
     switch (m_Direction) {
         case 0: // NORTH
