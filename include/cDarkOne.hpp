@@ -28,6 +28,8 @@ class cDarkOne : public cEntity
         void HandleJoy(CORE::cGame* game, float delta);
 
         bool IsPlayerControlled()
+
+
         { return m_IsPlayerControlled; }
         void SetPlayerControl(bool b)
         { m_IsPlayerControlled = b; }

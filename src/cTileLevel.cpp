@@ -4,6 +4,7 @@
 #include "cEntity.hpp"
 #include "cDoor.hpp"
 #include "cBros.hpp"
+#include "cDarkOne.hpp"
 #include "cMainGameState.hpp"
 
 enum cTileLevel::e_TileType : unsigned int
@@ -17,7 +18,8 @@ enum cTileLevel::e_EntityType : unsigned int
 {
     DOOR         = (SDL_BYTEORDER == SDL_BIG_ENDIAN) ? 0xfff7f7f7 : 0xff7f7f7f,
     DOOR_PARTNER = (SDL_BYTEORDER == SDL_BIG_ENDIAN) ? 0xff3c3c3c : 0xffc3c3c3,
-    PLAYER       = (SDL_BYTEORDER == SDL_BIG_ENDIAN) ? 0xffffc90e : 0xff0ec9ff
+    PLAYER       = (SDL_BYTEORDER == SDL_BIG_ENDIAN) ? 0xffffc90e : 0xff0ec9ff,
+    DARKONE      = (SDL_BYTEORDER == SDL_BIG_ENDIAN) ? 0xffffff00 : 0xff00ffff
 };
 
 cTileLevel::cTileLevel(string levelName)
@@ -66,12 +68,14 @@ void cTileLevel::Init(cMainGameState* state)
                     {
                         d = new cDoor(i*TILEWIDTH, j*TILEWIDTH, cDoor::e_Direction::NORTH, cDoor::e_Type::ENTRANCE);
                         state->GetPlayer()->SetPos(i*TILEWIDTH, (j+1)*TILEWIDTH);
+                        state->SetEntrance(d);
                     }
 
                     else
+                    {
                         d = new cDoor(i*TILEWIDTH, j*TILEWIDTH, cDoor::e_Direction::NORTH, cDoor::e_Type::EXIT);
-
-                    state->GetEntities().EntityList.push_back(d);
+                        state->SetExit(d);
+                    }
                 }
                 else if (i-1 > 0 && m_LevelMap->GetPixel(i-1,j) == e_EntityType::DOOR_PARTNER)
                 {
@@ -79,11 +83,14 @@ void cTileLevel::Init(cMainGameState* state)
                     {
                         d = new cDoor(i*TILEWIDTH, j*TILEWIDTH, cDoor::e_Direction::SOUTH, cDoor::e_Type::ENTRANCE);
                         state->GetPlayer()->SetPos(i*TILEWIDTH, (j-1)*TILEWIDTH);
+                        state->SetEntrance(d);
                     }
                     else
+                    {
                         d = new cDoor(i*TILEWIDTH, j*TILEWIDTH, cDoor::e_Direction::SOUTH, cDoor::e_Type::EXIT);
+                        state->SetExit(d);
+                    }
 
-                    state->GetEntities().EntityList.push_back(d);
                 }
                 else if (j+1 < m_yTiles && m_LevelMap->GetPixel(i,j+1) == e_EntityType::DOOR_PARTNER)
                 {
@@ -91,13 +98,14 @@ void cTileLevel::Init(cMainGameState* state)
                     {
                         d = new cDoor(i*TILEWIDTH, j*TILEWIDTH, cDoor::e_Direction::EAST, cDoor::e_Type::ENTRANCE);
                         state->GetPlayer()->SetPos((i-1)*TILEWIDTH, j*TILEWIDTH);
+                        state->SetEntrance(d);
                     }
                     else
                     {
                         d = new cDoor(i*TILEWIDTH, j*TILEWIDTH, cDoor::e_Direction::EAST, cDoor::e_Type::EXIT);
+                        state->SetExit(d);
                     }
 
-                    state->GetEntities().EntityList.push_back(d);
                 }
                 else if (j-1 > 0 && m_LevelMap->GetPixel(i,j-1) == e_EntityType::DOOR_PARTNER)
                 {
@@ -105,14 +113,19 @@ void cTileLevel::Init(cMainGameState* state)
                     {
                         d = new cDoor(i*TILEWIDTH, j*TILEWIDTH, cDoor::e_Direction::WEST, cDoor::e_Type::ENTRANCE);
                         state->GetPlayer()->SetPos((i+1)*TILEWIDTH, j*TILEWIDTH);
+                        state->SetEntrance(d);
                     }
                     else
                     {
                         d = new cDoor(i*TILEWIDTH, j*TILEWIDTH, cDoor::e_Direction::WEST, cDoor::e_Type::EXIT);
+                        state->SetExit(d);
                     }
-                    state->GetEntities().EntityList.push_back(d);
                 }
 
+                break;
+            case e_EntityType::DARKONE:
+                state->GetEntities().EntityList.push_back(new cDarkOne(Vec2f(i*TILEWIDTH, j*TILEWIDTH)
+                                                          , cRectf(14.0, 0.0f, 36, 64), *state->GetLevel()));
                 break;
             }
 
