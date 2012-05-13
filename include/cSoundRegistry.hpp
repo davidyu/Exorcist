@@ -12,20 +12,31 @@ class cSoundRegistry
         drill->volume = 50;
 
         killdig = Mix_LoadWAV("sound/digdeath.wav");
-        drill->volume = 50;
+        killdig->volume = 50;
+
+        flare = Mix_LoadWAV("sound/flare.wav");
+        flare->volume = 50;
+
+        killit = Mix_LoadWAV("sound/itdeath.wav");
+        killit->volume = 50;
+
+        stat = Mix_LoadWAV("sound/static.wav");
+        stat->volume = 8;
 
     }
     static void Destroy()
     {
         Mix_FreeChunk( drill );
         Mix_FreeChunk( killdig );
-        Mix_FreeChunk( swim );
-        Mix_FreeChunk( gameover );
+        Mix_FreeChunk( flare );
+        Mix_FreeChunk( killit );
+        Mix_FreeChunk( stat );
     }
     static Mix_Chunk* drill;
     static Mix_Chunk* killdig;
-    static Mix_Chunk* swim;
-    static Mix_Chunk* gameover;
+    static Mix_Chunk* flare;
+    static Mix_Chunk* killit;
+    static Mix_Chunk* stat;
 };
 
 #endif // CSOUNDREGISTRY_H
