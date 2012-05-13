@@ -4,6 +4,8 @@
 #include "global_inc.hpp"
 #include "cEntity.hpp"
 
+
+
 namespace CORE
 {
     class cGame;
@@ -25,11 +27,7 @@ public:
 
     void Flare(CORE::cGame* game, float delta, cMainGameState* state);
     cRectf GetFlareBox() { return cRectf::GetShiftedRect(m_FlareBox, m_Pos); }
-    void Kill() {
-        if (m_State==DYING) return;
-        m_State = DYING;
-        m_Anims.ResetStatetime();
-    }
+    void Kill();
 
 
 private:

@@ -119,6 +119,8 @@ class cMainGameState : public STATE::iGameState
         int m_Win;
         float m_Wintime;
         bool m_Quit;
+        bool m_IsStatic;
+        float m_LightSwitch;
 
 };
 

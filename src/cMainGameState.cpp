@@ -18,6 +18,7 @@
 #include "cTileLevel.hpp"
 #include "cDarkOne.hpp"
 #include "cDoor.hpp"
+#include "cSoundRegistry.hpp"
 
 #define WINDOW_WIDTH game->GetSDLState().window_w
 #define WINDOW_HEIGHT game->GetSDLState().window_h
@@ -64,6 +65,8 @@ cMainGameState::cMainGameState()
 , m_Player(0)
 , m_Entrance(0)
 , m_Exit(0)
+, m_IsStatic(false)
+, m_LightSwitch(0.0f)
  {}
 
 cMainGameState::~cMainGameState() {}
@@ -179,7 +182,7 @@ void cMainGameState::Update(CORE::cGame* game, float delta)
     } else if (m_Win==2) {
         m_Wintime+=delta;
     }
-    if (m_Wintime>= 2.0f) {
+    if (m_Wintime>= 2000.0f) {
         if (m_Win==1) {
             IncrementLevelIndex();
         }
@@ -203,6 +206,7 @@ void cMainGameState::Update(CORE::cGame* game, float delta)
         //prev level!
     }
 
+    m_IsStatic = false;
     m_Entities.EntityList[0]->Update(game, delta, this);
 
     if (DARKOFFSET == m_Entities.EntityList.size()) //no dark ones
@@ -215,6 +219,10 @@ void cMainGameState::Update(CORE::cGame* game, float delta)
          && m_Entities.EntityList[i]->GetBBox().IsCollidedRect(m_Entities.EntityList[0]->GetBBox())) {
             dynamic_cast<cBros*>(m_Entities.EntityList[0])->Kill();
             SetWinner(2);
+        }
+        if (m_Entities.EntityList[i]->GetBBox().IsCollidedRect(dynamic_cast<cBros*>(m_Entities.EntityList[0])->GetFlareBox())) {
+            m_IsStatic = true;
+            Mix_PlayChannel(-1, cSoundRegistry::stat, 0);
         }
     }
 }
@@ -248,7 +256,10 @@ void cMainGameState::Render(CORE::cGame* game, float percent_tick)
     if (statetime>10000000.0f) {
         statetime = 0.0f;
     }
-    ImmediateRenderTexturePos2Dim2(m_pAnimStaticOverlay->GetKeyFrame(statetime, true), 0.0f,100,700,700);
+    if (m_IsStatic) {
+        ImmediateRenderTexturePos2Dim2(m_pAnimStaticOverlay->GetKeyFrame(statetime, true)
+                                 , m_Camera->GetPos().x, m_Camera->GetPos().y, WINDOW_WIDTH,WINDOW_WIDTH);
+    }
     RenderLightMask(game, percent_tick);
 
     for (int i=0; i<m_Entities.EntityList.size(); ++i) {
@@ -258,7 +269,7 @@ void cMainGameState::Render(CORE::cGame* game, float percent_tick)
     if (!m_HasFlared) {
         Flare(game, percent_tick);
     }
-    const float e = expf(-35.08e-3f*percent_tick);
+    const float e = expf(-11.08e-3f*percent_tick);
     glColor4f(1.0f, 1.0f, 1.0f, e);
     RenderMotionBlur(game, percent_tick);
 
@@ -338,9 +349,12 @@ void cMainGameState::BuildLightMask(CORE::cGame* game, float percent_tick)
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glColor4f(1.0f,1.0f,1.0f,1.0f);
 
-    ImmediateRenderTexturePos2Dim2(texs[1], DIGGER->GetPos().x+32.0f-200.0f, DIGGER->GetPos().y+0.0f-200.0f, 400.0f, 400.0f);
-
-    glBindTexture(GL_TEXTURE_2D, m_pLightTex->GetID());
+    m_LightSwitch += percent_tick;
+    if (m_LightSwitch>10) {
+        ImmediateRenderTexturePos2Dim2(texs[1], DIGGER->GetPos().x+32.0f-200.0f, DIGGER->GetPos().y+0.0f-200.0f, 400.0f, 400.0f);
+        m_LightSwitch=0.0f;
+    }
+            glBindTexture(GL_TEXTURE_2D, m_pLightTex->GetID());
     CopyBackbufferToTexture(*m_pLightTex, WINDOW_WIDTH, WINDOW_HEIGHT);
 }
 
