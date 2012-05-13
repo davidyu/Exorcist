@@ -17,11 +17,13 @@
 
 #include "cTileLevel.hpp"
 #include "cDarkOne.hpp"
+#include "cDoor.hpp"
 
 #define WINDOW_WIDTH game->GetSDLState().window_w
 #define WINDOW_HEIGHT game->GetSDLState().window_h
 
-#define DARKOFFSET 2
+int DARKOFFSET = 2;
+int DOOROFFSET = 1;
 
 //using namespace std;
 using namespace GFX;
@@ -90,14 +92,15 @@ bool cMainGameState::OnEnter(CORE::cGame* game)
          CreateMotionBlurTexture(*m_pLightTex, 256, 256, 0);
     }
 
-    //m_pLevel = new cTileLevel(100, 100);
-    //m_pLevel->Init();
 
-    //note going to override Init
+    m_Player = new cBros;
+    cEntity::EntityList.push_back(m_Player); //push player before push door
+
+    DOOROFFSET = 1; //just in case!!!
     m_Levels.push_back(cTileLevel("art/level_1.png"));
     m_Levels.push_back(cTileLevel("art/level_2.png"));
 
-    m_Levels[m_LevelIndex].Init();
+    m_Levels[m_LevelIndex].Init(this);
 
 
 
@@ -109,14 +112,15 @@ bool cMainGameState::OnEnter(CORE::cGame* game)
 
     m_pAnimStaticOverlay = new cAnimation(50.0f, cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("static"), 4, 0, 0, 512, 512));
 
-    m_Player = new cBros;
-    cEntity::EntityList.push_back(m_Player);
+    cout << cEntity::EntityList.size() << endl;
+    DARKOFFSET = cEntity::EntityList.size(); //reset because we just added doors!
+    m_P2Index = DARKOFFSET;
 
     for (i=0; i<5; ++i) {
         cEntity::EntityList.push_back(new cDarkOne(Vec2f(RandFloat(0.0f, 400.0f), RandFloat(0.0f, 400.0f))
                                                  , cRectf(14.0, 0.0f, 36, 64), m_Levels[m_LevelIndex]));
     }
-    dynamic_cast<cDarkOne*>(cEntity::EntityList[4])->SetPlayerControl(true);
+    dynamic_cast<cDarkOne*>(cEntity::EntityList[cEntity::EntityList.size()-1])->SetPlayerControl(true);
 
 
     return true;
@@ -148,6 +152,22 @@ void cMainGameState::Update(CORE::cGame* game, float delta)
     m_Levels[m_LevelIndex].Update(game, delta, this);
 
     cEntity::EntityList[0]->Update(game, delta, this);
+
+    for (int i=DOOROFFSET; i < DARKOFFSET; ++i)
+    {
+        cEntity::EntityList[i]->Update(game, delta, this);
+        if (cEntity::EntityList[i]->GetBBox().IsCollidedRect(cEntity::EntityList[0]->GetBBox())) {
+            if (dynamic_cast<cDoor*>(cEntity::EntityList[i])->IsExit())
+            {
+                //next level!
+            }
+            else if (dynamic_cast<cDoor*>(cEntity::EntityList[i])->IsEntrance())
+            {
+                //prev level!
+            }
+        }
+    }
+
     for (int i=DARKOFFSET; i<cEntity::EntityList.size(); ++i) {
         cEntity::EntityList[i]->Update(game, delta, this);
         if (dynamic_cast<cDarkOne*>(cEntity::EntityList[i])->IsPlayerControlled()
@@ -204,7 +224,6 @@ void cMainGameState::Render(CORE::cGame* game, float percent_tick)
     glDisable(GL_BLEND);
     RenderMotionBlur(game, percent_tick);
 }
-
 
 
 void cMainGameState::RenderMain(CORE::cGame* game, float percent_tick)

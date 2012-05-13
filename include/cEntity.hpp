@@ -45,7 +45,8 @@ public:
     }
 
     void SetAnimFPS(int afps);
-
+    void SetPos(int x, int y)
+    { m_Pos = Vec2f(x, y); }
     Vec2f&  GetPos()
     { return m_Pos;  }
     Vec2f&  GetVel()

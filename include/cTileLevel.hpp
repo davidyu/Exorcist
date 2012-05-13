@@ -25,7 +25,7 @@ class cTileLevel
         cTileLevel(int xTiles, int yTiles);
         cTileLevel(string levelName);
         virtual ~cTileLevel();
-        void Init();
+        void Init(cMainGameState* state);
 
         void Update(CORE::cGame* game, float delta, cMainGameState* state);
         void Render(CORE::cGame* game, float delta, GFX::G2D::cSpriteBatch& batch, cRectf* renderRect);
@@ -39,6 +39,7 @@ class cTileLevel
         int m_xTiles, m_yTiles;
         bool m_IsDrilled; //why here?
         enum e_TileType : unsigned int;
+        enum e_EntityType : unsigned int;
 
         GFX::cImage* m_LevelMap;
 

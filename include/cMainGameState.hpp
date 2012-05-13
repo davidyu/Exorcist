@@ -52,6 +52,8 @@ class cMainGameState : public STATE::iGameState
 
         void SelectP2DarkOne();
 
+        cBros* GetPlayer() { return m_Player; }
+
         cTileLevel* GetLevel()
         { return &m_Levels[m_LevelIndex]; }
 

@@ -39,6 +39,9 @@ namespace GFX
         cTexture sheet = cTexture("art/spritesheet.png"); sheet.RegisterGL();
         RegisterTexture("sheet", sheet);
 
+        cTexture sheet_alt = cTexture("art/spritesheet_alt.png"); sheet_alt.RegisterGL();
+        RegisterTexture("sheet_alt", sheet_alt);
+
         cTexture sta = cTexture("art/static.png"); sta.RegisterGL();
         RegisterTexture("static", sta);
     }
