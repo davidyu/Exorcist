@@ -17,13 +17,16 @@ using namespace std;
 #include "STATE_iGameState.hpp"
 
 #include "cMainGameState.hpp"
+#include "cMenuState.hpp"
 #include "STATE_cTransSquareSpin.hpp"
+#include "GFX_cTextureRegistry.hpp"
 
 using namespace CORE;
 
 void RegisterStates()
 {
     CORE::cGame::state_factory.RegisterClass("play", cMainGameState::CreateInstance);
+    CORE::cGame::state_factory.RegisterClass("menu", cMenuState::CreateInstance);
 //
     cGame::transition_factory.RegisterClass("transFade", STATE::cTransSquareSpin::CreateInstance);
 }
@@ -31,15 +34,22 @@ void RegisterStates()
 // Main function must have these params for SDL... kinda lame for encapsulation here..
 int main(int argc, char* args[])
 {
-
-
     RegisterStates();
 
     iApplication* game = new cGame();
-    STATE::iGameState* state = cGame::state_factory.CreateObject("play");
+    cMenuState* state0 = dynamic_cast<cMenuState*>(cGame::state_factory.CreateObject("menu"));
+    cMenuState* state1 = dynamic_cast<cMenuState*>(cGame::state_factory.CreateObject("menu"));
+    cMenuState* state2 = dynamic_cast<cMenuState*>(cGame::state_factory.CreateObject("menu"));
+    STATE::iGameState* state3 = cGame::state_factory.CreateObject("play");
 
     if (game->Initialise()) {
-        dynamic_cast<cGame*>(game)->GetStateManager().PushState(state);
+        state0->SetTexture(&Art("title"));
+        state1->SetTexture(&Art("int1"));
+        state2->SetTexture(&Art("int2"));
+        dynamic_cast<cGame*>(game)->GetStateManager().PushState(state3);
+        dynamic_cast<cGame*>(game)->GetStateManager().PushState(state2);
+        dynamic_cast<cGame*>(game)->GetStateManager().PushState(state1);
+        dynamic_cast<cGame*>(game)->GetStateManager().PushState(state0);
         game->MainLoop();
         game->Terminate();
     }

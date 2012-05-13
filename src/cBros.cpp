@@ -160,7 +160,7 @@ void cBros::HandleInput(CORE::cGame* game, float delta, cMainGameState* state)
     || input.GetKeyState(SDLK_s)
     || input.GetKeyState(SDLK_a))) {
         m_State = STILL;
-        Mix_HaltChannel(m_DrillChannel);
+//        if (m_DrillChannel) Mix_HaltChannel(m_DrillChannel);
     }
 
 
