@@ -157,7 +157,7 @@ void cMainGameState::Update(CORE::cGame* game, float delta)
     } else if (m_Win==2) {
         m_Wintime+=delta;
     }
-    if (m_Wintime>= 2.0f) {
+    if (m_Wintime>= 2000.0f) {
         if (m_Win==1) {
             IncrementLevelIndex();
         }

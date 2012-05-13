@@ -11,16 +11,19 @@ class cSoundRegistry
         drill = Mix_LoadWAV("sound/drilling.wav");
         drill->volume = 50;
 
+        killdig = Mix_LoadWAV("sound/digdeath.wav");
+        drill->volume = 50;
+
     }
     static void Destroy()
     {
         Mix_FreeChunk( drill );
-        Mix_FreeChunk( beast );
+        Mix_FreeChunk( killdig );
         Mix_FreeChunk( swim );
         Mix_FreeChunk( gameover );
     }
     static Mix_Chunk* drill;
-    static Mix_Chunk* beast;
+    static Mix_Chunk* killdig;
     static Mix_Chunk* swim;
     static Mix_Chunk* gameover;
 };

@@ -126,7 +126,7 @@ void cBros::Render(CORE::cGame* game, float delta, cMainGameState* state)
                 break;
         }
     }
-    if (m_State==DYING) {
+    if (m_State==DYING&&m_Anims.GetStatetime()<1500.0f) {
         const cTextureWrapper& frame
          = m_Anims[m_Anims.GetCurrentIndex()].GetKeyFrame(m_Anims.GetStatetime(), false);
          ImmediateRenderTexturePos2Dim2(frame, GetPos().x, GetPos().y, 64, 64);
@@ -186,4 +186,12 @@ void cBros::HandleInput(CORE::cGame* game, float delta, cMainGameState* state)
         Flare(game, delta, state);
     }
 
+}
+
+void cBros::Kill()
+{
+    if (m_State==DYING) return;
+    m_DrillChannel = Mix_PlayChannel(1, cSoundRegistry::killdig, 0);
+    m_State = DYING;
+    m_Anims.ResetStatetime();
 }
