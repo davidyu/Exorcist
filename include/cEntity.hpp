@@ -7,8 +7,6 @@
 #include "GFX_G2D_cAnimationRegistry.hpp"
 #include "MATH_Primitives.hpp"
 
-#define DARKOFFSET 1
-
 namespace CORE
 {
     class cGame;
@@ -37,7 +35,8 @@ public:
     virtual void Collided(cEntity& e);
 
     void SetAnimFPS(int afps);
-
+    void SetPos(int x, int y)
+    { m_Pos = Vec2f(x, y); }
     Vec2f&  GetPos()
     { return m_Pos;  }
     Vec2f&  GetVel()

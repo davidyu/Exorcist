@@ -59,6 +59,8 @@ class cMainGameState : public STATE::iGameState
         { m_HasFlared=b; m_FlareTime=0.0f; }
         void SelectP2DarkOne();
 
+        cBros* GetPlayer() { return m_Player; }
+
         cTileLevel* GetLevel()
         { return m_pLevels[m_LevelIndex]; }
 

@@ -2,12 +2,22 @@
 #include "GFX_cImage.hpp"
 #include "GFX_TextureUtilities.hpp"
 #include "cEntity.hpp"
+#include "cDoor.hpp"
+#include "cBros.hpp"
+#include "cMainGameState.hpp"
 
 enum cTileLevel::e_TileType : unsigned int
 {
-    NOTHING       =  0xff000000,
-    DIGGABLE_SOIL =  SDL_BYTEORDER == SDL_BIG_ENDIAN ? 0xff3a2e2e : 0xff2e2e3a,
-    STONE_WALL    =  0xffffffff
+    CAVY        =  0xffffffff,
+    DIGGY       =  0xff000000,
+    STONE_BLOCK =  0xff00ff00
+};
+
+enum cTileLevel::e_EntityType : unsigned int
+{
+    DOOR         = (SDL_BYTEORDER == SDL_BIG_ENDIAN) ? 0xfff7f7f7 : 0xff7f7f7f,
+    DOOR_PARTNER = (SDL_BYTEORDER == SDL_BIG_ENDIAN) ? 0xff3c3c3c : 0xffc3c3c3,
+    PLAYER       = (SDL_BYTEORDER == SDL_BIG_ENDIAN) ? 0xffffc90e : 0xff0ec9ff
 };
 
 cTileLevel::cTileLevel(string levelName)
@@ -29,14 +39,14 @@ cTileLevel::~cTileLevel()
 }
 
 
-void cTileLevel::Init()
+void cTileLevel::Init(cMainGameState* state)
 {
     if (m_Init) Clear();
     int i, j;
     m_pppTiles = new cTile**[m_xTiles];
 
     for (i = 0; i < m_xTiles; ++i)
-        m_pppTiles[i] = new cTile*[m_yTiles]; //reverse: I store map in row-major order
+        m_pppTiles[i] = new cTile*[m_yTiles];
 
 
     for (i = 0; i < m_xTiles; i++)
@@ -44,19 +54,82 @@ void cTileLevel::Init()
         for (int j = 0; j < m_yTiles; j++)
         {
             unsigned int c = m_LevelMap->GetPixel(i, j);
-            unsigned int b = m_LevelMap->GetPixel(i, j);
+            //unsigned int b = m_LevelMap->GetPixel(i, j);
+            //foreground
+            switch(c)
+            {
+            case e_EntityType::DOOR:
+                cDoor* d;
+                if (i+1 < m_xTiles && m_LevelMap->GetPixel(i+1,j) == e_EntityType::DOOR_PARTNER)
+                {
+                    if (j+1 < m_yTiles && m_LevelMap->GetPixel(i,j+1) == e_EntityType::PLAYER)
+                    {
+                        d = new cDoor(i*TILEWIDTH, j*TILEWIDTH, cDoor::e_Direction::NORTH, cDoor::e_Type::ENTRANCE);
+                        state->GetPlayer()->SetPos(i*TILEWIDTH, (j+1)*TILEWIDTH);
+                    }
+
+                    else
+                        d = new cDoor(i*TILEWIDTH, j*TILEWIDTH, cDoor::e_Direction::NORTH, cDoor::e_Type::EXIT);
+
+                    state->GetEntities().EntityList.push_back(d);
+                }
+                else if (i-1 > 0 && m_LevelMap->GetPixel(i-1,j) == e_EntityType::DOOR_PARTNER)
+                {
+                    if (j-1 > 0 && m_LevelMap->GetPixel(i,j-1) == e_EntityType::PLAYER)
+                    {
+                        d = new cDoor(i*TILEWIDTH, j*TILEWIDTH, cDoor::e_Direction::SOUTH, cDoor::e_Type::ENTRANCE);
+                        state->GetPlayer()->SetPos(i*TILEWIDTH, (j-1)*TILEWIDTH);
+                    }
+                    else
+                        d = new cDoor(i*TILEWIDTH, j*TILEWIDTH, cDoor::e_Direction::SOUTH, cDoor::e_Type::EXIT);
+
+                    state->GetEntities().EntityList.push_back(d);
+                }
+                else if (j+1 < m_yTiles && m_LevelMap->GetPixel(i,j+1) == e_EntityType::DOOR_PARTNER)
+                {
+                    if (i-1 > 0 && m_LevelMap->GetPixel(i-1,j) == e_EntityType::PLAYER)
+                    {
+                        d = new cDoor(i*TILEWIDTH, j*TILEWIDTH, cDoor::e_Direction::EAST, cDoor::e_Type::ENTRANCE);
+                        state->GetPlayer()->SetPos((i-1)*TILEWIDTH, j*TILEWIDTH);
+                    }
+                    else
+                    {
+                        d = new cDoor(i*TILEWIDTH, j*TILEWIDTH, cDoor::e_Direction::EAST, cDoor::e_Type::EXIT);
+                    }
+
+                    state->GetEntities().EntityList.push_back(d);
+                }
+                else if (j-1 > 0 && m_LevelMap->GetPixel(i,j-1) == e_EntityType::DOOR_PARTNER)
+                {
+                    if (i+1 < m_xTiles && m_LevelMap->GetPixel(i+1,j) == e_EntityType::PLAYER)
+                    {
+                        d = new cDoor(i*TILEWIDTH, j*TILEWIDTH, cDoor::e_Direction::WEST, cDoor::e_Type::ENTRANCE);
+                        state->GetPlayer()->SetPos((i+1)*TILEWIDTH, j*TILEWIDTH);
+                    }
+                    else
+                    {
+                        d = new cDoor(i*TILEWIDTH, j*TILEWIDTH, cDoor::e_Direction::WEST, cDoor::e_Type::EXIT);
+                    }
+                    state->GetEntities().EntityList.push_back(d);
+                }
+
+                break;
+            }
+
+
+            //background
             switch (c)
             {
-            case 0xffffffff:
+            case e_TileType::CAVY:
                 m_pppTiles[i][j] = new cCavy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
                 break;
-            case 0xff000000:
+            case e_TileType::DIGGY:
                 m_pppTiles[i][j] = new cDiggy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
                 break;
-            case 0xff00ff00:
+            case e_TileType::STONE_BLOCK:
                 m_pppTiles[i][j] = new cBlock((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
                 break;
-            default:  //assume nothing
+            default:  //assume cavy
                 m_pppTiles[i][j] = new cCavy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
                 break;
             }

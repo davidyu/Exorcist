@@ -90,6 +90,7 @@ void cBros::TryMove(CORE::cGame* game, float delta, cMainGameState* state)
 void cBros::Flare(CORE::cGame* game, float delta, cMainGameState* state)
 {
     m_State = FLARING;
+    extern int DARKOFFSET;
     for (int i=DARKOFFSET; i<state->GetEntities().EntityList.size(); ++i) {
         if (state->GetEntities().EntityList[i]->GetBBox().IsCollidedRect(GetFlareBox())) {
             dynamic_cast<cDarkOne*>(state->GetEntities().EntityList[i])->Kill();

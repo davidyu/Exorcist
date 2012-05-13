@@ -25,7 +25,8 @@ class cTileLevel
         cTileLevel(int xTiles, int yTiles);
         cTileLevel(string levelName);
         virtual ~cTileLevel();
-        void Init();
+
+        void Init(cMainGameState* state);
         void Clear();
 
         void Update(CORE::cGame* game, float delta, cMainGameState* state);
@@ -40,6 +41,7 @@ class cTileLevel
         int m_xTiles, m_yTiles;
         bool m_IsDrilled; //why here?
         enum e_TileType : unsigned int;
+        enum e_EntityType : unsigned int;
 
         bool m_Init;
 
