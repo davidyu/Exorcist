@@ -26,6 +26,7 @@ cBros::cBros()
                          cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("sheet"), 4, 0, 192, 64, 64)));
 
     m_Pos.y = 200.0f;
+    m_BBox = cRectf(0.0f, 0.0f, 40.0f, 40.0f);
 }
 
 cBros::~cBros()
@@ -66,7 +67,11 @@ void cBros::TryMove(CORE::cGame* game, float delta, cMainGameState* state)
         case 3: // WEST
             m_Vel.x = -0.1f*delta;
             break;
+    }
 
+    vector<cTile*> col = level->GetCollidedTiles(GetBBoxSwept());
+    for (int i=0; i<col.size(); ++i) {
+        m_Pos += GetMinTranslationVectorRectRect(GetBBoxSwept(), col[i]->GetBBox());
     }
 }
 
@@ -97,24 +102,31 @@ void cBros::HandleInput(CORE::cGame* game, float delta)
 {
     CORE::Input& input = game->GetInput();
 
-    if (m_State!=DYING) m_State = STILL;
+    if (m_State!=DYING&&
+    !( input.GetKeyState(SDLK_UP)
+    || input.GetKeyState(SDLK_RIGHT)
+    || input.GetKeyState(SDLK_DOWN)
+    || input.GetKeyState(SDLK_LEFT))) {
+        m_State = STILL;
+    }
 
-    if (input.GetKeyState(SDLK_UP)) {
-        m_Direction = 0;
+
+    if (input.OnKeyDown(SDLK_UP)) {
+        m_Direction = NORTH;
         m_State = WALKING;
 
     }
-    if (input.GetKeyState(SDLK_RIGHT)) {
-        m_Direction = 1;
+    if (input.OnKeyDown(SDLK_RIGHT)) {
+        m_Direction = EAST;
         m_State = WALKING;
     }
-    if (input.GetKeyState(SDLK_DOWN)) {
-        m_Direction = 2;
+    if (input.OnKeyDown(SDLK_DOWN)) {
+        m_Direction = SOUTH;
         m_State = WALKING;
 
     }
-    if (input.GetKeyState(SDLK_LEFT)) {
-        m_Direction = 3;
+    if (input.OnKeyDown(SDLK_LEFT)) {
+        m_Direction = WEST;
         m_State = WALKING;
     }
 

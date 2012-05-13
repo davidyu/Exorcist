@@ -64,8 +64,8 @@
 		<Unit filename="..\Spice\include\GFX_cImage.hpp" />
 		<Unit filename="..\Spice\include\GFX_cTexture.hpp" />
 		<Unit filename="..\Spice\include\GFX_cTextureMesh.hpp" />
-		<Unit filename="..\Spice\include\GFX_cTextureRegistry.hpp" />
 		<Unit filename="..\Spice\include\GFX_cTextureWrapper.hpp" />
+		<Unit filename="..\Spice\include\MATH_Collision2D.hpp" />
 		<Unit filename="..\Spice\include\MATH_LinearAlgebra.hpp" />
 		<Unit filename="..\Spice\include\MATH_Math.hpp" />
 		<Unit filename="..\Spice\include\MATH_MathHelper.hpp" />
@@ -97,12 +97,14 @@
 		<Unit filename="..\Spice\src\GFX_cTexture.cpp" />
 		<Unit filename="..\Spice\src\GFX_cTextureMesh.cpp" />
 		<Unit filename="..\Spice\src\GFX_cTextureRegistry.cpp" />
+		<Unit filename="..\Spice\src\MATH_Collision2D.cpp" />
 		<Unit filename="..\Spice\src\MATH_Matrix4x4.cpp" />
 		<Unit filename="..\Spice\src\STATE_cGameStateManager.cpp" />
 		<Unit filename="..\Spice\src\STATE_cTransSquareSpin.cpp" />
 		<Unit filename="include\GFX_cTextureRegistry.hpp" />
 		<Unit filename="include\cBros.hpp" />
 		<Unit filename="include\cEntity.hpp" />
+		<Unit filename="include\cLevel.hpp" />
 		<Unit filename="include\cMainGameState.hpp" />
 		<Unit filename="include\cTile.hpp" />
 		<Unit filename="include\cTileLevel.hpp" />
@@ -112,6 +114,7 @@
 		<Unit filename="src\cEntity.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src\cLevel.cpp" />
 		<Unit filename="src\cMainGameState.cpp" />
 		<Unit filename="src\cTile.cpp" />
 		<Unit filename="src\cTileLevel.cpp" />

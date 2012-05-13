@@ -7,6 +7,8 @@
 #include "GFX_G2D_cAnimationRegistry.hpp"
 #include "MATH_Primitives.hpp"
 
+#define DIGGER cEntity::EntityList[0]
+
 namespace CORE
 {
     class cGame;
@@ -37,10 +39,21 @@ public:
 
     void SetAnimFPS(int afps);
 
-    Vec2f&  GetPos()  { return m_Pos;  }
-    Vec2f&  GetVel()  { return m_Vel;  }
-    Vec2f&  GetDim()  { return m_Dim;  }
-    cRectf& GetBBox() { return m_BBox; }
+    Vec2f&  GetPos()
+    { return m_Pos;  }
+    Vec2f&  GetVel()
+    { return m_Vel;  }
+    Vec2f&  GetDim()
+    { return m_Dim;  }
+    cRectf GetBBox()
+    { return cRectf::GetShiftedRect(m_BBox, m_Pos); }
+    cRectf GetBBoxSwept() {
+        cRectf temp = cRectf(minf(m_Pos.x+m_Vel.x, m_Pos.x)
+                           , minf(m_Pos.y+m_Vel.y, m_Pos.y)
+                           , maxf(m_BBox.Width()+m_Vel.x, m_BBox.Width())
+                           , maxf(m_BBox.Height()+m_Vel.y, m_BBox.Height()));
+        return temp;
+    }
 
 protected:
     Vec2f m_Pos;

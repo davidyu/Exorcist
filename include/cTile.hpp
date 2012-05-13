@@ -35,7 +35,7 @@ class cTile
         { return m_Life; }
         bool IsCollidable() const
         { return m_IsCollidable; }
-        cRectf GetBoundingBox() const
+        cRectf GetBBox() const
         { return cRectf::GetShiftedRect(m_BBox, m_Pos); }
     protected:
         Vec2f m_Pos;

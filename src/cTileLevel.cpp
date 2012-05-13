@@ -44,7 +44,13 @@ void cTileLevel::Init()
 
     for (i=0; i<m_xTiles; ++i) {
         for (j=0; j<m_yTiles; ++j) {
-            m_pppTiles[i][j] = new cTile((float)(i*40), (float)(j*40), true);
+            if (j>6) {
+                m_pppTiles[i][j] = new cTile((float)(i*40), (float)(j*40), true);
+            }
+            else {
+                m_pppTiles[i][j] = new cTile((float)(i*40), (float)(j*40), false);
+            }
+
         }
     }
 
@@ -80,6 +86,29 @@ void cTileLevel::Render(CORE::cGame* game, float delta, GFX::G2D::cSpriteBatch& 
     }
 }
 
+vector<cTile*> cTileLevel::GetCollidedTiles(const cRectf& r)
+{
+    const int left = static_cast<int>(r.Left())/TILEWIDTH;
+    const int right = static_cast<int>(r.Right())/TILEWIDTH;
+    const int top = static_cast<int>(r.Top())/TILEWIDTH;
+    const int bottom = static_cast<int>(r.Bottom())/TILEWIDTH;
+    vector<cTile*> colltiles;
+
+    if (!IsWithinRangeXY(left, top)||!IsWithinRangeXY(right, bottom)) {
+        return colltiles;
+    }
+
+    int i,j;
+    for (i=left; i<=right; ++i) {
+        for (j=top; j<=bottom; ++j) {
+            if (m_pppTiles[i][j]->IsCollidable()) {
+                colltiles.push_back(m_pppTiles[i][j]);
+            }
+
+        }
+    }
+}
+
 cTile* cTileLevel::GetTileClosestToPos(const Vec2f& p, int& x, int& y)
 {
     x = static_cast<float>(p.x)/TILEWIDTH;
@@ -90,9 +119,14 @@ cTile* cTileLevel::GetTileClosestToPos(const Vec2f& p, int& x, int& y)
 
 cTile* cTileLevel::GetTileXY(int x, int y)
 {
-    if (x>=m_xTiles||x<0||y>=m_yTiles||y<0) {
+    if (!IsWithinRangeXY(x, y)) {
         x=y=0;
         return 0;
     }
     return m_pppTiles[x][y];
+}
+
+bool cTileLevel::IsWithinRangeXY(int x, int y)
+{
+    return !(x>=m_xTiles||x<0||y>=m_yTiles||y<0);
 }

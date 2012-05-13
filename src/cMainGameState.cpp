@@ -256,7 +256,7 @@ void cMainGameState::BuildLightMask(CORE::cGame* game, float percent_tick)
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glColor4f(1.0f,1.0f,1.0f,1.0f);
 
-    ImmediateRenderTexturePos2Dim2(texs[1], posx, 100.0f, 400.0f, 400.0f);
+    ImmediateRenderTexturePos2Dim2(texs[1], DIGGER->GetPos().x+32.0f-200.0f, DIGGER->GetPos().y+0.0f-200.0f, 400.0f, 400.0f);
 
     glBindTexture(GL_TEXTURE_2D, m_pLightTex->GetID());
     CopyBackbufferToTexture(*m_pLightTex, WINDOW_WIDTH, WINDOW_HEIGHT);
