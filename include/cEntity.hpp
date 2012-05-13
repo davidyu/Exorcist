@@ -27,7 +27,7 @@ protected:
     bool                 m_AnimLooping;
 
 public:
-    enum {NORTH, EAST, SOUTH, WEST };
+    enum {NORTH, EAST, SOUTH, WEST, NONE };
 
     cEntity();
     cEntity(const Vec2f& pos, const cRectf& bbox);

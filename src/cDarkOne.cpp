@@ -35,7 +35,7 @@ cDarkOne::~cDarkOne()
     //dtor
 }
 
-#define TOL 3.0f
+#define TOL 10.0f
 
 void cDarkOne::Update(CORE::cGame* game, float delta, cMainGameState* state)
 {
@@ -60,43 +60,53 @@ void cDarkOne::Update(CORE::cGame* game, float delta, cMainGameState* state)
     m_Vel *= expf(-0.05*delta);
 }
 
+void cDarkOne::GetNextDestination()
+{
+    if (!m_Destinations.empty()) {
+        m_Destinations.pop_back();
+    }
+    m_Destinations.push_back(Vec2f(m_Pos)+Vec2f(RandFloat(-200.0f, 200.0f), RandFloat(-200.0f, 200.0f)));
+}
+
 void cDarkOne::DetermineDirection()
 {
     const float xDelta = m_Destinations[0].x-m_Pos.x;
     const float yDelta = m_Destinations[0].y-m_Pos.y;
 
-        if (m_TurnCooldown<300.0f) {
-            m_TurnCooldown = 300.0f;
-            m_DirPreference = RandInt(1,2);
+        if (m_TurnCooldown<0.0f) {
+            m_TurnCooldown = RandFloat(300.0f, 1500.0f);
+            m_DirPreference = RandInt(0,2);
         }
         if (fabs(xDelta)<TOL&&fabs(yDelta)<TOL) {
-            m_Destinations.pop_back();
-            m_Destinations.push_back(Vec2f(m_Pos)+Vec2f(RandFloat(100.0f, 400.0f), RandFloat(100.0f, 400.0f)));
+
+            GetNextDestination();
+        } else if (m_DirPreference==0) {
+            m_Dir = NONE;
         }
         else if (m_DirPreference==1) {
-            if (fabs(xDelta)<TOL) {
+            if (fabs(xDelta)>TOL) {
                 if (xDelta < 0) {
                     m_Dir = WEST;
                 } else {
                     m_Dir = EAST;
                 }
-            }
-            if (fabs(yDelta)<TOL) {
+            } else if (fabs(yDelta)>TOL) {
                 if (yDelta < 0) {
                     m_Dir = NORTH;
                 } else {
                     m_Dir = SOUTH;
                 }
+            } else {
+
             }
         } else {
-            if (fabs(yDelta)<TOL) {
+            if (fabs(yDelta)>TOL) {
                 if (yDelta < 0) {
                     m_Dir = NORTH;
                 } else {
                     m_Dir = SOUTH;
                 }
-            }
-            if (fabs(xDelta)<TOL) {
+            } else if (fabs(xDelta)>TOL) {
                 if (xDelta < 0) {
                     m_Dir = WEST;
                 } else {
@@ -110,16 +120,16 @@ void cDarkOne::Walk(float delta)
 {
     switch (m_Dir) {
         case 0: // NORTH
-            m_Vel.y = -0.1f*delta;
+            m_Vel.y = -0.01f*delta;
             break;
         case 1: // EAST
-            m_Vel.x = 0.1f*delta;
+            m_Vel.x = 0.01f*delta;
             break;
         case 2: // SOUTH
-            m_Vel.y = 0.1f*delta;
+            m_Vel.y = 0.01f*delta;
             break;
         case 3: // WEST
-            m_Vel.x = -0.1f*delta;
+            m_Vel.x = -0.01f*delta;
             break;
 
 
@@ -153,7 +163,7 @@ void cDarkOne::DetermineNewBehavior()
     m_State = WANDERING;
     switch (m_State) {
         case WANDERING:
-            m_Destinations.push_back(Vec2f(m_Pos)+Vec2f(RandFloat(100.0f, 400.0f), RandFloat(100.0f, 400.0f)));
+            GetNextDestination();
             m_NextBehaviorChange = RandFloat(3000.0f, 12000.0f);
             break;
         case BLINKING:

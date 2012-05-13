@@ -17,6 +17,7 @@ class cDarkOne : public cEntity
 
         void DetermineNewBehavior();
         void DetermineDirection();
+        void GetNextDestination();
         void Walk(float delta);
     private:
         int m_State;
