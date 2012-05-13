@@ -62,7 +62,6 @@
 		<Unit filename="..\Spice\include\GFX_TextureUtilities.hpp" />
 		<Unit filename="..\Spice\include\GFX_cCameraBase.hpp" />
 		<Unit filename="..\Spice\include\GFX_cImage.hpp" />
-		<Unit filename="..\Spice\include\GFX_cOrthoCamera.hpp" />
 		<Unit filename="..\Spice\include\GFX_cTexture.hpp" />
 		<Unit filename="..\Spice\include\GFX_cTextureMesh.hpp" />
 		<Unit filename="..\Spice\include\GFX_cTextureWrapper.hpp" />
@@ -103,12 +102,11 @@
 		<Unit filename="..\Spice\src\MATH_Matrix4x4.cpp" />
 		<Unit filename="..\Spice\src\STATE_cGameStateManager.cpp" />
 		<Unit filename="..\Spice\src\STATE_cTransSquareSpin.cpp" />
+		<Unit filename="..\Spice\src\demo_cPlayState.cpp" />
 		<Unit filename="include\GFX_cTextureRegistry.hpp" />
 		<Unit filename="include\cBros.hpp" />
 		<Unit filename="include\cDarkOne.hpp" />
-		<Unit filename="include\cDoor.hpp" />
 		<Unit filename="include\cEntity.hpp" />
-		<Unit filename="include\cEntityManager.hpp" />
 		<Unit filename="include\cLevel.hpp" />
 		<Unit filename="include\cMainGameState.hpp" />
 		<Unit filename="include\cSoundRegistry.hpp" />
@@ -119,7 +117,6 @@
 		<Unit filename="src\cBros.cpp" />
 		<Unit filename="src\cDarkOne.cpp" />
 		<Unit filename="src\cDoor.cpp" />
-		<Unit filename="src\cDoor.h" />
 		<Unit filename="src\cEntity.cpp">
 			<Option compilerVar="CC" />
 		</Unit>

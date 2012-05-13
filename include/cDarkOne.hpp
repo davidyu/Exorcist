@@ -5,7 +5,7 @@
 #include "global_inc.hpp"
 #include "cTileLevel.hpp"
 
-#define WALKSPEED 0.04f
+#define WALKSPEED 0.06f
 
 class cDarkOne : public cEntity
 {

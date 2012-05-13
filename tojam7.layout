@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="..\Spice\include\CORE_Input.hpp" open="0" top="0" tabpos="0">
-		<Cursor position="4070" topLine="94" />
+	<File name="..\Spice\include\CORE_Input.hpp" open="1" top="0" tabpos="8">
+		<Cursor position="3246" topLine="94" />
 	</File>
 	<File name="..\Spice\include\GFX_G2D_cAnimation.hpp" open="0" top="0" tabpos="0">
 		<Cursor position="1448" topLine="0" />
@@ -16,19 +16,8 @@
 	<File name="..\Spice\include\GFX_cImage.hpp" open="0" top="0" tabpos="0">
 		<Cursor position="846" topLine="9" />
 	</File>
-<<<<<<< HEAD
-	<File name="..\Spice\include\GFX_cCameraBase.hpp" open="0" top="0" tabpos="0">
-		<Cursor position="150" topLine="0" />
-	</File>
-	<File name="..\Spice\include\GFX_cImage.hpp" open="0" top="0" tabpos="4">
-		<Cursor position="146" topLine="9" />
-	</File>
-	<File name="..\Spice\include\GFX_cOrthoCamera.hpp" open="0" top="0" tabpos="0">
-		<Cursor position="695" topLine="0" />
-=======
 	<File name="..\Spice\include\GFX_cTextureWrapper.hpp" open="0" top="0" tabpos="0">
 		<Cursor position="3398" topLine="18" />
->>>>>>> 740edbe05484201ee298cc70eda5ff8e026f5d94
 	</File>
 	<File name="..\Spice\include\MATH_Collision2D.hpp" open="0" top="0" tabpos="0">
 		<Cursor position="147" topLine="0" />
@@ -36,22 +25,14 @@
 	<File name="..\Spice\include\MATH_Math.hpp" open="0" top="0" tabpos="0">
 		<Cursor position="160" topLine="0" />
 	</File>
-<<<<<<< HEAD
-	<File name="..\Spice\include\GFX_cTextureWrapper.hpp" open="0" top="0" tabpos="2">
-		<Cursor position="890" topLine="12" />
-	</File>
-	<File name="..\Spice\include\MATH_Primitives.hpp" open="0" top="0" tabpos="6">
-		<Cursor position="68" topLine="0" />
-=======
 	<File name="..\Spice\include\MATH_MathHelper.hpp" open="0" top="0" tabpos="0">
 		<Cursor position="607" topLine="0" />
 	</File>
 	<File name="..\Spice\include\MATH_Primitives.hpp" open="0" top="0" tabpos="4">
 		<Cursor position="1202" topLine="8" />
->>>>>>> 740edbe05484201ee298cc70eda5ff8e026f5d94
 	</File>
 	<File name="..\Spice\include\STATE_cTransSquareSpin.hpp" open="0" top="0" tabpos="6">
-		<Cursor position="509" topLine="9" />
+		<Cursor position="420" topLine="0" />
 	</File>
 	<File name="..\Spice\include\demo_cPlayState.hpp" open="0" top="0" tabpos="0">
 		<Cursor position="155" topLine="6" />
@@ -60,7 +41,7 @@
 		<Cursor position="393" topLine="3" />
 	</File>
 	<File name="..\Spice\src\CORE_Input.cpp" open="0" top="0" tabpos="3">
-		<Cursor position="4013" topLine="123" />
+		<Cursor position="363" topLine="0" />
 	</File>
 	<File name="..\Spice\src\CORE_cSDLState.cpp" open="0" top="0" tabpos="2">
 		<Cursor position="148" topLine="0" />
@@ -71,7 +52,7 @@
 	<File name="..\Spice\src\GFX_G2D_cAnimationRegistry.cpp" open="0" top="0" tabpos="5">
 		<Cursor position="443" topLine="20" />
 	</File>
-	<File name="..\Spice\src\GFX_G2D_cSpriteBatch.cpp" open="1" top="0" tabpos="3">
+	<File name="..\Spice\src\GFX_G2D_cSpriteBatch.cpp" open="0" top="0" tabpos="3">
 		<Cursor position="477" topLine="2" />
 	</File>
 	<File name="..\Spice\src\GFX_G2D_cTextureRegion.cpp" open="0" top="0" tabpos="0">
@@ -84,23 +65,10 @@
 		<Cursor position="167" topLine="6" />
 	</File>
 	<File name="..\Spice\src\GFX_cCameraBase.cpp" open="0" top="0" tabpos="0">
-<<<<<<< HEAD
-		<Cursor position="535" topLine="0" />
-	</File>
-	<File name="..\Spice\src\GFX_cImage.cpp" open="0" top="0" tabpos="5">
-		<Cursor position="608" topLine="7" />
-=======
 		<Cursor position="508" topLine="0" />
 	</File>
 	<File name="..\Spice\src\GFX_cImage.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="415" topLine="6" />
-	</File>
-	<File name="..\Spice\src\GFX_cOrthoCamera.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="348" topLine="0" />
->>>>>>> 740edbe05484201ee298cc70eda5ff8e026f5d94
-	</File>
-	<File name="..\Spice\src\GFX_cOrthoCamera.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="615" topLine="0" />
 	</File>
 	<File name="..\Spice\src\GFX_cTexture.cpp" open="0" top="0" tabpos="5">
 		<Cursor position="226" topLine="15" />
@@ -112,7 +80,7 @@
 		<Cursor position="163" topLine="0" />
 	</File>
 	<File name="..\Spice\src\MATH_Collision2D.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="1115" topLine="14" />
+		<Cursor position="743" topLine="11" />
 	</File>
 	<File name="..\Spice\src\STATE_cGameStateManager.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="2515" topLine="73" />
@@ -120,125 +88,58 @@
 	<File name="..\Spice\src\STATE_cTransSquareSpin.cpp" open="0" top="0" tabpos="5">
 		<Cursor position="1006" topLine="30" />
 	</File>
-	<File name="..\Spice\src\demo_cPlayState.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="426" topLine="81" />
-	</File>
-<<<<<<< HEAD
-	<File name="include\GFX_cTextureRegistry.hpp" open="0" top="0" tabpos="6">
-		<Cursor position="992" topLine="17" />
-	</File>
-	<File name="include\cBros.hpp" open="0" top="0" tabpos="3">
-		<Cursor position="532" topLine="0" />
-	</File>
-	<File name="include\cDarkOne.hpp" open="0" top="0" tabpos="0">
-		<Cursor position="885" topLine="8" />
-	</File>
-	<File name="include\cDoor.hpp" open="0" top="0" tabpos="0">
-		<Cursor position="146" topLine="0" />
-	</File>
-	<File name="include\cEntity.hpp" open="0" top="0" tabpos="3">
-		<Cursor position="502" topLine="0" />
-	</File>
-	<File name="include\cLevel.hpp" open="0" top="0" tabpos="0">
-		<Cursor position="80" topLine="0" />
-	</File>
-	<File name="include\cMainGameState.hpp" open="0" top="0" tabpos="2">
-		<Cursor position="1726" topLine="47" />
-	</File>
-	<File name="include\cTile.hpp" open="0" top="0" tabpos="0">
-		<Cursor position="1620" topLine="52" />
-	</File>
-	<File name="include\cTileLevel.hpp" open="0" top="0" tabpos="0">
-		<Cursor position="421" topLine="5" />
-	</File>
-	<File name="main.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="947" topLine="15" />
-=======
-	<File name="include\GFX_cTextureRegistry.hpp" open="1" top="0" tabpos="2">
+	<File name="include\GFX_cTextureRegistry.hpp" open="0" top="0" tabpos="2">
 		<Cursor position="1674" topLine="27" />
 	</File>
-	<File name="include\cBros.hpp" open="1" top="0" tabpos="6">
-		<Cursor position="727" topLine="15" />
+	<File name="include\cBros.hpp" open="0" top="0" tabpos="6">
+		<Cursor position="89" topLine="0" />
+	</File>
+	<File name="include\cDarkOne.hpp" open="1" top="0" tabpos="6">
+		<Cursor position="781" topLine="4" />
 	</File>
 	<File name="include\cEntity.hpp" open="0" top="0" tabpos="4">
 		<Cursor position="992" topLine="28" />
 	</File>
-	<File name="include\cEntityManager.hpp" open="0" top="0" tabpos="0">
-		<Cursor position="212" topLine="5" />
-	</File>
 	<File name="include\cLevel.hpp" open="0" top="0" tabpos="0">
 		<Cursor position="129" topLine="0" />
 	</File>
-	<File name="include\cMainGameState.hpp" open="0" top="0" tabpos="3">
-		<Cursor position="2267" topLine="35" />
+	<File name="include\cMainGameState.hpp" open="1" top="0" tabpos="1">
+		<Cursor position="2900" topLine="82" />
 	</File>
-	<File name="include\cMenuState.hpp" open="1" top="0" tabpos="3">
-		<Cursor position="1868" topLine="36" />
+	<File name="include\cSoundRegistry.hpp" open="1" top="0" tabpos="5">
+		<Cursor position="561" topLine="6" />
 	</File>
-	<File name="include\cSoundRegistry.hpp" open="1" top="0" tabpos="7">
-		<Cursor position="565" topLine="6" />
-	</File>
-	<File name="include\cTile.hpp" open="0" top="0" tabpos="0">
-		<Cursor position="720" topLine="25" />
+	<File name="include\cTile.hpp" open="1" top="0" tabpos="4">
+		<Cursor position="141" topLine="0" />
 	</File>
 	<File name="include\cTileLevel.hpp" open="0" top="0" tabpos="0">
 		<Cursor position="1116" topLine="28" />
 	</File>
-	<File name="main.cpp" open="1" top="0" tabpos="1">
+	<File name="main.cpp" open="0" top="0" tabpos="1">
 		<Cursor position="1607" topLine="31" />
->>>>>>> 740edbe05484201ee298cc70eda5ff8e026f5d94
 	</File>
 	<File name="src\CORE_cGame.cpp" open="0" top="0" tabpos="7">
-		<Cursor position="5459" topLine="190" />
+		<Cursor position="4234" topLine="121" />
 	</File>
-	<File name="src\cBros.cpp" open="1" top="0" tabpos="5">
-		<Cursor position="6155" topLine="171" />
+	<File name="src\cBros.cpp" open="0" top="0" tabpos="5">
+		<Cursor position="5727" topLine="172" />
 	</File>
-	<File name="src\cDarkOne.cpp" open="0" top="0" tabpos="2">
-		<Cursor position="7025" topLine="226" />
+	<File name="src\cDarkOne.cpp" open="1" top="1" tabpos="7">
+		<Cursor position="8871" topLine="298" />
 	</File>
 	<File name="src\cEntity.cpp" open="0" top="0" tabpos="6">
 		<Cursor position="24" topLine="0" />
 	</File>
-<<<<<<< HEAD
-	<File name="src\cBros.cpp" open="0" top="0" tabpos="2">
-		<Cursor position="3181" topLine="0" />
+	<File name="src\cMainGameState.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="6194" topLine="196" />
 	</File>
-	<File name="src\cDarkOne.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="2505" topLine="12" />
-	</File>
-	<File name="src\cDoor.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="261" topLine="0" />
-	</File>
-	<File name="src\cEntity.cpp" open="0" top="0" tabpos="1">
-		<Cursor position="107" topLine="0" />
-	</File>
-	<File name="src\cLevel.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="89" topLine="0" />
-	</File>
-	<File name="src\cMainGameState.cpp" open="1" top="1" tabpos="2">
-		<Cursor position="2529" topLine="89" />
-	</File>
-	<File name="src\cTile.cpp" open="0" top="0" tabpos="5">
-		<Cursor position="692" topLine="10" />
-	</File>
-	<File name="src\cTileLevel.cpp" open="0" top="0" tabpos="1">
-		<Cursor position="228" topLine="0" />
-=======
-	<File name="src\cEntityManager.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="140" topLine="0" />
-	</File>
-	<File name="src\cMainGameState.cpp" open="1" top="0" tabpos="4">
-		<Cursor position="4117" topLine="127" />
-	</File>
-	<File name="src\cSoundRegistry.cpp" open="1" top="0" tabpos="8">
-		<Cursor position="100" topLine="0" />
+	<File name="src\cSoundRegistry.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="208" topLine="0" />
 	</File>
 	<File name="src\cTile.cpp" open="0" top="0" tabpos="1">
 		<Cursor position="627" topLine="10" />
 	</File>
-	<File name="src\cTileLevel.cpp" open="1" top="1" tabpos="9">
-		<Cursor position="1736" topLine="55" />
->>>>>>> 740edbe05484201ee298cc70eda5ff8e026f5d94
+	<File name="src\cTileLevel.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="8355" topLine="213" />
 	</File>
 </CodeBlocks_layout_file>

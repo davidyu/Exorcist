@@ -11,7 +11,7 @@
 using namespace GFX::G2D;
 using namespace GFX;
 #define FLAREWIDTH 100.0f
-#define WALKSPEEDBRO 0.05f
+#define WALKSPEEDBRO 0.07f
 
 cBros::cBros()
 : cEntity()
@@ -22,7 +22,7 @@ cBros::cBros()
 , m_FlareBox(cRectf(-FLAREWIDTH, -FLAREWIDTH, FLAREWIDTH*2.0f, FLAREWIDTH*2.0f))
 {
     //SetAnimFPS(2);
-    m_Anims.SetTicksPerFrame(150.0f);
+    m_Anims.SetTicksPerFrame(200.0f);
     m_Anims.PushAnimation(cAnimation(30.0f,
                          cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("sheet"), 4, 0, 0, 64, 64)));
     m_Anims.PushAnimation(cAnimation(30.0f,

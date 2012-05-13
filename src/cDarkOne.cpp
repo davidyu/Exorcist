@@ -79,7 +79,8 @@ cDarkOne::~cDarkOne()
 void cDarkOne::Update(CORE::cGame* game, float delta, cMainGameState* state)
 {
     cout << m_State << endl;
-    if (m_State==DYING) return;
+    if (m_State==DYING)
+        return;
     if (!m_IsPlayerControlled) {
 
         if (m_NextBehaviorChange<0.0f) {
@@ -254,7 +255,7 @@ void cDarkOne::HandleInput(CORE::cGame* game, float delta)
     if (m_State==DYING) return;
     CORE::Input& input = game->GetInput();
 
-    HandleJoy(game, delta);
+//    HandleJoy(game, delta);
 
     if (m_State==WANDERING&&
     !( input.GetKeyState(SDLK_UP)
@@ -294,7 +295,7 @@ void cDarkOne::HandleInput(CORE::cGame* game, float delta)
 
 void cDarkOne::HandleJoy(CORE::cGame* game, float delta)
 {
-        if (m_State==DYING) return;
+    if (m_State==DYING) return;
     CORE::Input& input = game->GetInput();
 
     float x, y;
