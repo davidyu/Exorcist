@@ -98,16 +98,20 @@ void cTileLevel::Update(CORE::cGame* game, float delta, cMainGameState* state)
 }
 
 // Renders the m_pppTiles within the rectangle given
-void cTileLevel::Render(CORE::cGame* game, float delta, GFX::G2D::cSpriteBatch& batch, const MATH::cRectf& renderRect)
+void cTileLevel::Render(CORE::cGame* game, float delta, GFX::G2D::cSpriteBatch& batch, MATH::cRectf* renderRect)
 {
 
-    const int left = static_cast<int>(renderRect.Left())/TILEWIDTH;
-    const int right = static_cast<int>(renderRect.Right())/TILEWIDTH;
-    const int top = static_cast<int>(renderRect.Top())/TILEWIDTH;
-    const int bottom = static_cast<int>(renderRect.Bottom())/TILEWIDTH;
+    int left = static_cast<int>(renderRect->Left())/TILEWIDTH;
+    int right = static_cast<int>(renderRect->Right())/TILEWIDTH;
+    int top = static_cast<int>(renderRect->Top())/TILEWIDTH;
+    int bottom = static_cast<int>(renderRect->Bottom())/TILEWIDTH;
     int i, j, count =0;
 
-//    cout << left << COMMA << right << COMMA << top << COMMA << bottom << endl;
+    left = (left < 0) ? 0 : left;
+    top  = (top  < 0) ? 0 : top;
+
+    //cout << renderRect.Width() << COMMA << renderRect.Height() << endl;
+    cout << left << COMMA << right << COMMA << top << COMMA << bottom << endl;
 
     for (i=left; i<=right; ++i) {
         for (j=top; j<=bottom; ++j) {

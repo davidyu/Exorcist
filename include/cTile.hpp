@@ -5,7 +5,7 @@
 #include "GFX_G2D_cTextureRegion.hpp"
 #include "GFX_cTextureRegistry.hpp"
 
-#define TILEWIDTH 32.0f
+#define TILEWIDTH 16.0f
 
 namespace CORE
 {

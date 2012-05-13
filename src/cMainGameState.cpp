@@ -154,14 +154,17 @@ void cMainGameState::Render(CORE::cGame* game, float percent_tick)
 
     BuildLightMask(game, percent_tick);
 
+    Vec2f diff = m_Player->GetPos() - m_Camera->GetPos();
 
-    Vec2f diff = m_Camera->GetPos() - m_Player->GetPos();
+    //offsets
+    diff -= Vec2f(m_Camera->GetViewportWidth()/2, m_Camera->GetViewportHeight()/2);
+    diff += Vec2f(m_Player->GetBBox().Width()/2, m_Player->GetBBox().Height()/2);
 
-    diff += Vec2f(m_Camera->GetViewportWidth()/2, m_Camera->GetViewportHeight()/2);
-
-    //cout << diff.x << "," << diff.y << endl;
     glLoadIdentity();
-    glTranslatef(diff.x, diff.y, 0);
+    //m_Camera->LoadIdentity();
+    //m_Camera->Translatef(diff.x, diff.y);
+    m_Camera->TranslateTof(diff.x, diff.y);
+    glTranslatef(-diff.x, -diff.y, 0);
 
 
     RenderMain(game, percent_tick);
@@ -211,7 +214,9 @@ void cMainGameState::RenderMain(CORE::cGame* game, float percent_tick)
 //    m_pLevel->Render(game, percent_tick, m_batch, MATH::cRectf(0.0f, 0.0f, 800.0f, 700.0f));
     m_batch.End();
 
-    m_pLevel->Render(game, percent_tick, m_batch, m_Camera->GetViewportRect());
+    cRectf *r = m_Camera->GetViewportRect();
+    //cout << r.Left() << "," << r.Right() << endl;
+    m_pLevel->Render(game, percent_tick, m_batch, r);
 
     int i;
     for (i=0; i<cEntity::EntityList.size(); ++i) {
