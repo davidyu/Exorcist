@@ -27,7 +27,7 @@ cBros::cBros()
                          cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("sheet"), 4, 0, 192, 64, 64)));
 
     m_Pos.y = 0.0f;
-    m_BBox = cRectf(0.0f, 0.0f, 50.0f, 64.0f);
+    m_BBox = cRectf(16.0f, 7.0f, 32.0f, 50.0f);
 }
 
 cBros::~cBros()

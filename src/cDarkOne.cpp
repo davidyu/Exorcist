@@ -51,7 +51,6 @@ void cDarkOne::Update(CORE::cGame* game, float delta, cMainGameState* state)
         m_TurnCooldown -= delta;
         DetermineDirection();
         Walk(delta);
-
     }
 
     m_NextBehaviorChange -= delta;

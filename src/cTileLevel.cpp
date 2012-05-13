@@ -9,14 +9,6 @@ enum cTileLevel::e_TileType : unsigned int
     STONE_WALL    =  0xffffffff
 };
 
-cTileLevel::cTileLevel(int xTiles, int yTiles)
-: m_pppTiles(0)
-, m_xTiles(xTiles)
-, m_yTiles(yTiles)
-{
-    //ctor
-}
-
 cTileLevel::cTileLevel(string levelName)
 : m_pppTiles(0)
 {
@@ -88,30 +80,6 @@ void cTileLevel::Init()
     }
 }
 
-/*
-void cTileLevel::Init()
-{
-    int i, j;
-
-    m_pppTiles = new cTile**[m_xTiles];
-    for (i=0; i<m_xTiles; ++i) {
-        m_pppTiles[i] = new cTile*[m_yTiles];
-    }
-
-    for (i=0; i<m_xTiles; ++i) {
-        for (j=0; j<m_yTiles; ++j) {
-            if (j>6&&i>6) {
-                m_pppTiles[i][j] = new cDiggy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
-            }
-            else {
-                m_pppTiles[i][j] = new cCavy((float)(i*TILEWIDTH), (float)(j*TILEWIDTH));
-            }
-
-        }
-    }
-}
-*/
-
 void cTileLevel::Update(CORE::cGame* game, float delta, cMainGameState* state)
 {
     int i, j;
@@ -130,16 +98,19 @@ void cTileLevel::Update(CORE::cGame* game, float delta, cMainGameState* state)
 }
 
 // Renders the m_pppTiles within the rectangle given
-void cTileLevel::Render(CORE::cGame* game, float delta, GFX::G2D::cSpriteBatch& batch, const MATH::cRectf& renderRect)
+void cTileLevel::Render(CORE::cGame* game, float delta, GFX::G2D::cSpriteBatch& batch, MATH::cRectf* renderRect)
 {
 
-    const int left = static_cast<int>(renderRect.Left())/TILEWIDTH;
-    const int right = static_cast<int>(renderRect.Right())/TILEWIDTH;
-    const int top = static_cast<int>(renderRect.Top())/TILEWIDTH;
-    const int bottom = static_cast<int>(renderRect.Bottom())/TILEWIDTH;
+    int left = static_cast<int>(renderRect->Left())/TILEWIDTH;
+    int right = static_cast<int>(renderRect->Right())/TILEWIDTH;
+    int top = static_cast<int>(renderRect->Top())/TILEWIDTH;
+    int bottom = static_cast<int>(renderRect->Bottom())/TILEWIDTH;
     int i, j, count =0;
 
-//    cout << left << COMMA << right << COMMA << top << COMMA << bottom << endl;
+    left = (left < 0) ? 0 : left;
+    top  = (top  < 0) ? 0 : top;
+
+    //cout << left << COMMA << right << COMMA << top << COMMA << bottom << endl;
 
     for (i=left; i<=right; ++i) {
         for (j=top; j<=bottom; ++j) {
