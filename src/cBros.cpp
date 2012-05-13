@@ -11,6 +11,7 @@
 using namespace GFX::G2D;
 using namespace GFX;
 #define FLAREWIDTH 100.0f
+#define WALKSPEEDBRO 0.05f
 
 cBros::cBros()
 : cEntity()
@@ -65,22 +66,22 @@ void cBros::TryMove(CORE::cGame* game, float delta, cMainGameState* state)
 
     switch (m_Direction) {
         case 0: // NORTH
-            m_Vel.y = -0.1f*delta;
+            m_Vel.y = -WALKSPEEDBRO*delta;
             break;
         case 1: // EAST
-            m_Vel.x = 0.1f*delta;
+            m_Vel.x = WALKSPEEDBRO*delta;
             break;
         case 2: // SOUTH
-            m_Vel.y = 0.1f*delta;
+            m_Vel.y = WALKSPEEDBRO*delta;
             break;
         case 3: // WEST
-            m_Vel.x = -0.1f*delta;
+            m_Vel.x = -WALKSPEEDBRO*delta;
             break;
     }
 
     vector<cTile*> col = level->GetCollidedTiles(GetBBoxSwept());
     for (int i=0; i<col.size(); ++i) {
-        m_Pos += GetMinTranslationVectorRectRect(GetBBoxSwept(), col[i]->GetBBox());
+        m_Vel = GetMinTranslationVectorRectRect(GetBBoxSwept(), col[i]->GetBBox());
         col[i]->SetDrilled(true);
         col[i]->DecreaseLife(m_DrillRate*delta);
         m_DrillChannel = Mix_PlayChannel(1, cSoundRegistry::drill, 0);
@@ -91,6 +92,8 @@ void cBros::Flare(CORE::cGame* game, float delta, cMainGameState* state)
 {
     m_State = FLARING;
     extern int DARKOFFSET;
+    Mix_PlayChannel(1, cSoundRegistry::flare, 0);
+
     for (int i=DARKOFFSET; i<state->GetEntities().EntityList.size(); ++i) {
         if (state->GetEntities().EntityList[i]->GetBBox().IsCollidedRect(GetFlareBox())) {
             dynamic_cast<cDarkOne*>(state->GetEntities().EntityList[i])->Kill();
@@ -127,7 +130,7 @@ void cBros::Render(CORE::cGame* game, float delta, cMainGameState* state)
                 break;
         }
     }
-    if (m_State==DYING) {
+    if (m_State==DYING&&m_Anims.GetStatetime()<1500.0f) {
         const cTextureWrapper& frame
          = m_Anims[m_Anims.GetCurrentIndex()].GetKeyFrame(m_Anims.GetStatetime(), false);
          ImmediateRenderTexturePos2Dim2(frame, GetPos().x, GetPos().y, 64, 64);
@@ -187,4 +190,12 @@ void cBros::HandleInput(CORE::cGame* game, float delta, cMainGameState* state)
         Flare(game, delta, state);
     }
 
+}
+
+void cBros::Kill()
+{
+    if (m_State==DYING) return;
+    m_DrillChannel = Mix_PlayChannel(1, cSoundRegistry::killdig, 0);
+    m_State = DYING;
+    m_Anims.ResetStatetime();
 }

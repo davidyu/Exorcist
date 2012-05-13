@@ -232,11 +232,14 @@ vector<cTile*> cTileLevel::GetCollidedTiles(const cRectf& r)
 
 void cTileLevel::GetTilePosClosestToPos(const Vec2f& p, int& x, int& y) const
 {
-    x = static_cast<float>(p.x)/TILEWIDTH;
-    y = static_cast<float>(p.y)/TILEWIDTH;
-    if (x>=m_xTiles||x<0) {
+    const float fx = p.x/TILEWIDTH;
+    const float fy = p.y/TILEWIDTH;
+    x = static_cast<int>(fx);
+    y = static_cast<int>(fy);
+
+    if (fx>=static_cast<float>(m_xTiles)||fx<0.0f) {
         x = -1;
-    }if (y>=m_yTiles||y<0) {
+    }if (fy>=static_cast<float>(m_yTiles)||fy<0.0f) {
         y = -1;
     }
 }

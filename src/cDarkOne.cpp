@@ -7,6 +7,8 @@
 #include "cTileLevel.hpp"
 #include "MATH_Math.hpp"
 
+#include "cSoundRegistry.hpp"
+
 using namespace MATH;
 using namespace GFX::G2D;
 using namespace GFX;
@@ -50,7 +52,7 @@ cDarkOne::cDarkOne(const Vec2f& pos, const cRectf& bbox, const cTileLevel& level
 
 
 
-    const float DIST = 400.0f;
+    const float DIST = 1000.0f;
     int x, y;
     Vec2f v;
     for (int i=0; i<NUMDESTS; ++i) {
@@ -61,6 +63,7 @@ cDarkOne::cDarkOne(const Vec2f& pos, const cRectf& bbox, const cTileLevel& level
             level.GetTilePosClosestToPos(v, x, y);
         }
         m_Destinations.push_back(v);
+        cout << v.x << COMMA << v.y << endl;
     }
 
 
@@ -71,10 +74,11 @@ cDarkOne::~cDarkOne()
     //dtor
 }
 
-#define TOL 15.0f
+#define TOL 30.0f
 
 void cDarkOne::Update(CORE::cGame* game, float delta, cMainGameState* state)
 {
+    cout << m_State << endl;
     if (m_State==DYING) return;
     if (!m_IsPlayerControlled) {
 
@@ -105,7 +109,7 @@ void cDarkOne::Update(CORE::cGame* game, float delta, cMainGameState* state)
 
 void cDarkOne::GetNextDestination()
 {
-    m_DestIndex = ++m_DestIndex % NUMDESTS;
+    m_DestIndex = ++m_DestIndex % static_cast<int>(m_Destinations.size());
 }
 
 void cDarkOne::DetermineDirection()
@@ -136,7 +140,7 @@ void cDarkOne::DetermineDirection()
                     m_Dir = SOUTH;
                 }
             } else {
-
+                m_Dir = NONE;
             }
         } else {
             if (fabs(yDelta)>TOL) {
@@ -151,6 +155,8 @@ void cDarkOne::DetermineDirection()
                 } else {
                     m_Dir = EAST;
                 }
+            } else {
+                m_Dir = NONE;
             }
 
         }
@@ -223,7 +229,7 @@ void cDarkOne::Render(CORE::cGame* game, float delta, cMainGameState* state)
 void cDarkOne::DetermineNewBehavior()
 {
     m_State = RandInt(0, 7);
-    if (m_State>4) {
+    if (m_State>=4) {
         m_State = WANDERING;
     }
     switch (m_State) {
@@ -283,6 +289,13 @@ void cDarkOne::HandleInput(CORE::cGame* game, float delta)
     if (input.OnKeyDown(SDLK_l)) {
         m_State = SMILING;
     }
+}
 
+void cDarkOne::Kill()
+{
+    if (m_State==DYING) return;
+    m_State = DYING;
+    m_Anims.ResetStatetime();
+    Mix_PlayChannel(-1, cSoundRegistry::killit, 0);
 }
 
