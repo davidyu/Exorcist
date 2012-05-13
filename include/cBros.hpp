@@ -37,6 +37,7 @@ private:
     float m_DrillRate;
     int m_State;
     int m_Direction;
+    int m_FlaresLeft;
 
 };
 

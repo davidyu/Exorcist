@@ -14,6 +14,7 @@ cBros::cBros()
 , m_DrillRate(0.0009f)
 , m_Direction(0)
 , m_State(STILL)
+, m_FlaresLeft(1)
 {
     //SetAnimFPS(2);
     m_Anims.SetTicksPerFrame(150.0f);
@@ -83,7 +84,7 @@ void cBros::TryMove(CORE::cGame* game, float delta, cMainGameState* state)
 
 void cBros::Flare(CORE::cGame* game, float delta, cMainGameState* state)
 {
-    cEntity::EntityList[DARKOFFSET]->
+//    cEntity::EntityList[DARKOFFSET]->
 }
 
 void cBros::Render(CORE::cGame* game, float delta, cMainGameState* state)
@@ -125,7 +126,7 @@ void cBros::Render(CORE::cGame* game, float delta, cMainGameState* state)
 
 }
 
-void cBros::HandleInput(CORE::cGame* game, float delta)
+void cBros::HandleInput(CORE::cGame* game, float delta, cMainGameState* state)
 {
     if (m_State==DYING) return;
     CORE::Input& input = game->GetInput();
@@ -158,7 +159,8 @@ void cBros::HandleInput(CORE::cGame* game, float delta)
         m_State = WALKING;
     }
     if (input.OnKeyDown(SDLK_SPACE)) {
-        //
+        m_FlaresLeft--;
+//        m_State =
     }
 
 }
