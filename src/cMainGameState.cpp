@@ -16,7 +16,6 @@
 #include "global_inc.hpp"
 
 #include "cTileLevel.hpp"
-#include "cBros.hpp"
 #include "cDarkOne.hpp"
 
 #define WINDOW_WIDTH game->GetSDLState().window_w
@@ -57,6 +56,8 @@ bool cMainGameState::OnEnter(CORE::cGame* game)
 {
     cout << "Entering Main Game state\n";
 
+    MATH::cRectf vpr = MATH::cRectf(0.0f, 0.0f, 800.0f, 700.0f);
+    m_Camera = new cOrthoCamera(vpr);
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -99,9 +100,9 @@ bool cMainGameState::OnEnter(CORE::cGame* game)
     m_pAnimStaticOverlay = new cAnimation(50.0f, cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("static"), 4, 0, 0, 512, 512));
 
     int i;
-    cBros* bro = new cBros;
-    cEntity::EntityList.push_back(bro);
-    bro = 0;
+    m_Player = new cBros;
+    cEntity::EntityList.push_back(m_Player);
+
     for (i=0; i<5; ++i) {
         cEntity::EntityList.push_back(new cDarkOne(Vec2f(RandFloat(0.0f, 400.0f), RandFloat(0.0f, 400.0f))
                                                  , cRectf(14.0, 0.0f, 36, 64)));
@@ -153,6 +154,16 @@ void cMainGameState::Render(CORE::cGame* game, float percent_tick)
 
     BuildLightMask(game, percent_tick);
 
+
+    Vec2f diff = m_Camera->GetPos() - m_Player->GetPos();
+
+    diff += Vec2f(m_Camera->GetViewportWidth()/2, m_Camera->GetViewportHeight()/2);
+
+    //cout << diff.x << "," << diff.y << endl;
+    glLoadIdentity();
+    glTranslatef(diff.x, diff.y, 0);
+
+
     RenderMain(game, percent_tick);
     static float statetime = 0.0f;
     statetime += percent_tick;
@@ -180,7 +191,7 @@ void cMainGameState::Render(CORE::cGame* game, float percent_tick)
 
 void cMainGameState::RenderMain(CORE::cGame* game, float percent_tick)
 {
-    static cBros bro;
+    //static cBros bro;
     /* Begin Main Drawing Procedure */
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glClearColor(1.0f,1.0f,1.0f,1.0f);
@@ -200,7 +211,7 @@ void cMainGameState::RenderMain(CORE::cGame* game, float percent_tick)
 //    m_pLevel->Render(game, percent_tick, m_batch, MATH::cRectf(0.0f, 0.0f, 800.0f, 700.0f));
     m_batch.End();
 
-    m_pLevel->Render(game, percent_tick, m_batch, MATH::cRectf(0.0f, 0.0f, 800.0f, 700.0f));
+    m_pLevel->Render(game, percent_tick, m_batch, m_Camera->GetViewportRect());
 
     int i;
     for (i=0; i<cEntity::EntityList.size(); ++i) {

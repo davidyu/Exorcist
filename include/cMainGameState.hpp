@@ -4,6 +4,8 @@
 #include "STATE_iGameState.hpp"
 #include "GFX_G2D_cSpriteBatch.hpp"
 #include "GFX_cTexture.hpp"
+#include "cBros.hpp"
+#include "GFX_cOrthoCamera.hpp"
 //
 #include "global_inc.hpp"
 
@@ -55,6 +57,7 @@ class cMainGameState : public STATE::iGameState
 
         void RegisterSpriteFrames();
 
+        GFX::cOrthoCamera* m_Camera;
         GFX::G2D::cSpriteBatch m_batch;
         GFX::cTextureWrapper* m_pMotionTex;
         GFX::cTextureWrapper* m_pLightTex;
@@ -62,6 +65,8 @@ class cMainGameState : public STATE::iGameState
         std::vector<GFX::cTexture> texs;
 
         cTileLevel* m_pLevel;
+
+        cBros* m_Player;
 
 };
 

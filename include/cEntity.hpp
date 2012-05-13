@@ -48,8 +48,8 @@ public:
     cRectf GetBBox()
     { return cRectf::GetShiftedRect(m_BBox, m_Pos); }
     cRectf GetBBoxSwept() {
-        cRectf temp = cRectf(minf(m_Pos.x+m_Vel.x, m_Pos.x)
-                           , minf(m_Pos.y+m_Vel.y, m_Pos.y)
+        cRectf temp = cRectf(minf(m_Pos.x+m_BBox.Left()+m_Vel.x, m_Pos.x+m_BBox.Left())
+                           , minf(m_Pos.y+m_BBox.Top()+m_Vel.y, m_Pos.y+m_BBox.Top())
                            , maxf(m_BBox.Width()+m_Vel.x, m_BBox.Width())
                            , maxf(m_BBox.Height()+m_Vel.y, m_BBox.Height()));
         return temp;
