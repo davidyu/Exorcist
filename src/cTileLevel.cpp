@@ -20,33 +20,13 @@ cTileLevel::cTileLevel(int xTiles, int yTiles)
 cTileLevel::cTileLevel(string levelName)
 : m_pppTiles(0)
 {
-    GFX::cImage lvl(levelName);
+    m_LevelMap = GFX::cImage(levelName);
 
     int h = lvl->GetHeight();
     int w = lvl->GetWidth();
 
     m_xTiles = w;
     m_yTiles = h;
-
-    for (int y = 0; y < h; y++)
-    {
-        for (int x = 0; x < w; x++)
-        {
-            unsigned int c = GFX::GetColourInHex(lvl->GetPixel(x, y));
-            switch (c)
-            {
-            case NOTHING:
-                break;
-            case DIGGABLE_SOIL:
-                break;
-            case STONE_WALL:
-                break;
-            default:  //assume nothing
-                break;
-            }
-
-        }
-    }
 }
 
 cTileLevel::~cTileLevel()
@@ -73,6 +53,39 @@ cTileLevel::~cTileLevel()
     }
 }
 
+void cTileLevel::Init()
+{
+    int i, j;
+    m_pppTiles = new cTile**[m_xTiles];
+
+    for (i = 0; i < m_yTiles; ++i)
+        m_pppTiles[i] = new cTile*[m_xTiles]; //reverse: I store map in row-major order
+
+
+    for (i = 0; i < m_yTiles; i++)
+    {
+        for (int j = 0; j < m_xTiles; j++)
+        {
+            unsigned int c = GFX::GetColourInHex(lvl->GetPixel(j, i));
+            switch (c)
+            {
+            case NOTHING:
+                m_pppTiles[i][j] = new cTile((float)(j*64), (float)(i*64), false);
+                break;
+            case DIGGABLE_SOIL:
+                m_pppTiles[i][j] = new cTile((float)(j*64), (float)(i*64), true);
+                break;
+            case STONE_WALL:
+                m_pppTiles[i][j] = new cTile((float)(j*64), (float)(i*64), true);
+                break;
+            default:  //assume nothing
+                m_pppTiles[i][j] = new cTile((float)(j*64), (float)(i*64), false);
+                break;
+            }
+
+        }
+    }
+}
 
 void cTileLevel::Init()
 {
@@ -86,10 +99,10 @@ void cTileLevel::Init()
     for (i=0; i<m_xTiles; ++i) {
         for (j=0; j<m_yTiles; ++j) {
             if (j>6) {
-                m_pppTiles[i][j] = new cTile((float)(i*40), (float)(j*40), true);
+                m_pppTiles[i][j] = new cTile((float)(i*64), (float)(j*64), true);
             }
             else {
-                m_pppTiles[i][j] = new cTile((float)(i*40), (float)(j*40), false);
+                m_pppTiles[i][j] = new cTile((float)(i*64), (float)(j*64), false);
             }
 
         }
