@@ -31,10 +31,13 @@ void cTile::Update(CORE::cGame* game, float delta, cMainGameState* state)
     }
 
     if (m_Type==COLLIDABLE) {
-        if (m_Life<0.9f) {
-            m_FrameIndex = 1;
-        } else if (m_Life<0.6f) {
+        if (m_Life<0.6f) {
             m_FrameIndex = 2;
+        } else if (m_Life<0.9f) {
+            m_FrameIndex = 1;
+
+        } else {
+            m_FrameIndex = 0.0f;
         }
     }
 }
@@ -44,5 +47,4 @@ void cTile::Render(CORE::cGame* game, float delta, GFX::G2D::cSpriteBatch& batch
     GFX::cTextureWrapper& tex = m_Frames[m_FrameIndex];
 //    batch.DrawTexturePos2Dim2(tex, m_Pos.x, m_Pos.y, TILEWIDTH, TILEWIDTH);
     ImmediateRenderTexturePos2Dim2(tex, m_Pos.x ,m_Pos.y, TILEWIDTH, TILEWIDTH);
-
 }
