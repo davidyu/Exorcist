@@ -7,7 +7,7 @@
 #include "GFX_G2D_cAnimationRegistry.hpp"
 #include "MATH_Primitives.hpp"
 
-#define DIGGER cEntity::EntityList[0]
+#define DARKOFFSET 1
 
 namespace CORE
 {
@@ -20,7 +20,6 @@ class cMainGameState;
 class cEntity
 {
 public:
-    static std::vector<cEntity *> EntityList;
 protected:
     GFX::G2D::cAnimation m_Anim;
     int                  m_AnimFPS;         //use this to initially set ticks_per_frame for m_Anim
@@ -36,13 +35,6 @@ public:
     virtual void Update(CORE::cGame* game, float delta, cMainGameState* state);
     virtual void Render(CORE::cGame* game, float delta, cMainGameState* state); //animation logic in here
     virtual void Collided(cEntity& e);
-
-    static void ClearEntities() {
-        for (int i=0; i<cEntity::EntityList.size(); ++i) {
-            DELETESINGLE(cEntity::EntityList[i]);
-        }
-        EntityList.clear();
-    }
 
     void SetAnimFPS(int afps);
 

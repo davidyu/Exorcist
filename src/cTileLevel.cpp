@@ -12,6 +12,7 @@ enum cTileLevel::e_TileType : unsigned int
 
 cTileLevel::cTileLevel(string levelName)
 : m_pppTiles(0)
+, m_Init(false)
 {
     m_LevelMap = new GFX::cImage(levelName);
 
@@ -24,31 +25,13 @@ cTileLevel::cTileLevel(string levelName)
 
 cTileLevel::~cTileLevel()
 {
-    if (m_pppTiles) {
-        int i, j;
-        for (i=0; i<m_xTiles; ++i) {
-            for (j=0; j<m_yTiles; ++j) {
-                if (m_pppTiles[i][j]) {
-                    DELETESINGLE(m_pppTiles[i][j]);
-                } else {
-                    std::cout << "Strange things ahappenin' when deleting m_pppTiles2...\n";
-                }
-
-            }
-            if (m_pppTiles[i]) {
-                DELETEARRAY(m_pppTiles[i]);
-            } else {
-                std::cout << "Strange things ahappenin' when deleting m_pppTiles2...\n";
-            }
-
-        }
-        DELETEARRAY(m_pppTiles);
-    }
+    Clear();
 }
 
 
 void cTileLevel::Init()
 {
+    if (m_Init) Clear();
     int i, j;
     m_pppTiles = new cTile**[m_xTiles];
 
@@ -80,8 +63,32 @@ void cTileLevel::Init()
 
         }
     }
+    m_Init = true;
 }
 
+void cTileLevel::Clear()
+{
+    if (m_pppTiles) {
+        int i, j;
+        for (i=0; i<m_xTiles; ++i) {
+            for (j=0; j<m_yTiles; ++j) {
+                if (m_pppTiles[i][j]) {
+                    DELETESINGLE(m_pppTiles[i][j]);
+                } else {
+                    std::cout << "Strange things ahappenin' when deleting m_pppTiles2...\n";
+                }
+
+            }
+            if (m_pppTiles[i]) {
+                DELETEARRAY(m_pppTiles[i]);
+            } else {
+                std::cout << "Strange things ahappenin' when deleting m_pppTiles2...\n";
+            }
+
+        }
+        DELETEARRAY(m_pppTiles);
+    }
+}
 void cTileLevel::Update(CORE::cGame* game, float delta, cMainGameState* state)
 {
     int i, j;

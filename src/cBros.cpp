@@ -5,16 +5,20 @@
 #include "CORE_cGame.hpp"
 #include "cMainGameState.hpp"
 #include "cTileLevel.hpp"
+#include "cDarkOne.hpp"
+#include "cSoundRegistry.hpp"
 
 using namespace GFX::G2D;
 using namespace GFX;
+#define FLAREWIDTH 100.0f
 
 cBros::cBros()
 : cEntity()
 , m_DrillRate(0.0009f)
 , m_Direction(0)
 , m_State(STILL)
-, m_FlaresLeft(1)
+, m_FlaresLeft(5)
+, m_FlareBox(cRectf(-FLAREWIDTH, -FLAREWIDTH, FLAREWIDTH*2.0f, FLAREWIDTH*2.0f))
 {
     //SetAnimFPS(2);
     m_Anims.SetTicksPerFrame(150.0f);
@@ -79,18 +83,33 @@ void cBros::TryMove(CORE::cGame* game, float delta, cMainGameState* state)
         m_Pos += GetMinTranslationVectorRectRect(GetBBoxSwept(), col[i]->GetBBox());
         col[i]->SetDrilled(true);
         col[i]->DecreaseLife(m_DrillRate*delta);
+        m_DrillChannel = Mix_PlayChannel(1, cSoundRegistry::drill, 0);
     }
 }
 
 void cBros::Flare(CORE::cGame* game, float delta, cMainGameState* state)
 {
-//    cEntity::EntityList[DARKOFFSET]->
+    m_State = FLARING;
+    for (int i=DARKOFFSET; i<state->GetEntities().EntityList.size(); ++i) {
+        if (state->GetEntities().EntityList[i]->GetBBox().IsCollidedRect(GetFlareBox())) {
+            dynamic_cast<cDarkOne*>(state->GetEntities().EntityList[i])->Kill();
+            if (dynamic_cast<cDarkOne*>(state->GetEntities().EntityList[i])->IsPlayerControlled()) {
+//                state->SetWinner(1);
+            }
+        }
+    }
+
+    m_FlaresLeft--;
+    m_State = FLARING;
+    state->SetHasFlared(false);
 }
 
 void cBros::Render(CORE::cGame* game, float delta, cMainGameState* state)
 {
     if (m_State==DYING) {
         m_Anims.SetCurrentIndex(5);
+    } else if(m_State==FLARING) {
+        m_Anims.SetCurrentIndex(4);
     } else {
         switch (m_Direction) {
             case NORTH:
@@ -108,6 +127,10 @@ void cBros::Render(CORE::cGame* game, float delta, cMainGameState* state)
         }
     }
     if (m_State==DYING) {
+        const cTextureWrapper& frame
+         = m_Anims[m_Anims.GetCurrentIndex()].GetKeyFrame(m_Anims.GetStatetime(), false);
+         ImmediateRenderTexturePos2Dim2(frame, GetPos().x, GetPos().y, 64, 64);
+    } else if (m_State==FLARING) {
         const cTextureWrapper& frame
          = m_Anims[m_Anims.GetCurrentIndex()].GetKeyFrame(m_Anims.GetStatetime(), false);
          ImmediateRenderTexturePos2Dim2(frame, GetPos().x, GetPos().y, 64, 64);
@@ -131,12 +154,13 @@ void cBros::HandleInput(CORE::cGame* game, float delta, cMainGameState* state)
     if (m_State==DYING) return;
     CORE::Input& input = game->GetInput();
 
-    if (m_State!=DYING&&
+    if (m_State!=FLARING&&
     !( input.GetKeyState(SDLK_w)
     || input.GetKeyState(SDLK_d)
     || input.GetKeyState(SDLK_s)
     || input.GetKeyState(SDLK_a))) {
         m_State = STILL;
+        Mix_HaltChannel(m_DrillChannel);
     }
 
 
@@ -158,9 +182,8 @@ void cBros::HandleInput(CORE::cGame* game, float delta, cMainGameState* state)
         m_Direction = WEST;
         m_State = WALKING;
     }
-    if (input.OnKeyDown(SDLK_SPACE)) {
-        m_FlaresLeft--;
-//        m_State =
+    if (input.OnKeyDown(SDLK_SPACE) && m_FlaresLeft>0) {
+        Flare(game, delta, state);
     }
 
 }

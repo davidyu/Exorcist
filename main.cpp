@@ -25,7 +25,7 @@ void RegisterStates()
 {
     CORE::cGame::state_factory.RegisterClass("play", cMainGameState::CreateInstance);
 //
-    cGame::transition_factory.RegisterClass("transSquareSpin", STATE::cTransSquareSpin::CreateInstance);
+    cGame::transition_factory.RegisterClass("transFade", STATE::cTransSquareSpin::CreateInstance);
 }
 
 // Main function must have these params for SDL... kinda lame for encapsulation here..

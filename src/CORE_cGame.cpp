@@ -5,7 +5,8 @@
 #include "STATE_iGameState.hpp"
 
 #include "GFX_cTextureRegistry.hpp"
-
+#include "cSoundRegistry.hpp"
+#include "cMainGameState.hpp"
 
 
 /*temp*/ #include <iostream>
@@ -43,6 +44,8 @@ bool cGame::Initialise()
     m_running = true;
     m_input.Initialise();
     GFX::cTextureRegistry::Init();
+    cSoundRegistry::Init();
+    cMainGameState::InitLevels();
 
 
     return true;
@@ -202,6 +205,8 @@ void cGame::MainLoop()
 
         SDL_GL_SwapWindow(m_sdl_state->window);
     }
+    cMainGameState::ClearLevels();
+    cSoundRegistry::Destroy();
 }
 
 void cGame::EndGame()

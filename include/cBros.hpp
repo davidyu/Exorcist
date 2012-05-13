@@ -24,7 +24,7 @@ public:
     void HandleInput(CORE::cGame* game, float delta, cMainGameState* state);
 
     void Flare(CORE::cGame* game, float delta, cMainGameState* state);
-
+    cRectf GetFlareBox() { return cRectf::GetShiftedRect(m_FlareBox, m_Pos); }
     void Kill() {
         if (m_State==DYING) return;
         m_State = DYING;
@@ -33,11 +33,14 @@ public:
 
 
 private:
-    enum { STILL, WALKING, DRILLING, DYING };
+    enum { STILL, WALKING, DRILLING, DYING, FLARING };
     float m_DrillRate;
     int m_State;
     int m_Direction;
     int m_FlaresLeft;
+    cRectf m_FlareBox;
+
+    int m_DrillChannel;
 
 };
 

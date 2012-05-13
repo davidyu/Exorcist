@@ -5,7 +5,7 @@
 #include "global_inc.hpp"
 #include "cTileLevel.hpp"
 
-#define WALKSPEED 0.02f
+#define WALKSPEED 0.04f
 
 class cDarkOne : public cEntity
 {
@@ -34,6 +34,8 @@ class cDarkOne : public cEntity
         { return m_IsPlayerControlled; }
         void SetPlayerControl(bool b)
         { m_IsPlayerControlled = b; }
+        int GetState()
+        { return m_State; }
     private:
         int m_State;
         float m_NextBehaviorChange;
