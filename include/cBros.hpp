@@ -26,7 +26,6 @@ public:
 
 private:
     enum { STILL, WALKING, DRILLING, DYING };
-    GFX::G2D::cAnimationRegistry m_Anims;
     float m_DrillRate;
     int m_State;
     int m_Direction;

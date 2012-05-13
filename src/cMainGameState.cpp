@@ -17,6 +17,7 @@
 
 #include "cTileLevel.hpp"
 #include "cBros.hpp"
+#include "cDarkOne.hpp"
 
 #define WINDOW_WIDTH game->GetSDLState().window_w
 #define WINDOW_HEIGHT game->GetSDLState().window_h
@@ -95,9 +96,14 @@ bool cMainGameState::OnEnter(CORE::cGame* game)
 
     m_pAnimStaticOverlay = new cAnimation(50.0f, cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("static"), 4, 0, 0, 512, 512));
 
+    int i;
     cBros* bro = new cBros;
     cEntity::EntityList.push_back(bro);
     bro = 0;
+    for (i=0; i<5; ++i) {
+        cEntity::EntityList.push_back(new cDarkOne(Vec2f(RandFloat(0.0f, 400.0f), RandFloat(0.0f, 400.0f))
+                                                 , cRectf(14.0, 0.0f, 36, 64)));
+    }
 
 
     return true;
@@ -109,6 +115,12 @@ bool cMainGameState::OnExit(CORE::cGame* game)
     DELETESINGLE(m_pMotionTex);
     DELETESINGLE(m_pLightTex);
     DELETESINGLE(m_pAnimStaticOverlay);
+
+    int i;
+    for (i=0;i<cEntity::EntityList.size(); ++i) {
+        DELETESINGLE(cEntity::EntityList[i]);
+    }
+    cEntity::EntityList.clear();
 
 
     cout << "Leaving Main Game state\n";

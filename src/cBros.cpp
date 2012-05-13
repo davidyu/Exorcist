@@ -11,7 +11,6 @@ using namespace GFX;
 
 cBros::cBros()
 : cEntity()
-, m_Anims()
 , m_DrillRate(0.0009f)
 , m_Direction(0)
 , m_State(STILL)

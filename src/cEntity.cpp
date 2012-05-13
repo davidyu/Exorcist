@@ -9,8 +9,8 @@ cEntity::cEntity()
     m_Anim.SetTicksPerFrame((int) (1000.0f * (1.0f / m_AnimFPS)));
 }
 
-cEntity::cEntity(Vec2f& pos, Vec2f& dim, Vec2f& vel, cRectf& bbox)
-        :m_Pos(pos), m_Dim(dim), m_Vel(vel), m_BBox(bbox),
+cEntity::cEntity(const Vec2f& pos, const cRectf& bbox)
+        :m_Pos(pos), m_Dim(Vec2f(1.0f, 1.0f)), m_Vel(Vec2f(0.0f, 0.0f)), m_BBox(bbox),
          m_AnimLooping(true), m_AnimFPS(10)
 {
     m_Anim.SetTicksPerFrame((int) (1000.0f * (1.0f / m_AnimFPS)));

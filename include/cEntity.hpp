@@ -30,7 +30,7 @@ public:
     enum {NORTH, EAST, SOUTH, WEST };
 
     cEntity();
-    cEntity(Vec2f& pos, Vec2f& dim, Vec2f& vel, cRectf& bbox);
+    cEntity(const Vec2f& pos, const cRectf& bbox);
     cEntity(float x, float y, float w, float h, float vx, float vy, float offx, float offy, float offw, float offh);
     virtual ~cEntity();
     virtual void Update(CORE::cGame* game, float delta, cMainGameState* state);
@@ -56,6 +56,7 @@ public:
     }
 
 protected:
+    GFX::G2D::cAnimationRegistry m_Anims;
     Vec2f m_Pos;
     Vec2f m_Dim; //size
     Vec2f m_Vel;

@@ -103,6 +103,7 @@
 		<Unit filename="..\Spice\src\STATE_cTransSquareSpin.cpp" />
 		<Unit filename="include\GFX_cTextureRegistry.hpp" />
 		<Unit filename="include\cBros.hpp" />
+		<Unit filename="include\cDarkOne.hpp" />
 		<Unit filename="include\cEntity.hpp" />
 		<Unit filename="include\cLevel.hpp" />
 		<Unit filename="include\cMainGameState.hpp" />
@@ -111,6 +112,7 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="src\CORE_cGame.cpp" />
 		<Unit filename="src\cBros.cpp" />
+		<Unit filename="src\cDarkOne.cpp" />
 		<Unit filename="src\cEntity.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
