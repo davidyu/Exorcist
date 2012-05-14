@@ -55,7 +55,7 @@ void cBros::Update(CORE::cGame* game, float delta, cMainGameState* state)
     }
 
     m_Pos += m_Vel;
-    m_Vel *= expf(-0.05*delta);
+    m_Vel *= expf(-0.04*delta);
 
 }
 

@@ -383,7 +383,6 @@ void cMainGameState::HandleInput(CORE::cGame* game)
 
         game->GetStateManager().ReplaceStateUsingTransition(newstate, trans);
     }
-
 }
 
 void cMainGameState::Flare(CORE::cGame* game, float percent_tick)
