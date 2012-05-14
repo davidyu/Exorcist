@@ -22,7 +22,7 @@ cBros::cBros()
 , m_FlareBox(cRectf(-FLAREWIDTH, -FLAREWIDTH, FLAREWIDTH*2.0f, FLAREWIDTH*2.0f))
 {
     //SetAnimFPS(2);
-    m_Anims.SetTicksPerFrame(200.0f);
+    m_Anims.SetTicksPerFrame(400.0f);
     m_Anims.PushAnimation(cAnimation(30.0f,
                          cTextureRegion::SplitTextureHorizontalTexNumXYWH(Art("sheet"), 4, 0, 0, 64, 64)));
     m_Anims.PushAnimation(cAnimation(30.0f,
@@ -98,7 +98,7 @@ void cBros::Flare(CORE::cGame* game, float delta, cMainGameState* state)
         if (state->GetEntities().EntityList[i]->GetBBox().IsCollidedRect(GetFlareBox())) {
             dynamic_cast<cDarkOne*>(state->GetEntities().EntityList[i])->Kill();
             if (dynamic_cast<cDarkOne*>(state->GetEntities().EntityList[i])->IsPlayerControlled()) {
-//                state->SetWinner(1);
+                state->m_P2Life=false;
             }
         }
     }

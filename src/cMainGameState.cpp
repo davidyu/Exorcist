@@ -30,7 +30,7 @@ int DARKOFFSET = 2;
 using namespace GFX;
 using namespace GFX::G2D;
 
-int cMainGameState::m_LevelIndex = 1;
+int cMainGameState::m_LevelIndex = 0;
 vector<cTileLevel*> cMainGameState::m_pLevels;
 
 void cMainGameState::InitLevels()
@@ -58,7 +58,7 @@ cMainGameState::cMainGameState()
 , m_pLightTex(0)
 , m_HasFlared(true)
 , m_pAnimStaticOverlay(0)
-, m_P2Index(DARKOFFSET-1)
+, m_P2Index(DARKOFFSET)
 , m_Win(0)
 , m_Wintime(0.0f)
 , m_Quit(true)
@@ -67,6 +67,7 @@ cMainGameState::cMainGameState()
 , m_Exit(0)
 , m_IsStatic(false)
 , m_LightSwitch(0.0f)
+, m_P2Life(true)
  {}
 
 cMainGameState::~cMainGameState() {}
@@ -155,6 +156,7 @@ bool cMainGameState::OnExit(CORE::cGame* game)
     DELETESINGLE(m_pMotionTex);
     DELETESINGLE(m_pLightTex);
     DELETESINGLE(m_pAnimStaticOverlay);
+    DELETESINGLE(m_Camera);
 
     int i;
     m_Entities.ClearEntities();
@@ -372,7 +374,7 @@ void cMainGameState::HandleInput(CORE::cGame* game)
     //input.GetJoyExtentIDWhichExtent2(0,0, x, y);
 
     if (input.GetKeyState(SDLK_ESCAPE)) game->EndGame();
-    if (input.GetKeyState(SDLK_p)) {
+    if (input.GetKeyState(SDLK_p)/*||(input.OnJoyButtonDown(0,3))*/) {
         SelectP2DarkOne();
     }
     if (input.OnKeyDown(SDLK_b)) {
@@ -409,13 +411,16 @@ void cMainGameState::SelectP2DarkOne()
 {
     cRectf r = *m_Camera->GetViewportRect();
     bool isSelected = false;
-    int newIndex;
+    int newIndex=-1;
     int count = 0;
     cRectf bbox;
+    if (m_Entities.EntityList.size()==1||!m_P2Life) return;
+
     while (!isSelected&&count<100&&newIndex!=m_P2Index
-           &&dynamic_cast<cDarkOne*>(m_Entities.EntityList[newIndex])->cDarkOne::DYING) {
+           &&(newIndex==-1||dynamic_cast<cDarkOne*>(m_Entities.EntityList[newIndex])->cDarkOne::DYING)) {
         newIndex = MATH::RandInt(DARKOFFSET,m_Entities.EntityList.size()-1);
         bbox = m_Entities.EntityList[newIndex]->GetBBox();
+//        if (m_Entities.EntityList[m_P2Index]==)
         if (r.IsCollidedRect(bbox)) {
             dynamic_cast<cDarkOne*>(m_Entities.EntityList[m_P2Index])->SetPlayerControl(false);
             dynamic_cast<cDarkOne*>(m_Entities.EntityList[newIndex])->SetPlayerControl(true);

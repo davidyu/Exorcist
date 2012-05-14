@@ -89,7 +89,7 @@ class cMainGameState : public STATE::iGameState
 
         static int GetLevelIndex()
         { return m_LevelIndex; }
-
+         bool m_P2Life;
 
     private:
 
@@ -121,6 +121,7 @@ class cMainGameState : public STATE::iGameState
         bool m_Quit;
         bool m_IsStatic;
         float m_LightSwitch;
+
 
 };
 

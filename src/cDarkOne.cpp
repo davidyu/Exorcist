@@ -307,7 +307,7 @@ void cDarkOne::HandleJoy(CORE::cGame* game, float delta)
         m_Dir = NONE;
     }
     if (y>0.2f) {
-        m_Dir = NORTH;
+        m_Dir = SOUTH;
         m_State = WANDERING;
     }
     if (x>0.2f) {
@@ -315,7 +315,7 @@ void cDarkOne::HandleJoy(CORE::cGame* game, float delta)
         m_State = WANDERING;
     }
     if (y<-0.2f) {
-        m_Dir = SOUTH;
+        m_Dir = NORTH;
         m_State = WANDERING;
     }
     if (x<-0.2f) {
