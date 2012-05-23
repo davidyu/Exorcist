@@ -352,7 +352,7 @@ void cMainGameState::BuildLightMask(CORE::cGame* game, float percent_tick)
     glColor4f(1.0f,1.0f,1.0f,1.0f);
 
     m_LightSwitch += percent_tick;
-    if (m_LightSwitch>10) {
+    if (m_LightSwitch>30.0f) {
         ImmediateRenderTexturePos2Dim2(texs[1], DIGGER->GetPos().x+32.0f-200.0f, DIGGER->GetPos().y+0.0f-200.0f, 400.0f, 400.0f);
         m_LightSwitch=0.0f;
     }
