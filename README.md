@@ -22,7 +22,7 @@ David Yu and Harry Yu (code), Carl Ren (art)
 
 ##Tools and neat tech
 
-+ Used SDL2 (+OpenGL), SPICE as underlying engine framework
++ Built on top of [SPICE](http://github.com/dreamycactus/Spice), SDL2 (+OpenGL)
 + Game controller support
 + Minimum Translation Vector-based collision detection
 + Image-based level loader
