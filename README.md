@@ -1,9 +1,21 @@
--EXORCIST-
-A game by
-Dave and Harry Yu (code)
+
+EXORCIST
+========
+A entry for the 7th Toronto Game Jam
+
+David Yu and Harry Yu (code)
 Carl Ren (art)
 
-Instructions:
+Description
+
+In a haunted underground mine, John Digger must find his way out while avoiding eery creatures called Dark Ones. Not all Dark Ones
+are lethal, and John's flares kill all Dark Ones within its radius. But it is up to John to survive on his limited ammunition.
+
+
+
+Instructions and notes from Harry:
+----------------------------------
+
 Okay the in game instructions are SUPER non-informative. Hopefully this document will remedy some of the problems.. provided that you read and understand this.
 
 This is a 2 human player, 1v1 game.
