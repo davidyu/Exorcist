@@ -1,14 +1,24 @@
 
 EXORCIST
 ========
-######An entry for the 7th Toronto Game Jam
-######David Yu and Harry Yu (code), Carl Ren (art)
+*An entry for the 7th Toronto Game Jam*
 
-Description
+
+##Description
 
 Trapped in a haunted underground mine, John Digger must find his way out while avoiding eery creatures called Dark Ones. Not all Dark Ones
 are lethal, and John's flares kill all Dark Ones within its radius. But it is up to John to survive on his limited ammunition.
 
+##Controls
+
+(*Instructions also in-game*) 
+
+John Digger: **WASD** to move, **SPACEBAR** to activate flare
+Dark One: **↑←↓→** to move, **P** to possess a Dark One on-screen, **J, K, L** to activate idle animations
+
+##Authors
+
+David Yu and Harry Yu (code), Carl Ren (art)
 
 * * *
 
