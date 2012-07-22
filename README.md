@@ -13,12 +13,19 @@ are lethal, and John's flares kill all Dark Ones within its radius. But it is up
 
 (*Instructions also in-game*) 
 
-John Digger: **WASD** to move, **SPACEBAR** to activate flare
-Dark One: **↑←↓→** to move, **P** to possess a Dark One on-screen, **J, K, L** to activate idle animations
++ John Digger: **WASD** to move, **SPACEBAR** to activate flare
++ Dark One: **↑←↓→** to move, **P** to possess a Dark One on-screen, **J, K, L** to activate idle animations
 
 ##Authors
 
 David Yu and Harry Yu (code), Carl Ren (art)
+
+##Tools and neat tech
+
++ Used SDL2 (+OpenGL), SPICE as underlying engine framework
++ Game controller support
++ Minimum Translation Vector-based collision detection
++ Image-based level loader
 
 * * *
 
