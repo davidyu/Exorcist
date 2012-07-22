@@ -6,8 +6,8 @@ EXORCIST
 
 ##Description
 
-Trapped in a haunted underground mine, John Digger must find his way out while avoiding eery creatures called Dark Ones. Not all Dark Ones
-are lethal, and John's flares kill all Dark Ones within its radius. But it is up to John to survive on his limited ammunition.
+Trapped in a haunted underground mine, John Digger must find his way out while avoiding eery creatures called the Dark Ones. Not all Dark Ones
+are lethal, and John's flares exorcise Dark Ones within its radius. But it is up to John to survive on his limited ammunition.
 
 ##Controls
 
@@ -18,7 +18,7 @@ are lethal, and John's flares kill all Dark Ones within its radius. But it is up
 
 ##Authors
 
-David Yu and Harry Yu (code), Carl Ren (art)
+[Harry Yu](http://github.com/dreamycactus) and [David Yu](http://github.com/desktop) (code), Carl Ren (art)
 
 ##Tools and neat tech
 
