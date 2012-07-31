@@ -9,8 +9,8 @@ EXORCIST
 
 ##Description
 
-Trapped in a haunted underground mine, John Digger must find his way out while avoiding eery creatures called the Dark Ones. Not all Dark Ones
-are lethal, and John's flares exorcise Dark Ones within its radius. But it is up to John to survive on his limited ammunition.
+Trapped in a haunted underground mine, Lucius must find his way out while avoiding eery creatures called the Dark Ones. Not all Dark Ones
+are lethal, and Lucius's flares exorcise Dark Ones within its radius. But it is up to John to survive on his limited ammunition.
 
 ##Controls
 
