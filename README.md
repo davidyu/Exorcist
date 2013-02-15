@@ -9,7 +9,7 @@ EXORCIST
 ##Description
 
 Trapped in a haunted underground mine, Lucius must find his way out while avoiding ghosts. Only one ghost is lethal, and
-it is up to Lucius to survive on his cunning and limited ammunition of flares.
+it is up to Lucius to survive on his cunning and limited supply of flares.
 
 ##Controls
 
