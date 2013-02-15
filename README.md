@@ -1,11 +1,10 @@
-
 EXORCIST
 ========
 *An entry for the 7th Toronto Game Jam*
 
-![Instructions](/desktop/tojam7/raw/master/Screenshots/instr.jpg)
-![Level 1](/desktop/tojam7/raw/master/Screenshots/l1.jpg)
-![Level 3](/desktop/tojam7/raw/master/Screenshots/l3.jpg)
+![Instructions](./Screenshots/instr.jpg)
+![Level 1](./Screenshots/l1.jpg)
+![Level 3](./Screenshots/l3.jpg)
 
 ##Description
 
