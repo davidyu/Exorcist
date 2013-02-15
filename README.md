@@ -8,15 +8,15 @@ EXORCIST
 
 ##Description
 
-Trapped in a haunted underground mine, Lucius must find his way out while avoiding eery creatures called the Dark Ones. Not all Dark Ones
-are lethal, and Lucius's flares exorcise Dark Ones within its radius. But it is up to John to survive on his limited ammunition.
+Trapped in a haunted underground mine, Lucius must find his way out while avoiding ghosts. Only one ghost is lethal, and
+it is up to Lucius to survive on his cunning and limited ammunition of flares.
 
 ##Controls
 
 (*Instructions also in-game*) 
 
-+ John Digger: **WASD** to move, **SPACEBAR** to activate flare
-+ Dark One: **↑←↓→** to move, **P** to possess a Dark One on-screen, **J, K, L** to activate idle animations
++ Lucius: **WASD** to move, **SPACEBAR** to activate flare
++ Ghost: **↑←↓→** to move, **P** to possess a Dark One on-screen, **J, K, L** to activate idle animations
 
 ##Authors
 
@@ -31,7 +31,7 @@ are lethal, and Lucius's flares exorcise Dark Ones within its radius. But it is 
 
 * * *
 
-Words from Harry:
+Words from Harry (DIGGER = Lucius, DARK ONE = ghost):
 
 > Okay the in game instructions are SUPER non-informative. Hopefully this document will remedy some of the problems.. provided that you read and understand this.
 
